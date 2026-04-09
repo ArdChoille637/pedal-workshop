@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "name": "Tayda Electronics",
+    "slug": "tayda",
+    "website": "https://www.taydaelectronics.com",
+    "api_type": "scrape",
+    "poll_enabled": 0,
+    "poll_interval": 86400,
+    "last_polled_at": null,
+    "created_at": "2025-01-01T00:00:00"
+  },
+  {
+    "id": 2,
+    "name": "Mouser Electronics",
+    "slug": "mouser",
+    "website": "https://www.mouser.com",
+    "api_type": "api",
+    "poll_enabled": 0,
+    "poll_interval": 43200,
+    "last_polled_at": null,
+    "created_at": "2025-01-01T00:00:00"
+  },
+  {
+    "id": 3,
+    "name": "DigiKey",
+    "slug": "digikey",
+    "website": "https://www.digikey.com",
+    "api_type": "api",
+    "poll_enabled": 0,
+    "poll_interval": 43200,
+    "last_polled_at": null,
+    "created_at": "2025-01-01T00:00:00"
+  },
+  {
+    "id": 4,
+    "name": "Small Bear Electronics",
+    "slug": "smallbear",
+    "website": "https://smallbear-electronics.mybigcommerce.com",
+    "api_type": "scrape",
+    "poll_enabled": 0,
+    "poll_interval": 604800,
+    "last_polled_at": null,
+    "created_at": "2025-01-01T00:00:00"
+  },
+  {
+    "id": 5,
+    "name": "Love My Switches",
+    "slug": "lovemyswitches",
+    "website": "https://lovemyswitches.com",
+    "api_type": "scrape",
+    "poll_enabled": 0,
+    "poll_interval": 86400,
+    "last_polled_at": null,
+    "created_at": "2025-01-01T00:00:00"
+  },
+  {
+    "id": 6,
+    "name": "Mammoth Electronics",
+    "slug": "mammoth",
+    "website": "https://www.mammothelectronics.com",
+    "api_type": "scrape",
+    "poll_enabled": 0,
+    "poll_interval": 86400,
+    "last_polled_at": null,
+    "created_at": "2025-01-01T00:00:00"
+  },
+  {
+    "id": 7,
+    "name": "PCBWay",
+    "slug": "pcbway",
+    "website": "https://www.pcbway.com",
+    "api_type": "api",
+    "poll_enabled": 0,
+    "poll_interval": 604800,
+    "last_polled_at": null,
+    "created_at": "2025-01-01T00:00:00"
+  }
+]

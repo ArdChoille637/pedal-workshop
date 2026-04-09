@@ -1,0 +1,49 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+.pytest_cache/
+.mypy_cache/
+
+# ── Database & runtime data ────────────────────────────────────────────────────
+data/
+*.db
+*.db-shm
+*.db-wal
+
+# ── Node / React ──────────────────────────────────────────────────────────────
+ui/node_modules/
+ui/dist/
+ui/.vite/
+ui/*.local
+
+# ── Swift / Xcode ─────────────────────────────────────────────────────────────
+native/.build/
+native/DerivedData/
+native/**/*.xcworkspace/xcuserdata/
+native/**/*.xcuserstate
+native/**/xcuserdata/
+native/.swiftpm/
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+**/.DS_Store
+._*
+
+# ── Editor ────────────────────────────────────────────────────────────────────
+.vscode/
+*.swp
+*.swo
+
+# ── Secrets / local config ─────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+secrets.json
