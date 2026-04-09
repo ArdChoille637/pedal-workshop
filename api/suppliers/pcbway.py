@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Pedal Workshop Contributors
+# https://github.com/ArdChoille637/pedal-workshop
+
 """PCBWay adapter (API/scrape).
 
 PCBWay has a quote API for PCB fabrication. Board pricing depends on specs

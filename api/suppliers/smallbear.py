@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Pedal Workshop Contributors
+# https://github.com/ArdChoille637/pedal-workshop
+
 """Small Bear Electronics adapter (web scrape).
 
 Small catalog of specialty pedal components. Weekly poll is sufficient.

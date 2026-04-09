@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Pedal Workshop Contributors
+# https://github.com/ArdChoille637/pedal-workshop
+
 #!/usr/bin/env python3
 """
 Analyze all 881 schematics via OCR and extract BOM data.

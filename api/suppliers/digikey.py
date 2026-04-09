@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Pedal Workshop Contributors
+# https://github.com/ArdChoille637/pedal-workshop
+
 """DigiKey adapter (OAuth2 API).
 
 Requires DIGIKEY_CLIENT_ID and DIGIKEY_CLIENT_SECRET.

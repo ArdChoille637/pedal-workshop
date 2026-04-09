@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Pedal Workshop Contributors
+# https://github.com/ArdChoille637/pedal-workshop
+
 #!/usr/bin/env python3
 """Seed the database with common components, suppliers, and a sample project."""
 

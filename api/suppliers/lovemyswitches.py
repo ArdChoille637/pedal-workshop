@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Pedal Workshop Contributors
+# https://github.com/ArdChoille637/pedal-workshop
+
 """Love My Switches adapter (Shopify JSON).
 
 Shopify-based store, can use /products.json endpoint for catalog access.

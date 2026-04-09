@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Pedal Workshop Contributors
+# https://github.com/ArdChoille637/pedal-workshop
+
 """Mouser Electronics adapter (REST API).
 
 Requires MOUSER_API_KEY. Free tier: 1000 requests/day.

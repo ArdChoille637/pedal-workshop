@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Pedal Workshop Contributors
+// https://github.com/ArdChoille637/pedal-workshop
+
 import Foundation
 
 // MARK: – Form binding structs (not Codable, not persisted)

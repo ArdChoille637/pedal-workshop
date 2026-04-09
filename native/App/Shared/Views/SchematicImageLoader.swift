@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Pedal Workshop Contributors
+// https://github.com/ArdChoille637/pedal-workshop
+
 // macOS-only: thumbnail loading for GIF / JPG / PNG / PDF schematics.
 #if os(macOS)
 import AppKit

@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Pedal Workshop Contributors
+# https://github.com/ArdChoille637/pedal-workshop
+
 """Background supplier polling orchestration.
 
 Iterates through enabled suppliers, calls their adapter's bulk_check,
