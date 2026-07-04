@@ -116,9 +116,9 @@ struct PriceLookupView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 List(results) { result in
-                    PriceResultRow(result: result, isSaved: savedIds.contains(result.id)) {
-                        Task { await save(result) }
-                    }
+                    PriceResultRow(result: result,
+                                   isSaved: savedIds.contains(result.id),
+                                   onSave: { Task { await save(result) } })
                 }
                 .listStyle(.inset)
             }
@@ -173,7 +173,7 @@ struct PriceLookupView: View {
         results   = await store.searchSuppliers(query: query)
         isLoading = false
         if results.isEmpty {
-            errorMsg = "No results from Tayda, Mammoth, or Love My Switches. Check your query or try a simpler term."
+            errorMsg = "No results from Mammoth\(store.mouserAPIKey.isEmpty ? "" : " or Mouser"). Check your query, or add a Mouser API key in Settings for a broader catalog."
         }
     }
 
@@ -188,7 +188,8 @@ struct PriceLookupView: View {
 struct PriceResultRow: View {
     let result:  SupplierSearchResult
     let isSaved: Bool
-    let onSave:  () -> Void
+    /// When nil, the "link to component" button is hidden (standalone search).
+    var onSave:  (() -> Void)? = nil
 
     var body: some View {
         HStack(spacing: 10) {
@@ -233,13 +234,15 @@ struct PriceResultRow: View {
                     .buttonStyle(.borderless)
                     .help("Open in browser")
                 }
-                Button(action: onSave) {
-                    Image(systemName: isSaved ? "checkmark.circle.fill" : "plus.circle")
-                        .foregroundStyle(isSaved ? .green : .blue)
+                if let onSave {
+                    Button(action: onSave) {
+                        Image(systemName: isSaved ? "checkmark.circle.fill" : "plus.circle")
+                            .foregroundStyle(isSaved ? .green : .blue)
+                    }
+                    .buttonStyle(.borderless)
+                    .help(isSaved ? "Already saved" : "Link to component")
+                    .disabled(isSaved)
                 }
-                .buttonStyle(.borderless)
-                .help(isSaved ? "Already saved" : "Link to component")
-                .disabled(isSaved)
             }
         }
         .padding(.vertical, 3)

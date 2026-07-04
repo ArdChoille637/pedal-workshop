@@ -47,6 +47,7 @@ struct MacContentView: View {
                 Label("Projects",   systemImage: "folder").tag("projects")
                 Label("Schematics", systemImage: "doc.text.image").tag("schematics")
                 Label("Suppliers",  systemImage: "truck.box").tag("suppliers")
+                Label("Price Lookup", systemImage: "magnifyingglass.circle").tag("pricelookup")
                 Divider()
                 Label("Settings",   systemImage: "gearshape").tag("settings")
             }
@@ -60,6 +61,7 @@ struct MacContentView: View {
                 case "projects":   ProjectsView()
                 case "schematics": SchematicsView()
                 case "suppliers":  SuppliersView()
+                case "pricelookup": PartSearchView()
                 case "settings":   SettingsView()
                 default:           DashboardView()
                 }
