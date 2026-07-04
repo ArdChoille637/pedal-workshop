@@ -24,8 +24,9 @@ reads and writes plain JSON on your Mac.
   (`4k7`, `470R`, `Ω` all understood).
 - **Schematic browser** — grid + detail viewer for images and multi-page PDFs
   (PDFKit) with zoom and quick open / reveal in Finder.
-- **Supplier price lookup** — live search against Mammoth and Mouser
-  (Keychain-stored API key); other suppliers listed for reference.
+- **Supplier price lookup** — live keyword search against Mouser (free,
+  Keychain-stored API key) from a dedicated **Price Lookup** tab or per
+  inventory part; other suppliers listed for reference/manual entry.
 
 ## Requirements
 

@@ -295,14 +295,14 @@ public actor SupplierSearchService: Sendable {
     /// Shared singleton. All supplier sub-actors are initialised once here.
     public static let shared = SupplierSearchService()
 
-    // ── Pre-configured Shopify stores ────────────────────────────────────────────
-    /// Mammoth Electronics — effects-focussed parts including speciality film caps.
-    /// The only genuinely Shopify-powered store of the original three:
-    ///   • Tayda is Magento behind Cloudflare (its /products.json 403s) and was
-    ///     removed — it never returned a result.
-    ///   • Love My Switches is BigCommerce (its /products.json 404s) and was
-    ///     removed for the same reason. Their suppliers.json rows remain for
-    ///     manually-entered listings.
+    // ── Shopify stores (retired from live search — see note) ─────────────────────
+    /// Mammoth Electronics. **Not currently searched.** As of 2026-07 Mammoth puts
+    /// its public Shopify endpoints (`/search/suggest.json` and `/products.json`)
+    /// behind bot protection that drops non-browser connections — keyword search
+    /// returns nothing. That's the same reason Tayda (Cloudflare 403) and Love My
+    /// Switches (BigCommerce 404) were retired. All three remain in suppliers.json
+    /// for manually-entered listings; `searchAll` queries Mouser only. This searcher
+    /// is kept so search can be re-enabled if a store restores public API access.
     public let mammoth = ShopifySearcher(
         slug:    "mammoth",
         name:    "Mammoth Electronics",
@@ -329,28 +329,20 @@ public actor SupplierSearchService: Sendable {
     /// - Returns: Results from all suppliers sorted ascending by unit price,
     ///   plus human-readable failure notes for any supplier that errored.
     public func searchAll(query: String, mouserKey: String) async -> SupplierSearchOutcome {
-        async let mammothR: Result<[SupplierSearchResult], Error> = {
-            do { return .success(try await self.mammoth.search(query: query)) }
-            catch { return .failure(error) }
-        }()
-        async let mouserR: Result<[SupplierSearchResult], Error> = {
-            guard !mouserKey.isEmpty else { return .success([]) }
-            do { return .success(try await self.mouser.search(query: query, apiKey: mouserKey)) }
-            catch { return .failure(error) }
-        }()
-
-        var results: [SupplierSearchResult] = []
-        var failures: [String] = []
-        for (name, outcome) in await [("Mammoth", mammothR), ("Mouser", mouserR)] {
-            switch outcome {
-            case .success(let r): results += r
-            case .failure(let e): failures.append("\(name): \(Self.describe(e))")
-            }
+        // Mouser is the only supplier with a stable programmatic search API. The
+        // Shopify stores (Tayda, Love My Switches, and — as of 2026-07 — Mammoth)
+        // all block their public /products.json + /search/suggest.json endpoints
+        // behind bot protection that drops non-browser clients, so they can't be
+        // searched reliably. Re-add a store here if it restores public access.
+        guard !mouserKey.isEmpty else {
+            return SupplierSearchOutcome(results: [], failures: [])
         }
-        return SupplierSearchOutcome(
-            results: results.sorted { $0.price < $1.price },
-            failures: failures
-        )
+        do {
+            let r = try await mouser.search(query: query, apiKey: mouserKey)
+            return SupplierSearchOutcome(results: r.sorted { $0.price < $1.price }, failures: [])
+        } catch {
+            return SupplierSearchOutcome(results: [], failures: ["Mouser: \(Self.describe(error))"])
+        }
     }
 
     private static func describe(_ error: Error) -> String {

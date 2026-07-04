@@ -173,7 +173,9 @@ struct PriceLookupView: View {
         results   = await store.searchSuppliers(query: query)
         isLoading = false
         if results.isEmpty {
-            errorMsg = "No results from Mammoth\(store.mouserAPIKey.isEmpty ? "" : " or Mouser"). Check your query, or add a Mouser API key in Settings for a broader catalog."
+            errorMsg = store.mouserAPIKey.isEmpty
+                ? "Add a Mouser API key in Settings to search (free at mouser.com/api-hub)."
+                : "No results from Mouser. Try a different query."
         }
     }
 

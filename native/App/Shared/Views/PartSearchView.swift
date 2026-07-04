@@ -67,7 +67,7 @@ struct PartSearchView: View {
     // MARK: – Mouser-key hint
 
     private var keyHint: some View {
-        Label("Searching Mammoth only. Add a Mouser API key in Settings to include Mouser's catalog.",
+        Label("Add a Mouser API key in Settings to search (it's free at mouser.com/api-hub).",
               systemImage: "key")
             .font(.caption)
             .foregroundStyle(.secondary)
@@ -90,8 +90,8 @@ struct PartSearchView: View {
                       systemImage: searched ? "cart.badge.questionmark" : "magnifyingglass")
             } description: {
                 Text(searched
-                     ? "No matches from Mammoth\(hasMouserKey ? " or Mouser" : ""). Try a different term."
-                     : "Look up live prices and stock from Mammoth\(hasMouserKey ? " and Mouser" : "").")
+                     ? "No matches from Mouser. Try a different term."
+                     : "Look up live prices and stock from Mouser.")
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
