@@ -18,7 +18,6 @@ let package = Package(
                 .process("Resources/suppliers.json"),
                 .process("Resources/projects.json"),
                 .process("Resources/schematics.json"),
-                .process("Resources/schematics_metadata.json"),
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v6)

@@ -1,0 +1,774 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02D22F868E62AEDD1BF52F1A /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CE6099D541B61CA935CCD /* ProjectsView.swift */; };
+		08399734520BC1557C5260ED /* WorkshopCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1AEC9A579B39B51A0E297CE7 /* WorkshopCore */; };
+		0FCA6161C0AB84B5E75FE7FB /* ProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDE42EB95904ED31A4FF2CB /* ProjectFormView.swift */; };
+		15FB0E31AC767BFD9523D887 /* BarcodeEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1EA4C83C2773D0D8AABAA5 /* BarcodeEntryView.swift */; };
+		168D4C3CE9C684C270BB9C34 /* SuppliersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EE33A2DBBE4808CA70BEB9 /* SuppliersView.swift */; };
+		172582A1E8A039926A69FA25 /* SchematicImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEE49BC0F176CC5309AB603 /* SchematicImageLoader.swift */; };
+		177BF935D1C477F2036E4370 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8580CCE891CD005B527BB53C /* iOSApp.swift */; };
+		1818CF3CC53FCFF31CC11A32 /* BarcodeEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1EA4C83C2773D0D8AABAA5 /* BarcodeEntryView.swift */; };
+		1AD2D9C17E7915B6B72DA9B3 /* BOMItemFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92030BC1B592C39C9814C0DA /* BOMItemFormView.swift */; };
+		249CECDBB92922521AEEEDB8 /* ComponentFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753DD5B6F78A65B4C75B9F82 /* ComponentFormView.swift */; };
+		29EE58FF4C3B51BAB7ACF2DA /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38140D7E5CC5601905C436F1 /* DashboardView.swift */; };
+		2C47AB711E405601D6F1B8AB /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38140D7E5CC5601905C436F1 /* DashboardView.swift */; };
+		3235F9E082DC2859CD53C267 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A552AA7597EA706F4175D204 /* SettingsView.swift */; };
+		3A0F40BA83650B517413005A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A552AA7597EA706F4175D204 /* SettingsView.swift */; };
+		3D02A48580A3FC73E464B9C9 /* BOMItemFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92030BC1B592C39C9814C0DA /* BOMItemFormView.swift */; };
+		3E4A4797C8D12ACD58C13673 /* PriceLookupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035B06607907DEEAE3D65CDE /* PriceLookupView.swift */; };
+		4E74E80E385487D633F4D5C7 /* BOMItemFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92030BC1B592C39C9814C0DA /* BOMItemFormView.swift */; };
+		5B53D8F00470BCFF58DB63E2 /* ComponentFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753DD5B6F78A65B4C75B9F82 /* ComponentFormView.swift */; };
+		607FC38E891876B1C980BC6B /* SuppliersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EE33A2DBBE4808CA70BEB9 /* SuppliersView.swift */; };
+		66D1FB6041EA20517DA1ACD4 /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CE6099D541B61CA935CCD /* ProjectsView.swift */; };
+		6A095D514AE137919819E3D8 /* SchematicImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEE49BC0F176CC5309AB603 /* SchematicImageLoader.swift */; };
+		73D75FC6709EF0D44D4A5287 /* SchematicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B8E6CD906D58E7DC624B26 /* SchematicsView.swift */; };
+		761583DC2216E81B6432CE2B /* SchematicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B8E6CD906D58E7DC624B26 /* SchematicsView.swift */; };
+		7B81EEAF9EFAAF2C81213F98 /* ComponentFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753DD5B6F78A65B4C75B9F82 /* ComponentFormView.swift */; };
+		80426A4BC53C13D1AF80C10D /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F1DB7317FB482210ED2B7A /* InventoryView.swift */; };
+		8093B281DA4EEC986913496A /* WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1077CAD6BFAF0BD7D5D433 /* WatchApp.swift */; };
+		8DE57BAA9A8C5D9988447F23 /* WorkshopCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2D9D621619929C1F8E656D8E /* WorkshopCore */; };
+		92855B2B7DA5A1E7BEDF8254 /* ProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDE42EB95904ED31A4FF2CB /* ProjectFormView.swift */; };
+		9CF2EC6C9D13F8218BCDC689 /* ProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDE42EB95904ED31A4FF2CB /* ProjectFormView.swift */; };
+		A3F59E6F4FD04E26363BF074 /* SchematicImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEE49BC0F176CC5309AB603 /* SchematicImageLoader.swift */; };
+		A83ADC4A78A5FE46C9AE8A40 /* PriceLookupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035B06607907DEEAE3D65CDE /* PriceLookupView.swift */; };
+		B2A8F90DB3F50DFF410EA795 /* PriceLookupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035B06607907DEEAE3D65CDE /* PriceLookupView.swift */; };
+		B81CB675014B43FBF8623F92 /* SuppliersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EE33A2DBBE4808CA70BEB9 /* SuppliersView.swift */; };
+		C42A98BF8FCE415603718B09 /* WorkshopCore in Frameworks */ = {isa = PBXBuildFile; productRef = 178B0A8BFABBF44FC3345EDD /* WorkshopCore */; };
+		D978C718445ABF0229AAA3AF /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F1DB7317FB482210ED2B7A /* InventoryView.swift */; };
+		DA357BA5CE0CC368C6848F05 /* MacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEACF285245D9756AEFD2EDF /* MacApp.swift */; };
+		DCDC6C3841B8184C2326D19E /* SchematicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B8E6CD906D58E7DC624B26 /* SchematicsView.swift */; };
+		DD5D765EE038ECFAA7130D57 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A552AA7597EA706F4175D204 /* SettingsView.swift */; };
+		E33581497C3F2B2DD563CAB3 /* BarcodeEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1EA4C83C2773D0D8AABAA5 /* BarcodeEntryView.swift */; };
+		E72CDB746670FDCBAE2E8826 /* tvOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB28BEBF43F1BD645F3208A7 /* tvOSApp.swift */; };
+		EC36F3DA9B31F467BC2C6A59 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38140D7E5CC5601905C436F1 /* DashboardView.swift */; };
+		ED46CC80500F77824F32377F /* WorkshopCore in Frameworks */ = {isa = PBXBuildFile; productRef = 24F09C551DFC9336E7A7D382 /* WorkshopCore */; };
+		F29168904BA185BA50F073CD /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F1DB7317FB482210ED2B7A /* InventoryView.swift */; };
+		F3617A876160210D05990A6D /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890CE6099D541B61CA935CCD /* ProjectsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		035B06607907DEEAE3D65CDE /* PriceLookupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceLookupView.swift; sourceTree = "<group>"; };
+		08F1DB7317FB482210ED2B7A /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
+		34B8E6CD906D58E7DC624B26 /* SchematicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchematicsView.swift; sourceTree = "<group>"; };
+		38140D7E5CC5601905C436F1 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		3DEE49BC0F176CC5309AB603 /* SchematicImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchematicImageLoader.swift; sourceTree = "<group>"; };
+		46C9E189827EF8E91849B690 /* PedalWorkshop-tvOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "PedalWorkshop-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E144BB587FB3958689B952E /* PedalWorkshop-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PedalWorkshop-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A6D9BB936EA1613E84269DB /* PedalWorkshop-iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "PedalWorkshop-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BC7B2DAF1942791474C535F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		753DD5B6F78A65B4C75B9F82 /* ComponentFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentFormView.swift; sourceTree = "<group>"; };
+		76839AB5A540D285666E37A4 /* PedalWorkshop-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PedalWorkshop-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A946660FF426E0AE2A6E5AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7CD75094E99EC981D6D0841F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7E1EA4C83C2773D0D8AABAA5 /* BarcodeEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeEntryView.swift; sourceTree = "<group>"; };
+		7F8AB633A4C230AD77314E49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8580CCE891CD005B527BB53C /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		890CE6099D541B61CA935CCD /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
+		92030BC1B592C39C9814C0DA /* BOMItemFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BOMItemFormView.swift; sourceTree = "<group>"; };
+		A552AA7597EA706F4175D204 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DB28BEBF43F1BD645F3208A7 /* tvOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tvOSApp.swift; sourceTree = "<group>"; };
+		EF1231AAA6FFF8A7F59E29CB /* native */ = {isa = PBXFileReference; lastKnownFileType = folder; name = native; path = .; sourceTree = SOURCE_ROOT; };
+		F9EE33A2DBBE4808CA70BEB9 /* SuppliersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuppliersView.swift; sourceTree = "<group>"; };
+		FDDE42EB95904ED31A4FF2CB /* ProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFormView.swift; sourceTree = "<group>"; };
+		FE1077CAD6BFAF0BD7D5D433 /* WatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchApp.swift; sourceTree = "<group>"; };
+		FEACF285245D9756AEFD2EDF /* MacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0D5E3FCBCDC01016A21F8AE6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08399734520BC1557C5260ED /* WorkshopCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68DE71AF9FAF0AD6BF3088D7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DE57BAA9A8C5D9988447F23 /* WorkshopCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58FC50C98221607329639F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED46CC80500F77824F32377F /* WorkshopCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FDC6C95A930E3554CEF2B6C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C42A98BF8FCE415603718B09 /* WorkshopCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		007DCAF6FFA94145DB942AEF /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				7F8AB633A4C230AD77314E49 /* Info.plist */,
+				FEACF285245D9756AEFD2EDF /* MacApp.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		5FB985EC2E9F2E1F278FDB1C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6A6D9BB936EA1613E84269DB /* PedalWorkshop-iOS.app */,
+				76839AB5A540D285666E37A4 /* PedalWorkshop-macOS.app */,
+				46C9E189827EF8E91849B690 /* PedalWorkshop-tvOS.app */,
+				4E144BB587FB3958689B952E /* PedalWorkshop-watchOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6DD383CD1EBFC54AB3871693 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				EF1231AAA6FFF8A7F59E29CB /* native */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		85630AB40344646F01691EA7 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				85868B9BF062E58BED76A3C5 /* Extension */,
+			);
+			path = watchOS;
+			sourceTree = "<group>";
+		};
+		85868B9BF062E58BED76A3C5 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				6BC7B2DAF1942791474C535F /* Info.plist */,
+				FE1077CAD6BFAF0BD7D5D433 /* WatchApp.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		8770F7EBC75845599B8830AA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7E1EA4C83C2773D0D8AABAA5 /* BarcodeEntryView.swift */,
+				92030BC1B592C39C9814C0DA /* BOMItemFormView.swift */,
+				753DD5B6F78A65B4C75B9F82 /* ComponentFormView.swift */,
+				38140D7E5CC5601905C436F1 /* DashboardView.swift */,
+				08F1DB7317FB482210ED2B7A /* InventoryView.swift */,
+				035B06607907DEEAE3D65CDE /* PriceLookupView.swift */,
+				FDDE42EB95904ED31A4FF2CB /* ProjectFormView.swift */,
+				890CE6099D541B61CA935CCD /* ProjectsView.swift */,
+				3DEE49BC0F176CC5309AB603 /* SchematicImageLoader.swift */,
+				34B8E6CD906D58E7DC624B26 /* SchematicsView.swift */,
+				A552AA7597EA706F4175D204 /* SettingsView.swift */,
+				F9EE33A2DBBE4808CA70BEB9 /* SuppliersView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		ADB2B96405A7C6120EBF008F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F4F055FF16FEE4A1E02B80AF /* iOS */,
+				007DCAF6FFA94145DB942AEF /* macOS */,
+				C635EE8CCF5D4D241FE34143 /* Shared */,
+				F97CB0644B5AB47EE405D84D /* tvOS */,
+				85630AB40344646F01691EA7 /* watchOS */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		C635EE8CCF5D4D241FE34143 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				8770F7EBC75845599B8830AA /* Views */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		EC421AAC37ABDBA25074C851 = {
+			isa = PBXGroup;
+			children = (
+				ADB2B96405A7C6120EBF008F /* App */,
+				6DD383CD1EBFC54AB3871693 /* Packages */,
+				5FB985EC2E9F2E1F278FDB1C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F4F055FF16FEE4A1E02B80AF /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				7CD75094E99EC981D6D0841F /* Info.plist */,
+				8580CCE891CD005B527BB53C /* iOSApp.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		F97CB0644B5AB47EE405D84D /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				7A946660FF426E0AE2A6E5AC /* Info.plist */,
+				DB28BEBF43F1BD645F3208A7 /* tvOSApp.swift */,
+			);
+			path = tvOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3465992AA1E0AC1892027435 /* PedalWorkshop-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5F3997234142D349C4DCDC02 /* Build configuration list for PBXNativeTarget "PedalWorkshop-macOS" */;
+			buildPhases = (
+				A88B1A4F22485CBA2CB10EFE /* Sources */,
+				FDC6C95A930E3554CEF2B6C2 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "PedalWorkshop-macOS";
+			packageProductDependencies = (
+				178B0A8BFABBF44FC3345EDD /* WorkshopCore */,
+			);
+			productName = "PedalWorkshop-macOS";
+			productReference = 76839AB5A540D285666E37A4 /* PedalWorkshop-macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B5B79BDB35706D65B91AAED1 /* PedalWorkshop-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7A9E35247AAACA39930039B /* Build configuration list for PBXNativeTarget "PedalWorkshop-tvOS" */;
+			buildPhases = (
+				86A0D796D77DC07ED32EF746 /* Sources */,
+				0D5E3FCBCDC01016A21F8AE6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "PedalWorkshop-tvOS";
+			packageProductDependencies = (
+				1AEC9A579B39B51A0E297CE7 /* WorkshopCore */,
+			);
+			productName = "PedalWorkshop-tvOS";
+			productReference = 46C9E189827EF8E91849B690 /* PedalWorkshop-tvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E4CD3A92AF56D73B0BC336C2 /* PedalWorkshop-watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0DC764C9E1D4BC7B013B39E7 /* Build configuration list for PBXNativeTarget "PedalWorkshop-watchOS" */;
+			buildPhases = (
+				35BD010CC39D6175669CB2E9 /* Sources */,
+				68DE71AF9FAF0AD6BF3088D7 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "PedalWorkshop-watchOS";
+			packageProductDependencies = (
+				2D9D621619929C1F8E656D8E /* WorkshopCore */,
+			);
+			productName = "PedalWorkshop-watchOS";
+			productReference = 4E144BB587FB3958689B952E /* PedalWorkshop-watchOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F4A41C58AD9B43B163D9B5D4 /* PedalWorkshop-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDC2C9982C696463F3BE9FED /* Build configuration list for PBXNativeTarget "PedalWorkshop-iOS" */;
+			buildPhases = (
+				F2DDCE8E5F0A1910D6CFE274 /* Sources */,
+				DA58FC50C98221607329639F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "PedalWorkshop-iOS";
+			packageProductDependencies = (
+				24F09C551DFC9336E7A7D382 /* WorkshopCore */,
+			);
+			productName = "PedalWorkshop-iOS";
+			productReference = 6A6D9BB936EA1613E84269DB /* PedalWorkshop-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		47EC19E0877F13057017B45B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					3465992AA1E0AC1892027435 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					B5B79BDB35706D65B91AAED1 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					E4CD3A92AF56D73B0BC336C2 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					F4A41C58AD9B43B163D9B5D4 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B599EC116AA01AD75F114603 /* Build configuration list for PBXProject "PedalWorkshop" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = EC421AAC37ABDBA25074C851;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6B24209D9FAB4DB1AFFF837D /* XCLocalSwiftPackageReference "." */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 5FB985EC2E9F2E1F278FDB1C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F4A41C58AD9B43B163D9B5D4 /* PedalWorkshop-iOS */,
+				3465992AA1E0AC1892027435 /* PedalWorkshop-macOS */,
+				B5B79BDB35706D65B91AAED1 /* PedalWorkshop-tvOS */,
+				E4CD3A92AF56D73B0BC336C2 /* PedalWorkshop-watchOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		35BD010CC39D6175669CB2E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8093B281DA4EEC986913496A /* WatchApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86A0D796D77DC07ED32EF746 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AD2D9C17E7915B6B72DA9B3 /* BOMItemFormView.swift in Sources */,
+				15FB0E31AC767BFD9523D887 /* BarcodeEntryView.swift in Sources */,
+				249CECDBB92922521AEEEDB8 /* ComponentFormView.swift in Sources */,
+				2C47AB711E405601D6F1B8AB /* DashboardView.swift in Sources */,
+				D978C718445ABF0229AAA3AF /* InventoryView.swift in Sources */,
+				3E4A4797C8D12ACD58C13673 /* PriceLookupView.swift in Sources */,
+				92855B2B7DA5A1E7BEDF8254 /* ProjectFormView.swift in Sources */,
+				66D1FB6041EA20517DA1ACD4 /* ProjectsView.swift in Sources */,
+				A3F59E6F4FD04E26363BF074 /* SchematicImageLoader.swift in Sources */,
+				761583DC2216E81B6432CE2B /* SchematicsView.swift in Sources */,
+				3235F9E082DC2859CD53C267 /* SettingsView.swift in Sources */,
+				B81CB675014B43FBF8623F92 /* SuppliersView.swift in Sources */,
+				E72CDB746670FDCBAE2E8826 /* tvOSApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A88B1A4F22485CBA2CB10EFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D02A48580A3FC73E464B9C9 /* BOMItemFormView.swift in Sources */,
+				E33581497C3F2B2DD563CAB3 /* BarcodeEntryView.swift in Sources */,
+				5B53D8F00470BCFF58DB63E2 /* ComponentFormView.swift in Sources */,
+				EC36F3DA9B31F467BC2C6A59 /* DashboardView.swift in Sources */,
+				F29168904BA185BA50F073CD /* InventoryView.swift in Sources */,
+				DA357BA5CE0CC368C6848F05 /* MacApp.swift in Sources */,
+				B2A8F90DB3F50DFF410EA795 /* PriceLookupView.swift in Sources */,
+				9CF2EC6C9D13F8218BCDC689 /* ProjectFormView.swift in Sources */,
+				02D22F868E62AEDD1BF52F1A /* ProjectsView.swift in Sources */,
+				6A095D514AE137919819E3D8 /* SchematicImageLoader.swift in Sources */,
+				73D75FC6709EF0D44D4A5287 /* SchematicsView.swift in Sources */,
+				3A0F40BA83650B517413005A /* SettingsView.swift in Sources */,
+				607FC38E891876B1C980BC6B /* SuppliersView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F2DDCE8E5F0A1910D6CFE274 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4E74E80E385487D633F4D5C7 /* BOMItemFormView.swift in Sources */,
+				1818CF3CC53FCFF31CC11A32 /* BarcodeEntryView.swift in Sources */,
+				7B81EEAF9EFAAF2C81213F98 /* ComponentFormView.swift in Sources */,
+				29EE58FF4C3B51BAB7ACF2DA /* DashboardView.swift in Sources */,
+				80426A4BC53C13D1AF80C10D /* InventoryView.swift in Sources */,
+				A83ADC4A78A5FE46C9AE8A40 /* PriceLookupView.swift in Sources */,
+				0FCA6161C0AB84B5E75FE7FB /* ProjectFormView.swift in Sources */,
+				F3617A876160210D05990A6D /* ProjectsView.swift in Sources */,
+				172582A1E8A039926A69FA25 /* SchematicImageLoader.swift in Sources */,
+				DCDC6C3841B8184C2326D19E /* SchematicsView.swift in Sources */,
+				DD5D765EE038ECFAA7130D57 /* SettingsView.swift in Sources */,
+				168D4C3CE9C684C270BB9C34 /* SuppliersView.swift in Sources */,
+				177BF935D1C477F2036E4370 /* iOSApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		029D02A639B8CBF8D23F03A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = App/watchOS/Extension/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pedalworkshop.watchos;
+				PRODUCT_NAME = "Pedal Workshop";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		13655CB0C29F2BCB5B75CFC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.pedalworkshop.ios;
+				PRODUCT_NAME = "Pedal Workshop";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1835D54350B5E3E730496A0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TVOS_DEPLOYMENT_TARGET = 26.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		4CDB0567BC0618E823D36E00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = App/watchOS/Extension/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pedalworkshop.watchos;
+				PRODUCT_NAME = "Pedal Workshop";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		6240255ED156332B6EEAA843 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = App/macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pedalworkshop.mac;
+				PRODUCT_NAME = "Pedal Workshop";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		6E432D470451FD08CFABE5FF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TVOS_DEPLOYMENT_TARGET = 26.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		7E96E196FD6B3E96A23F290E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.pedalworkshop.ios;
+				PRODUCT_NAME = "Pedal Workshop";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		862BB78261B366256DAADAB8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = App/tvOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.pedalworkshop.tvos;
+				PRODUCT_NAME = "Pedal Workshop";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		9182D1E1FB9EADAD2EEA4BA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = App/macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pedalworkshop.mac;
+				PRODUCT_NAME = "Pedal Workshop";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CAFDFF14D95D5E7ACA80B467 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = App/tvOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.pedalworkshop.tvos;
+				PRODUCT_NAME = "Pedal Workshop";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0DC764C9E1D4BC7B013B39E7 /* Build configuration list for PBXNativeTarget "PedalWorkshop-watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CDB0567BC0618E823D36E00 /* Debug */,
+				029D02A639B8CBF8D23F03A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5F3997234142D349C4DCDC02 /* Build configuration list for PBXNativeTarget "PedalWorkshop-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9182D1E1FB9EADAD2EEA4BA4 /* Debug */,
+				6240255ED156332B6EEAA843 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B599EC116AA01AD75F114603 /* Build configuration list for PBXProject "PedalWorkshop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E432D470451FD08CFABE5FF /* Debug */,
+				1835D54350B5E3E730496A0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EDC2C9982C696463F3BE9FED /* Build configuration list for PBXNativeTarget "PedalWorkshop-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				13655CB0C29F2BCB5B75CFC8 /* Debug */,
+				7E96E196FD6B3E96A23F290E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F7A9E35247AAACA39930039B /* Build configuration list for PBXNativeTarget "PedalWorkshop-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				862BB78261B366256DAADAB8 /* Debug */,
+				CAFDFF14D95D5E7ACA80B467 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		6B24209D9FAB4DB1AFFF837D /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		178B0A8BFABBF44FC3345EDD /* WorkshopCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WorkshopCore;
+		};
+		1AEC9A579B39B51A0E297CE7 /* WorkshopCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WorkshopCore;
+		};
+		24F09C551DFC9336E7A7D382 /* WorkshopCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WorkshopCore;
+		};
+		2D9D621619929C1F8E656D8E /* WorkshopCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WorkshopCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 47EC19E0877F13057017B45B /* Project object */;
+}

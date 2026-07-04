@@ -70,7 +70,6 @@ public actor LocalDataStore: Sendable {
     private var _projects:         [Project]?
     private var _bomItems:         [BOMItem]?
     private var _schematics:       [Schematic]?
-    private var _schematicMeta:    [String: SchematicMeta]?   // keyed by file_path (survives re-indexing)
     private var _supplierListings: [SupplierListing]?
 
     // MARK: – Application Support directory
@@ -118,7 +117,7 @@ public actor LocalDataStore: Sendable {
     /// re-run of scripts/generate_native_index.py + rebuild), the copy is
     /// refreshed automatically. User-writable files (components, projects,
     /// bom_items, …) are seeded once and never overwritten here.
-    private static let bundleAuthoritative: Set<String> = ["schematics", "suppliers", "schematics_metadata"]
+    private static let bundleAuthoritative: Set<String> = ["schematics", "suppliers"]
 
     /// True if the bundle seed file is an empty JSON collection (`[]` / `{}`) or
     /// blank — used to stop an empty placeholder seed from overwriting real data.
@@ -149,10 +148,10 @@ public actor LocalDataStore: Sendable {
             let destDate = (try? dest.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
             if let s = srcDate, let d = destDate, s > d, !bundleSeedIsEmpty(src) {
                 // Guard: never let an EMPTY bundle seed clobber real local data.
-                // The published repo ships schematics/schematics_metadata as empty
-                // `[]` placeholders (they'd otherwise leak home paths + copyrighted
-                // OCR). A user's locally-generated index — from Settings → Rescan or
-                // generate_native_index.py — must survive an app rebuild.
+                // The published repo ships schematics.json as an empty `[]`
+                // placeholder (it would otherwise leak home paths + copyrighted
+                // schematic text). A user's locally-generated index — from
+                // pipeline/tools/generate_native_index.py — must survive a rebuild.
                 try? fm.removeItem(at: dest)
                 try fm.copyItem(at: src, to: dest)
             }
@@ -545,209 +544,6 @@ public actor LocalDataStore: Sendable {
             }
         }
         return Array(result.prefix(limit))
-    }
-
-    // =========================================================================
-    // MARK: – Schematic re-indexing (native)
-    // =========================================================================
-
-    /// Category-folder → effect-type map, mirroring generate_native_index.py.
-    private static let categoryEffectMap: [String: String] = [
-        "ADSR Generators and Envelope Generators": "envelope",
-        "Amplifiers and VCAs": "amplifier",
-        "Buffers Switchers Mixers and Routers": "utility",
-        "Chorus": "chorus",
-        "Circuit Bending and Modifications": "modification",
-        "Compressors Gates and Limiters": "compressor",
-        "Delay Echo and Samplers": "delay",
-        "Distortion Boost and Overdrive": "distortion",
-        "Filters Wahs and VCFs": "filter",
-        "Flangers": "flanger",
-        "Full Synths Drum Synths and Misc Synth": "synth",
-        "Fuzz and Fuzzy Noisemakers": "fuzz",
-        "Guitar Synth and Misc Signal Shapers": "synth",
-        "MIDI": "midi",
-        "Miscellaneous": "misc",
-        "OOP Japanese Electronics Book": "reference",
-        "Oscillators LFOs and Signal Generators": "oscillator",
-        "Phasers": "phaser",
-        "Power Supplies and Other Useful Stuff": "power",
-        "Reverb": "reverb",
-        "Ring Modulators and Frequency Shifters": "ring_mod",
-        "Tone Control and EQs": "eq",
-        "Tremolos and Panners": "tremolo",
-        "Vibrato and Pitch Shift": "pitch",
-    ]
-
-    /// Rescans the schematics repository on disk and rebuilds the index in
-    /// Application Support — the in-app equivalent of
-    /// scripts/generate_native_index.py, so adding/renaming schematic files
-    /// no longer requires Python. The repo root is inferred from the current
-    /// index (grandparent of the first entry's file path), falling back to
-    /// ~/Documents/schematics.
-    ///
-    /// Note: a subsequent app REBUILD ships a newer bundle index, which the
-    /// bundle-authoritative refresh in `load` will restore — after changing
-    /// the library long-term, also re-run generate_native_index.py before
-    /// building. For a running install, this rescan is authoritative.
-    ///
-    /// - Returns: The number of schematics indexed.
-    @discardableResult
-    public func reindexSchematics() throws -> Int {
-        let root = schematicsRootURL()
-        let fm = FileManager.default
-        let validExt: Set<String> = ["gif", "pdf", "png", "jpg", "jpeg"]
-        let skipDirs: Set<String> = ["workshop", "picocalc-bench"]
-
-        let categoryDirs = try fm.contentsOfDirectory(
-            at: root,
-            includingPropertiesForKeys: [.isDirectoryKey],
-            options: [.skipsHiddenFiles]
-        )
-
-        var entries: [Schematic] = []
-        for dir in categoryDirs.sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) {
-            guard (try? dir.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true else { continue }
-            let category = dir.lastPathComponent
-            if skipDirs.contains(category) || category.hasPrefix(".") { continue }
-            let effect = Self.categoryEffectMap[category]
-
-            let files = (try? fm.contentsOfDirectory(
-                at: dir, includingPropertiesForKeys: [.fileSizeKey], options: [.skipsHiddenFiles]
-            )) ?? []
-            for file in files.sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) {
-                let ext = file.pathExtension.lowercased()
-                guard validExt.contains(ext) else { continue }
-                let size = (try? file.resourceValues(forKeys: [.fileSizeKey]))?.fileSize ?? 0
-                // Scrape-junk guard: Mod_Security error stubs are 226 bytes.
-                guard size > 512 else { continue }
-
-                let stem = file.deletingPathExtension().lastPathComponent
-                var tags = stem
-                    .replacingOccurrences(of: "-", with: " ")
-                    .replacingOccurrences(of: "_", with: " ")
-                    .split(separator: " ")
-                    .map { $0.lowercased() }
-                    .filter { $0.count > 1 }
-                if let effect { tags.append(effect) }
-
-                entries.append(Schematic(
-                    id:             entries.count + 1,
-                    categoryFolder: category,
-                    fileName:       file.lastPathComponent,
-                    filePath:       file.path,
-                    fileType:       ext,
-                    fileSize:       size,
-                    effectType:     effect,
-                    tags:           Array(Set(tags)).sorted(),
-                    createdAt:      now()
-                ))
-            }
-        }
-
-        try save(entries, name: "schematics")
-        _schematics = entries
-        return entries.count
-    }
-
-    /// The schematics repo root: grandparent of the first indexed file
-    /// (file → category folder → root), else ~/Documents/schematics.
-    private func schematicsRootURL() -> URL {
-        if let first = try? fetchSchematics(limit: 1).first {
-            return URL(fileURLWithPath: first.filePath)
-                .deletingLastPathComponent()
-                .deletingLastPathComponent()
-        }
-        return fm_home().appendingPathComponent("Documents/schematics", isDirectory: true)
-    }
-
-    private func fm_home() -> URL {
-        FileManager.default.homeDirectoryForCurrentUser
-    }
-
-    // =========================================================================
-    // MARK: – Schematic Metadata (OCR-extracted BOM)
-    // =========================================================================
-
-    /// Returns the OCR-extracted BOM metadata for all schematics, keyed by
-    /// file path. Path keys survive index regeneration (integer ids do not —
-    /// they are re-assigned whenever generate_native_index.py runs).
-    /// Returns an empty dict (not an error) when the file doesn't exist yet —
-    /// the user just hasn't run `analyze_schematics.py` yet.
-    ///
-    /// To regenerate: `python3 scripts/analyze_schematics.py --workers 6`
-    /// The script writes to ~/Library/Application Support/PedalWorkshop/schematics_metadata.json
-    public func fetchSchematicMeta() throws -> [String: SchematicMeta] {
-        if let cached = _schematicMeta { return cached }
-        // Seeded from the bundle like the schematics index (bundle-authoritative),
-        // so a fresh install gets BOM data without running the analyzer script.
-        // Absent everywhere → empty dict, not an error.
-        let items: [SchematicMeta]
-        do {
-            items = try load("schematics_metadata", type: [SchematicMeta].self)
-        } catch {
-            return [:]
-        }
-        // Keyed by file_path for O(1) lookups; tolerate duplicates from
-        // externally-generated files instead of crashing (first entry wins).
-        let dict = Dictionary(items.map { ($0.filePath, $0) },
-                              uniquingKeysWith: { first, _ in first })
-        _schematicMeta = dict
-        return dict
-    }
-
-    public func fetchSchematicMeta(for schematic: Schematic) throws -> SchematicMeta? {
-        try fetchSchematicMeta()[schematic.filePath]
-    }
-
-    /// Creates a new Project + full BOM from a schematic's OCR-extracted metadata.
-    ///
-    /// - Parameters:
-    ///   - schematic: The schematic to derive the project from.
-    ///   - meta: Pre-fetched OCR metadata (call fetchSchematicMeta(for:) first).
-    ///   - status: Initial project status — defaults to "design".
-    ///
-    /// TO CUSTOMISE AUTO-NAMING: modify the `name` and `form` construction below.
-    public func createProjectFromSchematic(
-        _ schematic: Schematic,
-        meta: SchematicMeta,
-        status: String = "design"
-    ) throws -> (Project, [BOMItem]) {
-        // Strip file extension for a cleaner project name
-        let name = (schematic.fileName as NSString).deletingPathExtension
-        let form = ProjectForm(
-            name:        name,
-            effectType:  schematic.effectType
-                         ?? schematic.categoryFolder
-                            .components(separatedBy: " ").first?
-                            .lowercased() ?? "",
-            status:      status,
-            description: "Created from schematic: \(schematic.categoryFolder)",
-            notes:       "Source file: \(schematic.filePath)"
-        )
-        let project = try addProject(form)
-
-        var created: [BOMItem] = []
-        for entry in meta.bomEntries {
-            var itemForm         = BOMItemForm()
-            itemForm.category    = entry.category
-            itemForm.value       = entry.value
-            itemForm.quantity    = entry.quantity
-
-            // Link to an existing inventory component. Loads the component
-            // cache if needed (previously this silently skipped linking when
-            // the user went straight to Schematics on a fresh launch), and
-            // matches on normalized values so "4k7" / "4.7k" / "4700 ohm" unify.
-            let comps = try components()
-            let entryValue = BuildAnalyzer.normalizeValue(entry.value)
-            itemForm.componentId = comps.first {
-                $0.category.lowercased() == entry.category.lowercased() &&
-                BuildAnalyzer.normalizeValue($0.value) == entryValue
-            }?.id
-
-            created.append(try addBOMItem(itemForm, projectId: project.id))
-        }
-        return (project, created)
     }
 
     // =========================================================================

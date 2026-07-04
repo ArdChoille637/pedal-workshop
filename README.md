@@ -2,8 +2,7 @@
 # Pedal Workshop
 
 A **native macOS app** for guitar-pedal builders: a parts inventory manager,
-a build analyzer, and a schematic browser with OCR'd bills of materials and
-live supplier price lookup.
+a build analyzer, a schematic image browser, and live supplier price lookup.
 
 Built with **SwiftUI + Swift 6**. No backend, no accounts, no cloud — the app
 reads and writes plain JSON on your Mac.
@@ -23,9 +22,8 @@ reads and writes plain JSON on your Mac.
 - **Build Analyzer** — per-project BOM demand vs. on-hand stock, with
   Ready / Almost-Ready-Not-Available states and value normalization
   (`4k7`, `470R`, `Ω` all understood).
-- **Schematic browser** — grid + detail viewer (images and multi-page PDFs via
-  PDFKit), with an OCR-extracted BOM side panel and one-click
-  "create project from schematic".
+- **Schematic browser** — grid + detail viewer for images and multi-page PDFs
+  (PDFKit) with zoom and quick open / reveal in Finder.
 - **Supplier price lookup** — live search against Mammoth and Mouser
   (Keychain-stored API key); other suppliers listed for reference.
 
@@ -52,12 +50,13 @@ installs **Pedal Workshop.app** to `/Applications`, and opens it.
 |---|---|
 | Your inventory, projects, BOMs (live) | `~/Library/Application Support/PedalWorkshop/*.json` |
 | First-run seed defaults (shipped) | `native/Sources/WorkshopCore/Resources/*.json` |
-| Your schematic library (yours to provide) | any folder; point the app at it and **Rescan** |
+| Your schematic library (yours to provide) | any folder; index it with pipeline/tools |
 
-The repo ships **empty** schematic seeds — Pedal Workshop does not redistribute
-anyone's schematic library. Populate your own with the app's
-**Settings → Rescan Schematics Folder**, or with
-[`pipeline/tools/generate_native_index.py`](pipeline/tools/generate_native_index.py).
+The repo ships an **empty** schematic index — Pedal Workshop does not
+redistribute anyone's schematic library. Point it at your own by generating the
+index with
+[`pipeline/tools/generate_native_index.py`](pipeline/tools/generate_native_index.py),
+which writes `schematics.json` into Application Support.
 
 ## Repository layout
 

@@ -222,8 +222,8 @@ public struct BuildAnalyzer: Sendable {
             var missing: [MissingPart] = []
 
             // Optional rows never demote a build; aggregate the remaining demand
-            // per normalized StockKey first so duplicate BOM lines (common with
-            // OCR-generated BOMs) can't each claim the full on-hand quantity.
+            // per normalized StockKey first so duplicate BOM lines can't each
+            // claim the full on-hand quantity.
             let required = bom.filter { $0.isOptional == 0 }
             var demand: [StockKey: Int] = [:]
             var representative: [StockKey: BOMItem] = [:]

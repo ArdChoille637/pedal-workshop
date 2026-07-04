@@ -186,10 +186,9 @@ struct SchematicGridCell: View {
     #endif
 }
 
-// MARK: – Detail view
+// MARK: – Detail view (image / PDF viewer)
 
 struct SchematicDetailView: View {
-    @Environment(WorkshopStore.self) var store
     let schematic: Schematic
 
     #if os(macOS)
@@ -202,84 +201,55 @@ struct SchematicDetailView: View {
     private var fileExists: Bool { FileManager.default.fileExists(atPath: schematic.filePath) }
     #endif
 
-    @State private var meta: SchematicMeta?
-    @State private var metaLoaded = false
-    @State private var showBOM = false
-    @State private var creatingProject = false
-    @State private var showCreatedAlert = false
-
     var body: some View {
-        HSplitView {
-            // ── Left: image viewer ──────────────────────────────────────
-            Group {
-                #if os(macOS)
-                if isPDF, fileExists {
-                    // Vector-sharp zoom + multi-page navigation via PDFKit —
-                    // the raster path only ever showed page 1 at ~800 px.
-                    SchematicPDFViewer(
-                        url: URL(fileURLWithPath: schematic.filePath),
-                        zoom: $zoom
-                    )
-                } else if let img = image {
-                    ScrollView([.horizontal, .vertical]) {
-                        Image(nsImage: img)
-                            .resizable()
-                            .scaledToFit()
-                            // NB: no .scaleEffect here — the explicit frame IS the
-                            // zoom. Stacking both drew at zoom² and clipped.
-                            .frame(
-                                width:  img.size.width  * zoom,
-                                height: img.size.height * zoom
-                            )
-                            .padding()
-                    }
-                    .gesture(
-                        MagnificationGesture()
-                            .onChanged { v in
-                                zoom = min(maxZoom, max(minZoom, zoom * v))
-                            }
-                    )
-                } else if loadFailed || !fileExists {
-                    ContentUnavailableView {
-                        Label("File not found", systemImage: "exclamationmark.triangle")
-                    } description: {
-                        Text(schematic.filePath)
-                            .font(.caption)
-                            .textSelection(.enabled)
-                    } actions: {
-                        Button("Reveal in Finder") {
-                            NSWorkspace.shared.activateFileViewerSelecting(
-                                [URL(fileURLWithPath: schematic.filePath)])
-                        }
-                    }
-                } else {
-                    ProgressView("Loading…")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                #else
-                Text("Image viewer is macOS only.")
-                #endif
-            }
-            .frame(minWidth: 400)
-
-            // ── Right: BOM panel ────────────────────────────────────────
-            if showBOM {
-                BOMPanel(
-                    schematic: schematic,
-                    meta: meta,
-                    metaLoaded: metaLoaded,
-                    creatingProject: $creatingProject,
-                    onCreateProject: {
-                        creatingProject = true
-                        Task {
-                            await store.createProjectFromSchematic(schematic)
-                            creatingProject = false
-                            showCreatedAlert = true
-                        }
-                    }
+        Group {
+            #if os(macOS)
+            if isPDF, fileExists {
+                // Vector-sharp zoom + multi-page navigation via PDFKit —
+                // the raster path only ever showed page 1 at ~800 px.
+                SchematicPDFViewer(
+                    url: URL(fileURLWithPath: schematic.filePath),
+                    zoom: $zoom
                 )
-                .frame(width: 280)
+            } else if let img = image {
+                ScrollView([.horizontal, .vertical]) {
+                    Image(nsImage: img)
+                        .resizable()
+                        .scaledToFit()
+                        // NB: no .scaleEffect here — the explicit frame IS the
+                        // zoom. Stacking both drew at zoom² and clipped.
+                        .frame(
+                            width:  img.size.width  * zoom,
+                            height: img.size.height * zoom
+                        )
+                        .padding()
+                }
+                .gesture(
+                    MagnificationGesture()
+                        .onChanged { v in
+                            zoom = min(maxZoom, max(minZoom, zoom * v))
+                        }
+                )
+            } else if loadFailed || !fileExists {
+                ContentUnavailableView {
+                    Label("File not found", systemImage: "exclamationmark.triangle")
+                } description: {
+                    Text(schematic.filePath)
+                        .font(.caption)
+                        .textSelection(.enabled)
+                } actions: {
+                    Button("Reveal in Finder") {
+                        NSWorkspace.shared.activateFileViewerSelecting(
+                            [URL(fileURLWithPath: schematic.filePath)])
+                    }
+                }
+            } else {
+                ProgressView("Loading…")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
+            #else
+            Text("Image viewer is macOS only.")
+            #endif
         }
         .navigationTitle((schematic.fileName as NSString).deletingPathExtension)
         .toolbar {
@@ -304,17 +274,6 @@ struct SchematicDetailView: View {
 
                 Divider()
 
-                // BOM toggle
-                Button {
-                    showBOM.toggle()
-                } label: {
-                    Label("Parts List", systemImage: "list.bullet.rectangle")
-                }
-                .help(showBOM ? "Hide parts panel" : "Show extracted parts")
-                .keyboardShortcut("b", modifiers: .command)
-
-                Divider()
-
                 Button("Open in Preview") {
                     NSWorkspace.shared.open(URL(fileURLWithPath: schematic.filePath))
                 }
@@ -327,185 +286,13 @@ struct SchematicDetailView: View {
         }
         #if os(macOS)
         .task {
-            async let metaTask: SchematicMeta? = store.schematicMeta(for: schematic)
             if !isPDF {
                 // PDFs render via PDFKit directly; only raster files need loading.
                 image = await SchematicImageLoader.shared.fullImage(for: schematic)
                 if image == nil { loadFailed = true }
             }
-            meta = await metaTask
-            metaLoaded = true
         }
         #endif
-        .alert("Project Created", isPresented: $showCreatedAlert) {
-            Button("OK") {
-                store.lastCreatedProjectName = nil
-            }
-        } message: {
-            if let name = store.lastCreatedProjectName {
-                Text("\"\(name)\" added to Projects with \(meta?.bomCount ?? 0) BOM items.")
-            }
-        }
-    }
-}
-
-// MARK: – BOM side panel
-
-private struct BOMPanel: View {
-    @Environment(WorkshopStore.self) var store
-    let schematic: Schematic
-    let meta: SchematicMeta?
-    let metaLoaded: Bool
-    @Binding var creatingProject: Bool
-    let onCreateProject: () -> Void
-
-    var categoryGroups: [(String, [OCRBOMEntry])] {
-        guard let entries = meta?.bomEntries else { return [] }
-        let order = ["resistor","capacitor","ic","transistor","diode",
-                     "potentiometer","switch","jack","other"]
-        var grouped: [String: [OCRBOMEntry]] = [:]
-        for e in entries { grouped[e.category, default: []].append(e) }
-        return order.compactMap { cat in
-            guard let items = grouped[cat], !items.isEmpty else { return nil }
-            return (cat, items)
-        }
-    }
-
-    var alreadyHasProject: Bool {
-        let title = (schematic.fileName as NSString).deletingPathExtension
-        return store.projects.contains { $0.name.lowercased() == title.lowercased() }
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Header
-            HStack {
-                Text("Extracted Parts")
-                    .font(.headline)
-                Spacer()
-                if let n = meta?.bomCount, n > 0 {
-                    Text("\(n) parts")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-            }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
-
-            Divider()
-
-            if !metaLoaded {
-                ProgressView("Analyzing…")
-                    .padding()
-            } else if meta == nil || meta?.bomCount == 0 {
-                VStack(spacing: 8) {
-                    Image(systemName: "doc.questionmark")
-                        .font(.title2)
-                        .foregroundStyle(.secondary)
-                    Text("No parts extracted")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    Text("OCR couldn't read component values from this schematic.")
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
-                        .multilineTextAlignment(.center)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-            } else {
-                // BOM list
-                List {
-                    ForEach(categoryGroups, id: \.0) { cat, entries in
-                        Section(cat.capitalized) {
-                            ForEach(entries, id: \.value) { entry in
-                                BOMEntryRow(entry: entry, components: store.components)
-                            }
-                        }
-                    }
-                }
-                .listStyle(.inset)
-
-                Divider()
-
-                // Create project button
-                VStack(spacing: 6) {
-                    if alreadyHasProject {
-                        Label("Project already exists", systemImage: "checkmark.circle.fill")
-                            .font(.caption)
-                            .foregroundStyle(.green)
-                    } else {
-                        Button {
-                            onCreateProject()
-                        } label: {
-                            if creatingProject {
-                                ProgressView()
-                                    .scaleEffect(0.7)
-                                    .frame(maxWidth: .infinity)
-                            } else {
-                                Label("Add All Parts to New Project",
-                                      systemImage: "folder.badge.plus")
-                                    .frame(maxWidth: .infinity)
-                            }
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .disabled(creatingProject)
-                        .padding(.horizontal, 8)
-                    }
-
-                    if let err = store.error {
-                        Text(err).font(.caption2).foregroundStyle(.red)
-                            .padding(.horizontal, 8)
-                    }
-                }
-                .padding(.vertical, 8)
-            }
-        }
-        .background(.background.secondary)
-    }
-}
-
-// MARK: – BOM entry row with inventory status
-
-private struct BOMEntryRow: View {
-    let entry: OCRBOMEntry
-    let components: [Component]
-
-    var matched: Component? {
-        components.first {
-            $0.category == entry.category &&
-            $0.value.lowercased() == entry.value.lowercased()
-        }
-    }
-
-    var body: some View {
-        HStack(spacing: 8) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(entry.value)
-                    .font(.system(.body, design: .monospaced))
-                    .lineLimit(1)
-                if let qty = matched.map({ $0.quantity }) {
-                    Text("\(qty) in stock")
-                        .font(.caption2)
-                        .foregroundStyle(qty >= entry.quantity ? .green : .orange)
-                } else {
-                    Text("not in inventory")
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
-                }
-            }
-            Spacer()
-            // Stock indicator dot
-            if let comp = matched {
-                Circle()
-                    .fill(comp.quantity >= entry.quantity ? Color.green : Color.orange)
-                    .frame(width: 7, height: 7)
-            } else {
-                Circle()
-                    .fill(Color.secondary.opacity(0.3))
-                    .frame(width: 7, height: 7)
-            }
-        }
-        .padding(.vertical, 1)
     }
 }
 

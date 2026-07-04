@@ -246,35 +246,6 @@ public final class WorkshopStore {
         }
     }
 
-    // MARK: – Schematic metadata
-
-    public func schematicMeta(for schematic: Schematic) async -> SchematicMeta? {
-        try? await store.fetchSchematicMeta(for: schematic)
-    }
-
-    /// Create a project + full BOM from an OCR-analyzed schematic.
-    /// Sets `lastCreatedProjectName` on success so the UI can show a confirmation.
-    public func createProjectFromSchematic(_ schematic: Schematic) async {
-        do {
-            guard let meta = try await store.fetchSchematicMeta(for: schematic),
-                  meta.bomCount > 0 else {
-                self.error = "No BOM data for this schematic. Run analyze_schematics.py first."
-                return
-            }
-            let (project, _) = try await store.createProjectFromSchematic(schematic, meta: meta)
-            projects = try await store.fetchProjects()
-            await recomputeTiers()
-            self.error = nil
-            self.lastCreatedProjectName = project.name
-        } catch {
-            self.error = error.localizedDescription
-        }
-    }
-
-    /// Transient: set to the just-created project name after createProjectFromSchematic.
-    /// Views should observe this and clear it after showing confirmation.
-    public var lastCreatedProjectName: String? = nil
-
     // MARK: – Convenience refreshes
     //
     // These all call loadAll() — cheap since LocalDataStore caches in memory.
@@ -358,23 +329,6 @@ public final class WorkshopStore {
 
     public func schematicFileURL(for schematic: Schematic) -> URL? {
         URL(fileURLWithPath: schematic.filePath)
-    }
-
-    // MARK: – Schematic re-indexing
-
-    /// Count from the last in-app rescan, for UI confirmation. Transient.
-    public var lastReindexCount: Int?
-
-    /// Rescan the schematics folder on disk and refresh the in-memory index.
-    public func reindexSchematics() async {
-        do {
-            let count = try await store.reindexSchematics()
-            schematics = try await store.fetchSchematics()
-            lastReindexCount = count
-            error = nil
-        } catch {
-            self.error = error.localizedDescription
-        }
     }
 
     // MARK: – Private helpers

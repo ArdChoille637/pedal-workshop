@@ -13,7 +13,6 @@ struct SettingsView: View {
 
     @State private var mouserKey: String = ""
     @State private var saved = false
-    @State private var reindexing = false
 
     private var dataFolder: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
@@ -36,30 +35,6 @@ struct SettingsView: View {
             }
 
             Section {
-                HStack {
-                    Button {
-                        reindexing = true
-                        Task {
-                            await store.reindexSchematics()
-                            reindexing = false
-                        }
-                    } label: {
-                        Label("Rescan Schematics Folder", systemImage: "arrow.triangle.2.circlepath")
-                    }
-                    .disabled(reindexing)
-
-                    if reindexing {
-                        ProgressView().controlSize(.small)
-                    } else if let n = store.lastReindexCount {
-                        Text("\(n) schematics indexed")
-                            .font(.caption)
-                            .foregroundStyle(.green)
-                    }
-                }
-                Text("Re-scans the schematics repository on disk after you add, rename, or reorganize files. New files won't have extracted parts until the OCR analyzer is re-run.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-
                 #if os(macOS)
                 Button {
                     NSWorkspace.shared.activateFileViewerSelecting([dataFolder])

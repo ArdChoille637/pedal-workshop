@@ -34,10 +34,11 @@ scheme `PedalWorkshop-macOS`).
 - State ownership: `WorkshopStore` (`@Observable @MainActor`) is the **only**
   gateway between views and persistence (`actor LocalDataStore`). Views call
   async store methods; never reach past the store into `LocalDataStore`.
-- Schematic index/metadata seeds ship **empty** in git (they'd otherwise leak
-  home paths + copyrighted OCR text). Regenerate locally with
-  `pipeline/tools/generate_native_index.py` + `analyze_schematics.py`, or the
-  app's **Settings → Rescan Schematics Folder**.
+- The schematic index seed (`schematics.json`) ships **empty** in git (it would
+  otherwise leak home paths + copyrighted schematic names). Regenerate locally
+  with `pipeline/tools/generate_native_index.py`. The app is a read-only
+  image/PDF browser over that index — no OCR, no BOM extraction, no
+  schematic→project derivation (all that lives in the pipeline).
 
 ## Architecture notes
 - `BuildAnalyzer` aggregates per-project BOM demand by `StockKey` vs. on-hand
