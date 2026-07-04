@@ -1,0 +1,3 @@
+# This directory is populated locally by pipeline/tools/package_schematics.py.
+# The schematic files themselves are gitignored (copyrighted + large); only this
+# marker is committed so a fresh clone still builds (ships an empty library).

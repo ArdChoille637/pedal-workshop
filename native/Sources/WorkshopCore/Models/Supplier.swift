@@ -74,3 +74,23 @@ public struct Schematic: Codable, Identifiable, Hashable, Sendable {
         case createdAt      = "created_at"
     }
 }
+
+public extension Schematic {
+    /// URL of the schematic file **packaged inside the app bundle**, or `nil` if
+    /// it isn't bundled.
+    ///
+    /// The app reads schematic files ONLY from its own bundle — never from the
+    /// user's `~/Documents` folder — so it never triggers the macOS
+    /// "access files in your Documents folder" permission prompt (which could
+    /// otherwise hang the app). Populate the bundle with
+    /// `pipeline/tools/package_schematics.py`, which copies the indexed files
+    /// into `WorkshopCore/Resources/Schematics/<category>/<file>`.
+    var fileURL: URL? {
+        guard let base = Bundle.module.resourceURL else { return nil }
+        let url = base
+            .appendingPathComponent("Schematics", isDirectory: true)
+            .appendingPathComponent(categoryFolder, isDirectory: true)
+            .appendingPathComponent(fileName)
+        return FileManager.default.fileExists(atPath: url.path) ? url : nil
+    }
+}

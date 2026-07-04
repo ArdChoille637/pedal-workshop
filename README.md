@@ -53,11 +53,18 @@ installs **Pedal Workshop.app** to `/Applications`, and opens it.
 | First-run seed defaults (shipped) | `native/Sources/WorkshopCore/Resources/*.json` |
 | Your schematic library (yours to provide) | any folder; index it with pipeline/tools |
 
-The repo ships an **empty** schematic index — Pedal Workshop does not
-redistribute anyone's schematic library. Point it at your own by generating the
-index with
-[`pipeline/tools/generate_native_index.py`](pipeline/tools/generate_native_index.py),
-which writes `schematics.json` into Application Support.
+The repo ships an **empty** schematic library — Pedal Workshop does not
+redistribute anyone's schematics. To load your own:
+
+```sh
+python3 pipeline/tools/generate_native_index.py   # build the index (schematics.json)
+python3 pipeline/tools/package_schematics.py       # copy the files into the app bundle
+cd native && ./launch.sh                            # rebuild
+```
+
+The app reads schematic files **only from its own bundle**, never from
+`~/Documents` — so it never asks for Documents-folder permission and stays
+self-contained.
 
 ## Repository layout
 

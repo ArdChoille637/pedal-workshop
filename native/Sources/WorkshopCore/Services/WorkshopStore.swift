@@ -328,7 +328,7 @@ public final class WorkshopStore {
     }
 
     public func schematicFileURL(for schematic: Schematic) -> URL? {
-        URL(fileURLWithPath: schematic.filePath)
+        schematic.fileURL
     }
 
     // MARK: – Private helpers

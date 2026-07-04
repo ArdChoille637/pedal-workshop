@@ -28,8 +28,9 @@ actor SchematicImageLoader {
         let key = NSString(string: schematic.filePath)
         if let hit = cache.object(forKey: key) { return hit }
 
-        let url = URL(fileURLWithPath: schematic.filePath)
-        guard let raw = await load(url: url, type: schematic.fileType) else { return nil }
+        // Read only from the app bundle — never ~/Documents (no TCC prompt).
+        guard let url = schematic.fileURL,
+              let raw = await load(url: url, type: schematic.fileType) else { return nil }
 
         let thumb = scaled(raw, maxDimension: 360)
         let cost  = Int(thumb.size.width * thumb.size.height * 4)
@@ -39,7 +40,7 @@ actor SchematicImageLoader {
 
     /// Full-resolution image for the detail view.
     func fullImage(for schematic: Schematic) async -> NSImage? {
-        let url = URL(fileURLWithPath: schematic.filePath)
+        guard let url = schematic.fileURL else { return nil }
         return await load(url: url, type: schematic.fileType)
     }
 

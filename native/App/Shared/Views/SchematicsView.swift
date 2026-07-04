@@ -177,11 +177,12 @@ struct SchematicGridCell: View {
 
     #if os(macOS)
     private func openFile() {
-        NSWorkspace.shared.open(URL(fileURLWithPath: schematic.filePath))
+        if let url = schematic.fileURL { NSWorkspace.shared.open(url) }
     }
     private func revealInFinder() {
-        NSWorkspace.shared.activateFileViewerSelecting(
-            [URL(fileURLWithPath: schematic.filePath)])
+        if let url = schematic.fileURL {
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+        }
     }
     #endif
 }
@@ -198,19 +199,17 @@ struct SchematicDetailView: View {
     private let minZoom: CGFloat = 0.25
     private let maxZoom: CGFloat = 8.0
     private var isPDF: Bool { schematic.fileType.lowercased() == "pdf" }
-    private var fileExists: Bool { FileManager.default.fileExists(atPath: schematic.filePath) }
+    /// The packaged file inside the app bundle (nil if not bundled). Never ~/Documents.
+    private var bundleURL: URL? { schematic.fileURL }
     #endif
 
     var body: some View {
         Group {
             #if os(macOS)
-            if isPDF, fileExists {
+            if isPDF, let url = bundleURL {
                 // Vector-sharp zoom + multi-page navigation via PDFKit —
                 // the raster path only ever showed page 1 at ~800 px.
-                SchematicPDFViewer(
-                    url: URL(fileURLWithPath: schematic.filePath),
-                    zoom: $zoom
-                )
+                SchematicPDFViewer(url: url, zoom: $zoom)
             } else if let img = image {
                 ScrollView([.horizontal, .vertical]) {
                     Image(nsImage: img)
@@ -230,18 +229,13 @@ struct SchematicDetailView: View {
                             zoom = min(maxZoom, max(minZoom, zoom * v))
                         }
                 )
-            } else if loadFailed || !fileExists {
+            } else if loadFailed || bundleURL == nil {
                 ContentUnavailableView {
-                    Label("File not found", systemImage: "exclamationmark.triangle")
+                    Label("Not in library", systemImage: "exclamationmark.triangle")
                 } description: {
-                    Text(schematic.filePath)
+                    Text("“\(schematic.fileName)” isn't packaged in the app. Run pipeline/tools/package_schematics.py and rebuild.")
                         .font(.caption)
                         .textSelection(.enabled)
-                } actions: {
-                    Button("Reveal in Finder") {
-                        NSWorkspace.shared.activateFileViewerSelecting(
-                            [URL(fileURLWithPath: schematic.filePath)])
-                    }
                 }
             } else {
                 ProgressView("Loading…")
@@ -274,12 +268,11 @@ struct SchematicDetailView: View {
 
                 Divider()
 
-                Button("Open in Preview") {
-                    NSWorkspace.shared.open(URL(fileURLWithPath: schematic.filePath))
-                }
-                Button("Reveal in Finder") {
-                    NSWorkspace.shared.activateFileViewerSelecting(
-                        [URL(fileURLWithPath: schematic.filePath)])
+                if let url = bundleURL {
+                    Button("Open in Preview") { NSWorkspace.shared.open(url) }
+                    Button("Reveal in Finder") {
+                        NSWorkspace.shared.activateFileViewerSelecting([url])
+                    }
                 }
             }
             #endif

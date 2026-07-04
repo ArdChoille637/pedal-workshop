@@ -55,3 +55,7 @@ pipeline/_scratch/
 # Internal working docs (not published)
 RECODE-PLAN.md
 .claude/
+
+# ── Packaged schematic library (copyrighted + ~192MB; populated locally) ──────
+native/Sources/WorkshopCore/Resources/Schematics/*
+!native/Sources/WorkshopCore/Resources/Schematics/.gitkeep
