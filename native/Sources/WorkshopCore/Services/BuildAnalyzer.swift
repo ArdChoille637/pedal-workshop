@@ -20,6 +20,9 @@ import Foundation
 /// | ARNA 1–3 | 1–3 | ``BuildTiers/arna13`` |
 /// | ARNA 4+ | 4 or more | ``BuildTiers/arna4Plus`` |
 ///
+/// The missing-part count **excludes** optional BOM rows and the enclosure —
+/// both are sourced separately and do not gate build readiness.
+///
 /// > **To change tier thresholds:** Locate the `switch missing.count` block in
 /// > ``analyze(projects:bomItems:components:)`` and adjust the `case 1...3:` range.
 /// > The ARNA 1–3 / ARNA 4+ boundary is that upper bound (currently `3`).
@@ -221,10 +224,15 @@ public struct BuildAnalyzer: Sendable {
 
             var missing: [MissingPart] = []
 
-            // Optional rows never demote a build; aggregate the remaining demand
-            // per normalized StockKey first so duplicate BOM lines can't each
-            // claim the full on-hand quantity.
-            let required = bom.filter { $0.isOptional == 0 }
+            // Optional rows never demote a build. The enclosure is likewise
+            // excluded from the ARNA (missing-part) count — it's sourced
+            // separately and shouldn't gate build readiness. Aggregate the
+            // remaining demand per normalized StockKey first so duplicate BOM
+            // lines can't each claim the full on-hand quantity.
+            let required = bom.filter {
+                $0.isOptional == 0 &&
+                $0.category.trimmingCharacters(in: .whitespaces).lowercased() != "enclosure"
+            }
             var demand: [StockKey: Int] = [:]
             var representative: [StockKey: BOMItem] = [:]
             for item in required {
