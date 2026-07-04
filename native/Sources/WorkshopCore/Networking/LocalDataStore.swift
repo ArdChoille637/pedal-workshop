@@ -1,0 +1,866 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Pedal Workshop Contributors
+// https://github.com/ArdChoille637/pedal-workshop
+
+import Foundation
+
+// MARK: – LocalDataStore
+//
+// PURPOSE:
+//   Single source of truth for all app data.  Uses plain JSON files stored in
+//   ~/Library/Application Support/PedalWorkshop/ so data survives app updates,
+//   works without a server, and is easy to inspect / hand-edit.
+//
+// ARCHITECTURE:
+//   • `actor` isolation — all mutations are serialised on the actor's executor,
+//     so there are no data races even when called from concurrent async contexts.
+//   • In-memory cache — each collection is loaded once and mutated in place;
+//     writes flush the full array back to disk atomically (.atomic flag).
+//   • Bundle seeding — on first launch, seed files from the app bundle are
+//     copied to Application Support so the user starts with useful defaults.
+//
+// TO ADD A NEW DATA TYPE:
+//   1. Define the model struct in Sources/WorkshopCore/Models/.
+//   2. Add a `private var _myThings: [MyThing]?` cache property here.
+//   3. Add a private `myThings()` accessor that lazy-loads from disk.
+//   4. Add public fetch / add / update / delete methods following the pattern below.
+//   5. Add a seed JSON file to Sources/WorkshopCore/Resources/ if needed.
+//   6. Register the resource in Package.swift → resources: [.process(...)].
+
+public actor LocalDataStore: Sendable {
+
+    // Shared singleton — use this everywhere.
+    // If you need test isolation, create a separate instance instead.
+    public static let shared = LocalDataStore()
+
+    // MARK: – Codec
+
+    // We use explicit CodingKeys with snake_case raw values on every model,
+    // so no key-decoding strategy is needed here.  This avoids surprises when
+    // property names contain acronyms (e.g. `mpn`, `bomItems`).
+    private let decoder = JSONDecoder()
+
+    // Pretty-printed so the JSON files are human-readable and diff-friendly
+    // in version control.  To shrink file size in production builds, remove
+    // .prettyPrinted — the decoder doesn't care either way.
+    private let encoder: JSONEncoder = {
+        let e = JSONEncoder()
+        e.outputFormatting = [.prettyPrinted, .sortedKeys]
+        return e
+    }()
+
+    // MARK: – ISO 8601 timestamp helper
+    //
+    // WHY cached: ISO8601DateFormatter is expensive to initialise (~5 ms).
+    // Creating one per write would be noticeable during bulk BOM imports.
+    private let iso8601: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime]
+        return f
+    }()
+
+    private func now() -> String { iso8601.string(from: Date()) }
+
+    // MARK: – In-memory cache
+    //
+    // Optional means "not loaded yet".  Once loaded the value is never nil;
+    // mutations keep it in sync so we never need a full reload from disk.
+    private var _components:       [Component]?
+    private var _suppliers:        [Supplier]?
+    private var _projects:         [Project]?
+    private var _bomItems:         [BOMItem]?
+    private var _schematics:       [Schematic]?
+    private var _schematicMeta:    [String: SchematicMeta]?   // keyed by file_path (survives re-indexing)
+    private var _supplierListings: [SupplierListing]?
+
+    // MARK: – Application Support directory
+
+    // The directory is created here once; subsequent accesses are pure URL math.
+    // Force-unwrap of `urls(for:in:)` is safe — this call cannot fail on macOS/iOS.
+    private let appSupportDir: URL = {
+        let base = FileManager.default.urls(
+            for: .applicationSupportDirectory, in: .userDomainMask
+        ).first!
+        let dir = base.appendingPathComponent("PedalWorkshop", isDirectory: true)
+        // createDirectory is idempotent when withIntermediateDirectories: true
+        do {
+            try FileManager.default.createDirectory(
+                at: dir, withIntermediateDirectories: true, attributes: nil
+            )
+        } catch {
+            // In practice this cannot fail for a user-writable directory.
+            // If it does (e.g. permission error), reads will subsequently fail
+            // with a clear DataError.missingResource message.
+            assertionFailure("Could not create app support directory: \(error)")
+        }
+        return dir
+    }()
+
+    private init() {}
+
+    // MARK: – Path helpers
+
+    /// Returns the on-disk URL for a named JSON file (no extension needed).
+    private func dataURL(_ name: String) -> URL {
+        appSupportDir.appendingPathComponent("\(name).json")
+    }
+
+    // MARK: – Generic load / save
+
+    /// Load a JSON file from Application Support.
+    /// On first launch (file absent), copies the seed from the app bundle.
+    ///
+    /// - Parameters:
+    ///   - name: File base-name (e.g. "components" → components.json).
+    ///   - bundleName: Override if the bundle resource has a different name.
+    /// Datasets the app never mutates. These follow the BUNDLE: when the bundle
+    /// seed is newer than the App Support copy (i.e. after an app update or a
+    /// re-run of scripts/generate_native_index.py + rebuild), the copy is
+    /// refreshed automatically. User-writable files (components, projects,
+    /// bom_items, …) are seeded once and never overwritten here.
+    private static let bundleAuthoritative: Set<String> = ["schematics", "suppliers", "schematics_metadata"]
+
+    /// True if the bundle seed file is an empty JSON collection (`[]` / `{}`) or
+    /// blank — used to stop an empty placeholder seed from overwriting real data.
+    private func bundleSeedIsEmpty(_ url: URL) -> Bool {
+        guard let bytes = try? Data(contentsOf: url) else { return true }
+        let trimmed = String(decoding: bytes, as: UTF8.self)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty || trimmed == "[]" || trimmed == "{}"
+    }
+
+    private func load<T: Decodable>(_ name: String, type: T.Type, bundleName: String? = nil) throws -> T {
+        let dest = dataURL(name)
+        let bname = bundleName ?? name
+        let bundleURL = Bundle.module.url(forResource: bname, withExtension: "json")
+        let fm = FileManager.default
+
+        if !fm.fileExists(atPath: dest.path) {
+            // First launch — seed from bundle.
+            // To change the defaults a user sees on first launch, edit the
+            // JSON files in Sources/WorkshopCore/Resources/.
+            guard let src = bundleURL else {
+                throw DataError.missingResource(bname)
+            }
+            try fm.copyItem(at: src, to: dest)
+        } else if Self.bundleAuthoritative.contains(name), let src = bundleURL {
+            // Read-only dataset: refresh from the bundle when the seed is newer.
+            let srcDate  = (try? src.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+            let destDate = (try? dest.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+            if let s = srcDate, let d = destDate, s > d, !bundleSeedIsEmpty(src) {
+                // Guard: never let an EMPTY bundle seed clobber real local data.
+                // The published repo ships schematics/schematics_metadata as empty
+                // `[]` placeholders (they'd otherwise leak home paths + copyrighted
+                // OCR). A user's locally-generated index — from Settings → Rescan or
+                // generate_native_index.py — must survive an app rebuild.
+                try? fm.removeItem(at: dest)
+                try fm.copyItem(at: src, to: dest)
+            }
+        }
+
+        do {
+            let data = try Data(contentsOf: dest)
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            // Corrupt or schema-mismatched file: quarantine it and re-seed from
+            // the bundle instead of bricking the collection until manual file
+            // surgery. The quarantined copy is kept for recovery.
+            let stamp = ISO8601DateFormatter().string(from: Date())
+                .replacingOccurrences(of: ":", with: "-")
+            let quarantine = appSupportDir.appendingPathComponent("\(name).corrupt-\(stamp).json")
+            try? fm.moveItem(at: dest, to: quarantine)
+            if let src = bundleURL, (try? fm.copyItem(at: src, to: dest)) != nil,
+               let data = try? Data(contentsOf: dest),
+               let value = try? decoder.decode(T.self, from: data) {
+                return value
+            }
+            throw DataError.decodeFailed(name, underlying: error)
+        }
+    }
+
+    /// Atomically write an encodable value to disk.
+    /// `.atomic` writes to a temp file then renames, preventing corruption on
+    /// crash or sudden power loss.
+    private func save<T: Encodable>(_ value: T, name: String) throws {
+        let data = try encoder.encode(value)
+        try data.write(to: dataURL(name), options: .atomic)
+    }
+
+    // MARK: – Next ID helper
+    //
+    // Generates monotonically-increasing integer IDs — simple and deterministic
+    // for a local JSON store.  If you ever migrate to a networked backend,
+    // switch to UUID strings and update the Identifiable conformances.
+    private func nextId(_ items: [some Identifiable<Int>]) -> Int {
+        (items.map(\.id).max() ?? 0) + 1
+    }
+
+    // MARK: – Slug helper
+    //
+    // Produces a URL-safe lowercase hyphenated slug from any name.
+    // Used for project slugs; kept simple — collisions are benign.
+    private func makeSlug(_ name: String) -> String {
+        name.lowercased()
+            .components(separatedBy: CharacterSet.alphanumerics.inverted)
+            .filter { !$0.isEmpty }
+            .joined(separator: "-")
+    }
+
+    // =========================================================================
+    // MARK: – Cache accessors (private)
+    // =========================================================================
+
+    private func components() throws -> [Component] {
+        if _components == nil {
+            _components = try load("components", type: [Component].self)
+        }
+        return _components!
+    }
+
+    private func projects() throws -> [Project] {
+        if _projects == nil { try seedProjectsIfNeeded() }
+        return _projects!
+    }
+
+    private func bomItems() throws -> [BOMItem] {
+        if _bomItems == nil { try seedProjectsIfNeeded() }
+        return _bomItems!
+    }
+
+    /// On first launch the bundle ships a combined `projects.json` containing
+    /// `{ "projects": [...], "bom_items": [...] }`.  We split them into
+    /// separate writable files so they can grow independently.
+    ///
+    /// TO CHANGE DEFAULT PROJECTS: edit seeds/sample_project.json and
+    /// re-run `make seed` (Python) or rebuild the Swift target.
+    private func seedProjectsIfNeeded() throws {
+        let projDest = dataURL("projects")
+        let bomDest  = dataURL("bom_items")
+        let fm = FileManager.default
+        let projExists = fm.fileExists(atPath: projDest.path)
+        let bomExists  = fm.fileExists(atPath: bomDest.path)
+
+        if projExists, bomExists {
+            _projects = try load("projects",  type: [Project].self)
+            _bomItems = try load("bom_items", type: [BOMItem].self)
+            return
+        }
+
+        if !projExists, !bomExists {
+            // True first launch — seed both from the bundle's combined file.
+            guard let src = Bundle.module.url(forResource: "projects", withExtension: "json") else {
+                // No seed file — start empty rather than crashing.
+                _projects = []
+                _bomItems = []
+                try save(_projects!, name: "projects")
+                try save(_bomItems!, name: "bom_items")
+                return
+            }
+            let data   = try Data(contentsOf: src)
+            let bundle = try decoder.decode(ProjectBundle.self, from: data)
+            try save(bundle.projects, name: "projects")
+            try save(bundle.bomItems, name: "bom_items")
+            _projects = bundle.projects
+            _bomItems = bundle.bomItems
+            return
+        }
+
+        // Exactly one of the pair is missing (partial delete or interrupted
+        // write). Keep the survivor and create the missing file EMPTY —
+        // re-seeding both from the bundle would clobber user data.
+        if projExists {
+            _projects = try load("projects", type: [Project].self)
+        } else {
+            _projects = []
+            try save(_projects!, name: "projects")
+        }
+        if bomExists {
+            _bomItems = try load("bom_items", type: [BOMItem].self)
+        } else {
+            _bomItems = []
+            try save(_bomItems!, name: "bom_items")
+        }
+    }
+
+    // =========================================================================
+    // MARK: – Components
+    // =========================================================================
+
+    /// Fetch all components, optionally filtered by category and/or search query.
+    /// Both filters are applied server-side (in-memory) — no SQL needed.
+    public func fetchComponents(category: String? = nil, q: String? = nil) throws -> [Component] {
+        var result = try components()
+        if let cat = category, !cat.isEmpty {
+            result = result.filter { $0.category == cat }
+        }
+        if let query = q, !query.isEmpty {
+            let lower = query.lowercased()
+            result = result.filter {
+                $0.value.lowercased().contains(lower) ||
+                ($0.description?.lowercased().contains(lower) ?? false) ||
+                $0.category.lowercased().contains(lower) ||
+                ($0.mpn?.lowercased().contains(lower) ?? false)
+            }
+        }
+        return result
+    }
+
+    /// Add a new component from a form.  Returns the persisted component with
+    /// its generated `id` filled in.
+    public func addComponent(_ form: ComponentForm) throws -> Component {
+        var all = try components()
+        let ts  = now()
+        let new = Component(
+            id:           nextId(all),
+            category:     form.category,
+            subcategory:  form.subcategory.nilIfEmpty,
+            value:        form.value,
+            valueNumeric: nil,      // TODO: parse numeric from value string (e.g. "10k" → 10000)
+            valueUnit:    form.valueUnit.nilIfEmpty,
+            package:      form.package.nilIfEmpty,
+            description:  form.description.nilIfEmpty,
+            manufacturer: form.manufacturer.nilIfEmpty,
+            mpn:          form.mpn.nilIfEmpty,
+            quantity:     form.quantity,
+            minQuantity:  form.minQuantity,
+            location:     form.location.nilIfEmpty,
+            notes:        form.notes.nilIfEmpty,
+            createdAt:    ts,
+            updatedAt:    ts
+        )
+        all.append(new)
+        _components = all
+        try save(all, name: "components")
+        return new
+    }
+
+    public func updateComponent(_ updated: Component) throws -> Component {
+        var all = try components()
+        guard let idx = all.firstIndex(where: { $0.id == updated.id }) else {
+            throw DataError.notFound(updated.id)
+        }
+        var mut = updated
+        mut.updatedAt = now()
+        all[idx]  = mut
+        _components = all
+        try save(all, name: "components")
+        return mut
+    }
+
+    public func deleteComponent(id: Int) throws {
+        var all = try components()
+        guard let idx = all.firstIndex(where: { $0.id == id }) else {
+            throw DataError.notFound(id)
+        }
+        all.remove(at: idx)
+        _components = all
+        try save(all, name: "components")
+
+        // Preserve BOM integrity: nil out the component link on any BOM rows
+        // that referenced this component.  The BOM row itself is kept so the
+        // project still knows a part is needed — it just loses the inventory link.
+        var boms = try bomItems()
+        var bomChanged = false
+        for i in boms.indices where boms[i].componentId == id {
+            boms[i].componentId = nil
+            bomChanged = true
+        }
+        if bomChanged {
+            _bomItems = boms
+            try save(boms, name: "bom_items")
+        }
+    }
+
+    /// Adjust inventory quantity by `delta` (positive = add stock, negative = consume).
+    /// Clamps to 0 — quantity can never go negative.
+    public func adjustQuantity(id: Int, delta: Int) throws -> Component {
+        var all = try components()
+        guard let idx = all.firstIndex(where: { $0.id == id }) else {
+            throw DataError.notFound(id)
+        }
+        // max(0, ...) prevents negative stock, which has no physical meaning
+        all[idx].quantity  = max(0, all[idx].quantity + delta)
+        all[idx].updatedAt = now()
+        let updated = all[idx]
+        _components = all
+        try save(all, name: "components")
+        return updated
+    }
+
+    // =========================================================================
+    // MARK: – Projects
+    // =========================================================================
+
+    public func fetchProjects() throws -> [Project] { try projects() }
+
+    public func addProject(_ form: ProjectForm) throws -> Project {
+        var all = try projects()
+        let ts   = now()
+        let new  = Project(
+            id:          nextId(all),
+            name:        form.name,
+            slug:        makeSlug(form.name),
+            effectType:  form.effectType.nilIfEmpty,
+            status:      form.status,
+            description: form.description.nilIfEmpty,
+            notes:       form.notes.nilIfEmpty,
+            schematicId: nil,
+            createdAt:   ts,
+            updatedAt:   ts
+        )
+        all.append(new)
+        _projects = all
+        try save(all, name: "projects")
+        return new
+    }
+
+    public func updateProject(_ updated: Project) throws -> Project {
+        var all = try projects()
+        guard let idx = all.firstIndex(where: { $0.id == updated.id }) else {
+            throw DataError.notFound(updated.id)
+        }
+        var mut = updated
+        mut.updatedAt = now()
+        all[idx]  = mut
+        _projects = all
+        try save(all, name: "projects")
+        return mut
+    }
+
+    public func deleteProject(id: Int) throws {
+        var all = try projects()
+        guard let idx = all.firstIndex(where: { $0.id == id }) else {
+            throw DataError.notFound(id)
+        }
+        all.remove(at: idx)
+        _projects = all
+        try save(all, name: "projects")
+
+        // Cascade delete: remove all BOM rows belonging to this project.
+        // This mirrors the ON DELETE CASCADE behaviour you'd get in SQLite.
+        var boms = try bomItems()
+        boms.removeAll { $0.projectId == id }
+        _bomItems = boms
+        try save(boms, name: "bom_items")
+    }
+
+    // =========================================================================
+    // MARK: – BOM Items
+    // =========================================================================
+
+    public func fetchBOMItems(projectId: Int) throws -> [BOMItem] {
+        try bomItems().filter { $0.projectId == projectId }
+    }
+
+    public func fetchAllBOMItems() throws -> [BOMItem] { try bomItems() }
+
+    public func addBOMItem(_ form: BOMItemForm, projectId: Int) throws -> BOMItem {
+        var all = try bomItems()
+        let new = BOMItem(
+            id:          nextId(all),
+            projectId:   projectId,
+            componentId: form.componentId,
+            reference:   form.reference.nilIfEmpty,
+            category:    form.category,
+            value:       form.value,
+            quantity:    form.quantity,
+            notes:       form.notes.nilIfEmpty,
+            // Stored as Int (0/1) for compatibility with the Python/SQLite backend.
+            // To change to a Bool column, update BOMItem.isOptional type and CodingKeys.
+            isOptional:  form.isOptional ? 1 : 0,
+            createdAt:   now()
+        )
+        all.append(new)
+        _bomItems = all
+        try save(all, name: "bom_items")
+        return new
+    }
+
+    public func updateBOMItem(_ updated: BOMItem) throws -> BOMItem {
+        var all = try bomItems()
+        guard let idx = all.firstIndex(where: { $0.id == updated.id }) else {
+            throw DataError.notFound(updated.id)
+        }
+        all[idx]  = updated
+        _bomItems = all
+        try save(all, name: "bom_items")
+        return updated
+    }
+
+    public func deleteBOMItem(id: Int) throws {
+        var all = try bomItems()
+        guard let idx = all.firstIndex(where: { $0.id == id }) else {
+            throw DataError.notFound(id)
+        }
+        all.remove(at: idx)
+        _bomItems = all
+        try save(all, name: "bom_items")
+    }
+
+    // =========================================================================
+    // MARK: – Suppliers (read-only — edit suppliers.json in bundle to change)
+    // =========================================================================
+
+    /// Suppliers are defined in the bundle's suppliers.json seed file.
+    /// To add a new supplier:
+    ///   1. Add an entry to Sources/WorkshopCore/Resources/suppliers.json.
+    ///   2. Implement a Swift adapter in SupplierSearch.swift (Shopify stores
+    ///      need only a new ShopifySearcher instance; others need a custom actor).
+    ///   3. Register the adapter in SupplierSearchService.searchAll().
+    public func fetchSuppliers() throws -> [Supplier] {
+        if _suppliers == nil {
+            _suppliers = try load("suppliers", type: [Supplier].self)
+        }
+        return _suppliers!
+    }
+
+    // =========================================================================
+    // MARK: – Schematics (read-only index)
+    // =========================================================================
+
+    /// The schematics index is generated by scripts/generate_native_index.py,
+    /// which writes both the bundle seed and the Application Support copy.
+    /// It is never edited by the app itself (bundle-authoritative: newer bundle
+    /// seeds refresh the on-disk copy automatically — see `load`).
+    ///
+    /// - Parameters:
+    ///   - q: Free-text search across filename, folder, effect type, and tags.
+    ///   - category: Exact folder match (e.g. "Fuzz and Fuzzy Noisemakers").
+    ///   - limit: Max results. Defaults to unlimited — LazyVGrid virtualizes
+    ///     fine at the full ~900-entry index size.
+    public func fetchSchematics(q: String? = nil, category: String? = nil, limit: Int = .max) throws -> [Schematic] {
+        if _schematics == nil {
+            _schematics = try load("schematics", type: [Schematic].self)
+        }
+        var result = _schematics!
+        if let cat = category, !cat.isEmpty {
+            result = result.filter { $0.categoryFolder == cat }
+        }
+        if let query = q, !query.isEmpty {
+            let lower = query.lowercased()
+            result = result.filter {
+                $0.fileName.lowercased().contains(lower) ||
+                $0.categoryFolder.lowercased().contains(lower) ||
+                ($0.effectType?.lowercased().contains(lower) ?? false)
+            }
+        }
+        return Array(result.prefix(limit))
+    }
+
+    // =========================================================================
+    // MARK: – Schematic re-indexing (native)
+    // =========================================================================
+
+    /// Category-folder → effect-type map, mirroring generate_native_index.py.
+    private static let categoryEffectMap: [String: String] = [
+        "ADSR Generators and Envelope Generators": "envelope",
+        "Amplifiers and VCAs": "amplifier",
+        "Buffers Switchers Mixers and Routers": "utility",
+        "Chorus": "chorus",
+        "Circuit Bending and Modifications": "modification",
+        "Compressors Gates and Limiters": "compressor",
+        "Delay Echo and Samplers": "delay",
+        "Distortion Boost and Overdrive": "distortion",
+        "Filters Wahs and VCFs": "filter",
+        "Flangers": "flanger",
+        "Full Synths Drum Synths and Misc Synth": "synth",
+        "Fuzz and Fuzzy Noisemakers": "fuzz",
+        "Guitar Synth and Misc Signal Shapers": "synth",
+        "MIDI": "midi",
+        "Miscellaneous": "misc",
+        "OOP Japanese Electronics Book": "reference",
+        "Oscillators LFOs and Signal Generators": "oscillator",
+        "Phasers": "phaser",
+        "Power Supplies and Other Useful Stuff": "power",
+        "Reverb": "reverb",
+        "Ring Modulators and Frequency Shifters": "ring_mod",
+        "Tone Control and EQs": "eq",
+        "Tremolos and Panners": "tremolo",
+        "Vibrato and Pitch Shift": "pitch",
+    ]
+
+    /// Rescans the schematics repository on disk and rebuilds the index in
+    /// Application Support — the in-app equivalent of
+    /// scripts/generate_native_index.py, so adding/renaming schematic files
+    /// no longer requires Python. The repo root is inferred from the current
+    /// index (grandparent of the first entry's file path), falling back to
+    /// ~/Documents/schematics.
+    ///
+    /// Note: a subsequent app REBUILD ships a newer bundle index, which the
+    /// bundle-authoritative refresh in `load` will restore — after changing
+    /// the library long-term, also re-run generate_native_index.py before
+    /// building. For a running install, this rescan is authoritative.
+    ///
+    /// - Returns: The number of schematics indexed.
+    @discardableResult
+    public func reindexSchematics() throws -> Int {
+        let root = schematicsRootURL()
+        let fm = FileManager.default
+        let validExt: Set<String> = ["gif", "pdf", "png", "jpg", "jpeg"]
+        let skipDirs: Set<String> = ["workshop", "picocalc-bench"]
+
+        let categoryDirs = try fm.contentsOfDirectory(
+            at: root,
+            includingPropertiesForKeys: [.isDirectoryKey],
+            options: [.skipsHiddenFiles]
+        )
+
+        var entries: [Schematic] = []
+        for dir in categoryDirs.sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) {
+            guard (try? dir.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true else { continue }
+            let category = dir.lastPathComponent
+            if skipDirs.contains(category) || category.hasPrefix(".") { continue }
+            let effect = Self.categoryEffectMap[category]
+
+            let files = (try? fm.contentsOfDirectory(
+                at: dir, includingPropertiesForKeys: [.fileSizeKey], options: [.skipsHiddenFiles]
+            )) ?? []
+            for file in files.sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) {
+                let ext = file.pathExtension.lowercased()
+                guard validExt.contains(ext) else { continue }
+                let size = (try? file.resourceValues(forKeys: [.fileSizeKey]))?.fileSize ?? 0
+                // Scrape-junk guard: Mod_Security error stubs are 226 bytes.
+                guard size > 512 else { continue }
+
+                let stem = file.deletingPathExtension().lastPathComponent
+                var tags = stem
+                    .replacingOccurrences(of: "-", with: " ")
+                    .replacingOccurrences(of: "_", with: " ")
+                    .split(separator: " ")
+                    .map { $0.lowercased() }
+                    .filter { $0.count > 1 }
+                if let effect { tags.append(effect) }
+
+                entries.append(Schematic(
+                    id:             entries.count + 1,
+                    categoryFolder: category,
+                    fileName:       file.lastPathComponent,
+                    filePath:       file.path,
+                    fileType:       ext,
+                    fileSize:       size,
+                    effectType:     effect,
+                    tags:           Array(Set(tags)).sorted(),
+                    createdAt:      now()
+                ))
+            }
+        }
+
+        try save(entries, name: "schematics")
+        _schematics = entries
+        return entries.count
+    }
+
+    /// The schematics repo root: grandparent of the first indexed file
+    /// (file → category folder → root), else ~/Documents/schematics.
+    private func schematicsRootURL() -> URL {
+        if let first = try? fetchSchematics(limit: 1).first {
+            return URL(fileURLWithPath: first.filePath)
+                .deletingLastPathComponent()
+                .deletingLastPathComponent()
+        }
+        return fm_home().appendingPathComponent("Documents/schematics", isDirectory: true)
+    }
+
+    private func fm_home() -> URL {
+        FileManager.default.homeDirectoryForCurrentUser
+    }
+
+    // =========================================================================
+    // MARK: – Schematic Metadata (OCR-extracted BOM)
+    // =========================================================================
+
+    /// Returns the OCR-extracted BOM metadata for all schematics, keyed by
+    /// file path. Path keys survive index regeneration (integer ids do not —
+    /// they are re-assigned whenever generate_native_index.py runs).
+    /// Returns an empty dict (not an error) when the file doesn't exist yet —
+    /// the user just hasn't run `analyze_schematics.py` yet.
+    ///
+    /// To regenerate: `python3 scripts/analyze_schematics.py --workers 6`
+    /// The script writes to ~/Library/Application Support/PedalWorkshop/schematics_metadata.json
+    public func fetchSchematicMeta() throws -> [String: SchematicMeta] {
+        if let cached = _schematicMeta { return cached }
+        // Seeded from the bundle like the schematics index (bundle-authoritative),
+        // so a fresh install gets BOM data without running the analyzer script.
+        // Absent everywhere → empty dict, not an error.
+        let items: [SchematicMeta]
+        do {
+            items = try load("schematics_metadata", type: [SchematicMeta].self)
+        } catch {
+            return [:]
+        }
+        // Keyed by file_path for O(1) lookups; tolerate duplicates from
+        // externally-generated files instead of crashing (first entry wins).
+        let dict = Dictionary(items.map { ($0.filePath, $0) },
+                              uniquingKeysWith: { first, _ in first })
+        _schematicMeta = dict
+        return dict
+    }
+
+    public func fetchSchematicMeta(for schematic: Schematic) throws -> SchematicMeta? {
+        try fetchSchematicMeta()[schematic.filePath]
+    }
+
+    /// Creates a new Project + full BOM from a schematic's OCR-extracted metadata.
+    ///
+    /// - Parameters:
+    ///   - schematic: The schematic to derive the project from.
+    ///   - meta: Pre-fetched OCR metadata (call fetchSchematicMeta(for:) first).
+    ///   - status: Initial project status — defaults to "design".
+    ///
+    /// TO CUSTOMISE AUTO-NAMING: modify the `name` and `form` construction below.
+    public func createProjectFromSchematic(
+        _ schematic: Schematic,
+        meta: SchematicMeta,
+        status: String = "design"
+    ) throws -> (Project, [BOMItem]) {
+        // Strip file extension for a cleaner project name
+        let name = (schematic.fileName as NSString).deletingPathExtension
+        let form = ProjectForm(
+            name:        name,
+            effectType:  schematic.effectType
+                         ?? schematic.categoryFolder
+                            .components(separatedBy: " ").first?
+                            .lowercased() ?? "",
+            status:      status,
+            description: "Created from schematic: \(schematic.categoryFolder)",
+            notes:       "Source file: \(schematic.filePath)"
+        )
+        let project = try addProject(form)
+
+        var created: [BOMItem] = []
+        for entry in meta.bomEntries {
+            var itemForm         = BOMItemForm()
+            itemForm.category    = entry.category
+            itemForm.value       = entry.value
+            itemForm.quantity    = entry.quantity
+
+            // Link to an existing inventory component. Loads the component
+            // cache if needed (previously this silently skipped linking when
+            // the user went straight to Schematics on a fresh launch), and
+            // matches on normalized values so "4k7" / "4.7k" / "4700 ohm" unify.
+            let comps = try components()
+            let entryValue = BuildAnalyzer.normalizeValue(entry.value)
+            itemForm.componentId = comps.first {
+                $0.category.lowercased() == entry.category.lowercased() &&
+                BuildAnalyzer.normalizeValue($0.value) == entryValue
+            }?.id
+
+            created.append(try addBOMItem(itemForm, projectId: project.id))
+        }
+        return (project, created)
+    }
+
+    // =========================================================================
+    // MARK: – Supplier Listings
+    // =========================================================================
+    //
+    // Supplier listings record prices saved from PriceLookupView.
+    // They are NOT polled automatically — the user triggers searches manually.
+    // For automatic polling, see api/tasks/scheduler.py (Python backend).
+
+    private func supplierListings() throws -> [SupplierListing] {
+        if _supplierListings == nil {
+            let url = dataURL("supplier_listings")
+            if FileManager.default.fileExists(atPath: url.path) {
+                let data = try Data(contentsOf: url)
+                _supplierListings = try decoder.decode([SupplierListing].self, from: data)
+            } else {
+                // No listings yet — start empty.  File is created on first save.
+                _supplierListings = []
+            }
+        }
+        return _supplierListings!
+    }
+
+    public func fetchSupplierListings(componentId: Int? = nil) throws -> [SupplierListing] {
+        var all = try supplierListings()
+        if let cid = componentId { all = all.filter { $0.componentId == cid } }
+        return all
+    }
+
+    /// Save (or update) a supplier search result as a linked listing.
+    /// If a listing for the same supplier + component + SKU already exists,
+    /// its price and stock status are refreshed rather than creating a duplicate.
+    public func saveSupplierListing(
+        result: SupplierSearchResult,
+        supplierId: Int,
+        componentId: Int?
+    ) throws -> SupplierListing {
+        var all = try supplierListings()
+        let ts  = now()
+
+        if let idx = all.firstIndex(where: {
+            $0.supplierId  == supplierId &&
+            $0.componentId == componentId &&
+            $0.sku         == result.sku
+        }) {
+            // Update existing — refresh price + stock, preserve other fields
+            all[idx].price       = result.price
+            all[idx].inStock     = result.inStock
+            all[idx].lastChecked = ts
+            _supplierListings    = all
+            try save(all, name: "supplier_listings")
+            return all[idx]
+        }
+
+        let new = SupplierListing(
+            id:          nextId(all),
+            supplierId:  supplierId,
+            componentId: componentId,
+            sku:         result.sku,
+            title:       result.title,
+            price:       result.price,
+            currency:    result.currency,
+            inStock:     result.inStock,
+            url:         result.url?.absoluteString,
+            lastChecked: ts
+        )
+        all.append(new)
+        _supplierListings = all
+        try save(all, name: "supplier_listings")
+        return new
+    }
+
+    public func deleteSupplierListing(id: Int) throws {
+        var all = try supplierListings()
+        all.removeAll { $0.id == id }
+        _supplierListings = all
+        try save(all, name: "supplier_listings")
+    }
+}
+
+// MARK: – Error types
+
+public enum DataError: LocalizedError, Sendable {
+    case missingResource(String)
+    case notFound(Int)
+    case decodeFailed(String, underlying: Error)
+
+    public var errorDescription: String? {
+        switch self {
+        case .missingResource(let n):
+            return "Bundled resource not found: \(n).json — rebuild the app to re-seed."
+        case .notFound(let id):
+            return "Record id=\(id) not found — it may have been deleted."
+        case .decodeFailed(let name, let err):
+            // This usually means the JSON schema changed without migrating existing data.
+            // Fix: delete ~/Library/Application Support/PedalWorkshop/\(name).json
+            // and relaunch to re-seed from bundle defaults.
+            return "Failed to decode \(name).json: \(err.localizedDescription)"
+        }
+    }
+}
+
+// MARK: – Bundle seed helper
+
+// projects.json in the bundle stores both arrays in one file for tidiness.
+// After first launch they're split into separate writable files.
+private struct ProjectBundle: Codable, Sendable {
+    let projects: [Project]
+    let bomItems: [BOMItem]
+
+    enum CodingKeys: String, CodingKey {
+        case projects
+        case bomItems = "bom_items"
+    }
+}

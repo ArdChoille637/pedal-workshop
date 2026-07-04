@@ -1,0 +1,23 @@
+You are digitizing a guitar-pedal / audio-effect schematic image into a verified parts list and netlist. Work SYSTEMATICALLY and do not guess silently — guess LOUDLY (record every assumption in "issues").
+
+STEPS:
+1. Inventory every component: reference designator AS PRINTED (R1, C3, Q2, IC1, VR1, SW1, J1, BT1). If no refs are printed, assign R1..Rn / C1..Cn / etc. in reading order and say so in issues. Capture type and value exactly as printed (4k7, 100n, 2N5088, TL072, A100k). Include jacks, pots, switches, battery.
+2. Trace connectivity into nets. Follow each wire; a junction DOT = connected, a crossing WITHOUT a dot = NOT connected. Emit each net as a list of pin refs "REF.N" (N starts at 1).
+   - Transistors/JFETs: pin1 = collector/drain, pin2 = base/gate, pin3 = emitter/source.
+   - Pots: pin1 = CCW end, pin2 = wiper, pin3 = CW end.
+   - Power rails named 9V / GND / VB (bias); signal nets IN / OUT / N1 / N2 ...
+3. Describe the signal path in ONE sentence.
+4. Anything illegible, ambiguous, or assumed → put it in "issues". Note likely drafting errors too.
+
+OUTPUT: a single JSON object and NOTHING else (no markdown, no code fences, no commentary). Exactly this shape:
+{
+  "name": "<circuit name from title or filename>",
+  "source_image": "<SOURCE_IMAGE>",
+  "effect_type": "<EFFECT_TYPE>",
+  "signal_path": "<one sentence>",
+  "parts": [{"ref":"R1","type":"resistor","value":"1M","pins":2}, ...],
+  "nets":  [{"name":"IN","pins":["J1.1","C1.1"]}, ...],
+  "confidence": "high|medium|low",
+  "issues": ["..."]
+}
+Types allowed: resistor capacitor inductor diode led zener transistor jfet mosfet opamp ic potentiometer switch jack transformer battery lamp photocell vactrol other. pins: 2 for passives, 3 for transistors/pots, actual pin count for ICs.

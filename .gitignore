@@ -1,0 +1,57 @@
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+**/.DS_Store
+._*
+
+# ── Swift / Xcode ─────────────────────────────────────────────────────────────
+# The .xcodeproj is generated from native/project.yml by XcodeGen — never commit it.
+native/PedalWorkshop.xcodeproj/
+native/.build/
+native/DerivedData/
+native/.swiftpm/
+native/**/xcuserdata/
+native/**/*.xcuserstate
+
+# ── Python (pipeline tooling) ─────────────────────────────────────────────────
+.venv/
+venv/
+**/venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+
+# ── Secrets / local config ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+secrets.json
+
+# ── Pipeline: local data & derived assets (NOT redistributed) ─────────────────
+# The extraction dataset, the DB, and KiCad output are derived from copyrighted
+# schematics and are user-local. Keep them out of the public repo.
+pipeline/extractions/
+pipeline/extractions_backup/
+pipeline/kicad-projects/
+pipeline/manifest.json
+pipeline/handoff/
+pipeline/*.db
+pipeline/*.db-shm
+pipeline/*.db-wal
+pipeline/chrome_profile/
+pipeline/_scratch/
+
+# ── App bundle seeds that would leak home paths / copyrighted OCR ─────────────
+# These regenerate locally via pipeline/tools/generate_native_index.py +
+# analyze_schematics.py; the committed copies are empty placeholders.
+# (Tracked as empty [] — see native/Sources/WorkshopCore/Resources/README.md)
+
+# ── Misc scratch ──────────────────────────────────────────────────────────────
+*.log
+*.tmp
+
+# Internal working docs (not published)
+RECODE-PLAN.md
+.claude/

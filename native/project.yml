@@ -1,0 +1,46 @@
+name: PedalWorkshop
+options:
+  bundleIdPrefix: com.pedalworkshop
+  deploymentTarget:
+    macOS: "26.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+packages:
+  WorkshopCore:
+    path: .
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""
+
+targets:
+
+  # ── macOS ──────────────────────────────────────────────────────────────────
+  PedalWorkshop-macOS:
+    type: application
+    platform: macOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: App/Shared/Views
+      - path: App/macOS
+    dependencies:
+      - package: WorkshopCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pedalworkshop.mac
+        PRODUCT_NAME: "Pedal Workshop"
+        INFOPLIST_FILE: App/macOS/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    info:
+      path: App/macOS/Info.plist
+      properties:
+        CFBundleName: Pedal Workshop
+        CFBundleDisplayName: Pedal Workshop
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+          NSAllowsArbitraryLoads: true

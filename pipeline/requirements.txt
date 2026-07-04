@@ -1,0 +1,9 @@
+# Pipeline (offline schematic→KiCad tooling) Python deps.
+# Core modules (manifest, netlist_to_kicad, build_database, …) are pure stdlib.
+# Pillow is used by tools/analyze_schematics.py for OCR image preprocessing.
+Pillow>=10.0
+
+# System dependencies (install with Homebrew, not pip):
+#   brew install tesseract poppler kicad
+# Optional lint:
+#   pip install ruff
