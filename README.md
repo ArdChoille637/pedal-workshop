@@ -7,6 +7,11 @@ a build analyzer, a schematic image browser, and live supplier price lookup.
 Built with **SwiftUI + Swift 6**. No backend, no accounts, no cloud — the app
 reads and writes plain JSON on your Mac.
 
+**Ports:** the same app is being ported to other platforms — a **Flet (Python)
+desktop** app in [`python/`](python/) and a **native Android (Kotlin/Compose)**
+app in [`android/`](android/). All three share the same data model, Build
+Analyzer algorithm, and Mouser search, so they behave identically.
+
 > **Scope:** Pedal Workshop is a self-contained desktop app. It contains **no
 > AI/LLM features** — it only reads static JSON. The separate, optional
 > [`pipeline/`](pipeline/) directory is offline batch tooling that turns a
@@ -70,6 +75,8 @@ self-contained.
 
 ```
 native/      the macOS app (SwiftUI) + WorkshopCore Swift package
+python/      Flet (Python) desktop port — see python/README.md
+android/     native Android (Kotlin + Jetpack Compose) port
 pipeline/    optional offline schematic→KiCad batch tooling (see pipeline/README.md)
 seeds/       generic default inventory / suppliers / sample project
 ```

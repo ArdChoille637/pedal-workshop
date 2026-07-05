@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Tayda Electronics",
+    "slug": "tayda",
+    "website": "https://www.taydaelectronics.com",
+    "api_type": "scrape",
+    "poll_interval": 86400
+  },
+  {
+    "name": "Mouser Electronics",
+    "slug": "mouser",
+    "website": "https://www.mouser.com",
+    "api_type": "api",
+    "poll_interval": 43200
+  },
+  {
+    "name": "DigiKey",
+    "slug": "digikey",
+    "website": "https://www.digikey.com",
+    "api_type": "api",
+    "poll_interval": 43200
+  },
+  {
+    "name": "Small Bear Electronics",
+    "slug": "smallbear",
+    "website": "https://smallbear-electronics.mybigcommerce.com",
+    "api_type": "scrape",
+    "poll_interval": 604800
+  },
+  {
+    "name": "Love My Switches",
+    "slug": "lovemyswitches",
+    "website": "https://lovemyswitches.com",
+    "api_type": "scrape",
+    "poll_interval": 86400
+  },
+  {
+    "name": "Mammoth Electronics",
+    "slug": "mammoth",
+    "website": "https://www.mammothelectronics.com",
+    "api_type": "scrape",
+    "poll_interval": 86400
+  },
+  {
+    "name": "PCBWay",
+    "slug": "pcbway",
+    "website": "https://www.pcbway.com",
+    "api_type": "api",
+    "poll_interval": 604800
+  }
+]

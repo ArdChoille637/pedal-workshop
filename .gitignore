@@ -59,3 +59,20 @@ RECODE-PLAN.md
 # ── Packaged schematic library (copyrighted + ~192MB; populated locally) ──────
 native/Sources/WorkshopCore/Resources/Schematics/*
 !native/Sources/WorkshopCore/Resources/Schematics/.gitkeep
+
+# ── Ports: Android (Gradle) build artifacts + local config ────────────────────
+android/local.properties
+android/.gradle/
+android/build/
+android/app/build/
+android/.idea/
+android/*.iml
+android/.kotlin/
+
+# ── Ports: Python (Flet) ──────────────────────────────────────────────────────
+python/.venv/
+python/**/__pycache__/
+python/.pytest_cache/
+
+# Internal port spec (has absolute reference paths)
+android/SPEC.md

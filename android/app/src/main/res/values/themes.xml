@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base theme; the actual colors come from the Compose Material3 theme.
+         This XML theme only needs to be a valid Material3 parent so the
+         Activity can inflate before Compose takes over. -->
+    <style name="Theme.PedalWorkshop" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

@@ -1,0 +1,16 @@
+# Pedal Workshop -- Flet desktop port.
+# Verified against the versions pinned below (Python 3.11).
+#
+# Flet 0.85 is the "recent Flet" line this port targets: capitalized enums
+# (ft.Icons/ft.Colors), ft.FilePicker as a page service, and the
+# show_dialog/pop_dialog dialog API. See PORT-NOTES.md for the API notes.
+
+flet>=0.85,<0.86
+requests>=2.31
+
+# Optional: secure Mouser-API-key storage in the OS keyring. If absent, the key
+# falls back to the (plaintext) settings.json file -- see storage.py.
+keyring>=24
+
+# Dev/test only.
+pytest>=8
