@@ -76,3 +76,10 @@ python/.pytest_cache/
 
 # Internal port spec (has absolute reference paths)
 android/SPEC.md
+
+# ── Belt-and-suspenders: never commit a Mouser key / local app settings ───────
+# The Flet app stores its Mouser key in the OS keyring or ~/.pedalworkshop
+# (both outside this repo). These patterns block any stray local settings/key
+# from ever being staged, no matter where the app is run from.
+**/settings.json
+.pedalworkshop/
