@@ -138,13 +138,14 @@
 
   <!-- ======== LED + CLR ======== -->
   <rect x="852" y="348" width="16" height="44" rx="3" fill="#e0e7ff" stroke="#3730a3" stroke-width="2"/>
-  <text x="878" y="366" class="t" font-size="11" font-weight="bold">CLR 4k7</text>
-  <text x="878" y="380" class="tm" font-size="9">(skip if LED is on-board)</text>
+  <text x="845" y="360" text-anchor="end" class="t" font-size="11" font-weight="bold">CLR 4k7</text>
+  <text x="845" y="374" text-anchor="end" class="tm" font-size="9">(skip if LED</text>
+  <text x="845" y="386" text-anchor="end" class="tm" font-size="9">is on-board)</text>
   <circle cx="860" cy="428" r="14" fill="#f87171" stroke="#7f1d1d" stroke-width="2.5"/>
   <line x1="849" y1="437" x2="871" y2="437" stroke="#7f1d1d" stroke-width="2.5"/>
   <text x="842" y="414" text-anchor="end" class="t" font-size="13" font-weight="bold">+</text>
   <text x="842" y="452" text-anchor="end" class="t" font-size="13" font-weight="bold">&#8722;</text>
-  <text x="893" y="432" class="t" font-size="12" font-weight="bold">LED</text>
+  <text x="836" y="436" text-anchor="end" class="t" font-size="12" font-weight="bold">LED</text>
 
   <!-- ======== 3PDT LUGS (drawn after wires) ======== -->
   <g>
@@ -177,12 +178,12 @@
   <g transform="translate(756,585) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#15803d">BOARD OUT &#8594; B3</text></g>
   <text x="845" y="778" text-anchor="middle" class="lbl" fill="#0d9488">B2 &#8594; OUTPUT TIP</text>
   <text x="674" y="859" text-anchor="end" class="lbl" fill="#1c1917">C3 &#8594; GND</text>
-  <text x="790" y="626" text-anchor="middle" class="lbl" fill="#ea580c">LED &#8722; &#8594; C2</text>
+  <text x="815" y="622" text-anchor="middle" class="lbl" fill="#ea580c">LED &#8722; &#8594; C2</text>
   <text x="300" y="146" text-anchor="middle" class="lbl" fill="#dc2626">+9&#8201;V</text>
   <g transform="translate(328,300) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">DC &#8722; &#8594; GND</text></g>
   <g transform="translate(929,560) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">BOARD GND</text></g>
-  <g transform="translate(276,790) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">SLEEVE &#8594; GND</text></g>
-  <g transform="translate(991,790) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">SLEEVE &#8594; GND</text></g>
+  <g transform="translate(276,760) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">SLEEVE &#8594; GND</text></g>
+  <g transform="translate(991,760) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">SLEEVE &#8594; GND</text></g>
 
   <!-- ======== WIRE NUMBER BADGES ======== -->
   <g>
@@ -198,8 +199,8 @@
     <circle cx="306" cy="160" r="10" fill="#dc2626"/><text x="306" y="164" text-anchor="middle" class="badge-t">10</text>
     <circle cx="315" cy="360" r="10" fill="#1c1917"/><text x="315" y="364" text-anchor="middle" class="badge-t">11</text>
     <circle cx="915" cy="505" r="10" fill="#1c1917"/><text x="915" y="509" text-anchor="middle" class="badge-t">12</text>
-    <circle cx="263" cy="780" r="10" fill="#1c1917"/><text x="263" y="784" text-anchor="middle" class="badge-t">13</text>
-    <circle cx="978" cy="780" r="10" fill="#1c1917"/><text x="978" y="784" text-anchor="middle" class="badge-t">14</text>
+    <circle cx="263" cy="835" r="10" fill="#1c1917"/><text x="263" y="839" text-anchor="middle" class="badge-t">13</text>
+    <circle cx="978" cy="835" r="10" fill="#1c1917"/><text x="978" y="839" text-anchor="middle" class="badge-t">14</text>
   </g>
 
   <!-- ======== LEGEND ======== -->

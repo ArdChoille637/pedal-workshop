@@ -19,7 +19,8 @@ silk / build doc; hookup points for those are called out where they plug in.
 
 ## Wire-by-wire solder map
 
-Numbers match the badges in fig 1. All lug names (`A1`…`C3`) are as seen from
+Numbers 1–14 match the badges in fig 1; battery wires 15–16 are drawn in
+fig 3. All lug names (`A1`…`C3`) are as seen from
 the **solder side** of the 3PDT: columns A·B·C, rows 1 (top) · 2 (middle =
 common) · 3 (bottom).
 
