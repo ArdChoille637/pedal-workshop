@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .box   { fill:#f5f5f4; stroke:#57534e; stroke-width:2; }
+      .lug   { fill:#e7e5e4; stroke:#44403c; stroke-width:2; }
+      .wire  { fill:none; stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round; }
+      .blue  { stroke:#1d4ed8; } .red   { stroke:#dc2626; } .blk   { stroke:#1c1917; }
+      .violet{ stroke:#7c3aed; } .mag   { stroke:#db2777; }
+      .t     { fill:#1c1917; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .tm    { fill:#57534e; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .lbl   { font-size:12px; font-weight:bold; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .badge-t { font-size:12px; font-weight:bold; fill:#ffffff; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1240" height="900" fill="#ffffff"/>
+  <text x="620" y="36" text-anchor="middle" class="t" font-size="22" font-weight="bold">fig 5 &#8212; 18&#8201;V tool-battery power &#38; DSP recording tap</text>
+  <text x="620" y="60" text-anchor="middle" class="tm" font-size="14">adds onto figs 1&#8211;4: the 9&#8201;V rail plugs into the fig&#8201;1 DC jack &#8212; the analog path is untouched</text>
+
+  <!-- ======== BATTERY ======== -->
+  <rect x="70" y="110" width="220" height="150" rx="8" fill="#dcfce7" stroke="#166534" stroke-width="2.5"/>
+  <text x="180" y="140" text-anchor="middle" class="t" font-size="15" font-weight="bold">RYOBI 18&#8201;V PACK</text>
+  <text x="180" y="160" text-anchor="middle" class="tm" font-size="10">15&#8211;20&#8201;V over discharge &#183; use a</text>
+  <text x="180" y="174" text-anchor="middle" class="tm" font-size="10">terminal dock / battery adapter</text>
+  <circle cx="290" cy="150" r="8" class="lug"/>
+  <circle cx="290" cy="220" r="8" class="lug"/>
+  <text x="278" y="154" text-anchor="end" class="t" font-size="12" font-weight="bold">+</text>
+  <text x="278" y="224" text-anchor="end" class="t" font-size="12" font-weight="bold">&#8722;</text>
+
+  <!-- ======== FUSE ======== -->
+  <rect x="360" y="130" width="90" height="40" rx="6" class="box"/>
+  <text x="405" y="147" text-anchor="middle" class="t" font-size="11" font-weight="bold">FUSE</text>
+  <text x="405" y="161" text-anchor="middle" class="tm" font-size="10">3&#8211;5&#8201;A blade</text>
+
+  <!-- ======== MASTER SWITCH ======== -->
+  <rect x="520" y="120" width="100" height="60" rx="6" class="box"/>
+  <text x="570" y="145" text-anchor="middle" class="t" font-size="11" font-weight="bold">MASTER SW</text>
+  <text x="570" y="161" text-anchor="middle" class="tm" font-size="10">SPST &#8805;3&#8201;A</text>
+
+  <!-- ======== 7809 ======== -->
+  <rect x="740" y="110" width="190" height="120" rx="8" class="box"/>
+  <text x="835" y="138" text-anchor="middle" class="t" font-size="14" font-weight="bold">7809 LINEAR REG</text>
+  <text x="835" y="156" text-anchor="middle" class="tm" font-size="10">analog rail &#183; no switching noise</text>
+  <text x="835" y="172" text-anchor="middle" class="tm" font-size="10">100&#8201;nF in &#183; 10&#8201;&#181;F out &#183; small heatsink</text>
+  <text x="752" y="197" class="tm" font-size="10" font-weight="bold">IN</text>
+  <text x="918" y="197" text-anchor="end" class="tm" font-size="10" font-weight="bold">OUT +9&#8201;V</text>
+  <text x="835" y="222" text-anchor="middle" class="tm" font-size="10" font-weight="bold">GND</text>
+
+  <!-- ======== BUCK ======== -->
+  <rect x="740" y="300" width="190" height="120" rx="8" class="box"/>
+  <text x="835" y="328" text-anchor="middle" class="t" font-size="14" font-weight="bold">5&#8201;V BUCK &#8805;3&#8201;A</text>
+  <text x="835" y="346" text-anchor="middle" class="tm" font-size="10">digital rail &#183; input rated &#8805;24&#8201;V</text>
+  <text x="835" y="362" text-anchor="middle" class="tm" font-size="10">(or a USB-C PD car-charger board)</text>
+  <text x="752" y="387" class="tm" font-size="10" font-weight="bold">IN</text>
+  <text x="918" y="387" text-anchor="end" class="tm" font-size="10" font-weight="bold">OUT 5&#8201;V</text>
+  <text x="835" y="412" text-anchor="middle" class="tm" font-size="10" font-weight="bold">GND</text>
+
+  <!-- ======== DC PLUG ======== -->
+  <rect x="1010" y="110" width="160" height="120" rx="8" fill="#fef3c7" stroke="#92400e" stroke-width="2"/>
+  <text x="1090" y="138" text-anchor="middle" class="t" font-size="13" font-weight="bold">2.1&#8201;mm DC PLUG</text>
+  <text x="1090" y="156" text-anchor="middle" class="tm" font-size="10">center-negative</text>
+  <text x="1090" y="172" text-anchor="middle" class="tm" font-size="10">&#8594; into the fig&#8201;1 DC jack;</text>
+  <text x="1090" y="186" text-anchor="middle" class="tm" font-size="10">figs 1&#8211;4 unchanged</text>
+  <text x="1022" y="207" class="tm" font-size="10" font-weight="bold">barrel +</text>
+  <text x="1022" y="222" class="tm" font-size="10" font-weight="bold">pin &#8722;</text>
+
+  <!-- ======== PI ======== -->
+  <rect x="1010" y="300" width="160" height="120" rx="8" fill="#fce7f3" stroke="#9d174d" stroke-width="2"/>
+  <text x="1090" y="328" text-anchor="middle" class="t" font-size="13" font-weight="bold">RASPBERRY PI</text>
+  <text x="1090" y="346" text-anchor="middle" class="tm" font-size="10">power via USB-C only</text>
+  <text x="1090" y="362" text-anchor="middle" class="tm" font-size="10">(GND arrives in the cable);</text>
+  <text x="1090" y="378" text-anchor="middle" class="tm" font-size="10">never 9&#8201;V or 18&#8201;V on any pin</text>
+
+  <!-- ======== POWER WIRES ======== -->
+  <polyline class="wire violet" points="298,150 360,150"/>
+  <polyline class="wire violet" points="450,150 520,150"/>
+  <polyline class="wire violet" points="620,150 740,150"/>
+  <polyline class="wire violet" points="660,150 660,385 740,385"/>
+  <circle cx="660" cy="150" r="4.5" fill="#7c3aed"/>
+  <polyline class="wire red" points="930,193 950,193 950,203 1002,203"/>
+  <polyline class="wire mag" points="930,383 950,383 950,330 1002,330"/>
+  <!-- grounds -->
+  <polyline class="wire blk" points="298,220 320,220 320,480"/>
+  <polyline class="wire blk" points="835,232 835,265 690,265 690,480"/>
+  <polyline class="wire blk" points="835,422 835,480"/>
+  <polyline class="wire blk" points="1002,218 970,218 970,480"/>
+  <line x1="320" y1="480" x2="970" y2="480" class="wire blk" stroke-width="5"/>
+  <circle cx="560" cy="480" r="7" fill="#1c1917"/>
+  <text x="560" y="505" text-anchor="middle" class="lbl" fill="#1c1917">STAR GROUND &#8212; every rail meets here exactly once</text>
+
+  <!-- ======== DSP TAP ROW ======== -->
+  <text x="620" y="560" text-anchor="middle" class="t" font-size="15" font-weight="bold">DSP RECORDING TAP (chord analysis)</text>
+
+  <rect x="70" y="590" width="180" height="100" rx="8" class="box"/>
+  <text x="160" y="618" text-anchor="middle" class="t" font-size="12" font-weight="bold">INPUT JACK (fig&#8201;1)</text>
+  <text x="160" y="634" text-anchor="middle" class="tm" font-size="10">tap the TIP &#8212; dry guitar</text>
+  <circle cx="250" cy="655" r="8" class="lug"/>
+  <text x="238" y="659" text-anchor="end" class="tm" font-size="10" font-weight="bold">TIP</text>
+
+  <rect x="350" y="590" width="220" height="100" rx="8" class="box"/>
+  <text x="460" y="616" text-anchor="middle" class="t" font-size="12" font-weight="bold">UNITY BUFFER</text>
+  <text x="460" y="632" text-anchor="middle" class="tm" font-size="10">TL072, &#189;-supply bias, on the 9&#8201;V rail</text>
+  <text x="460" y="646" text-anchor="middle" class="tm" font-size="10">keeps the tap from loading your tone</text>
+  <line x1="460" y1="560" x2="460" y2="590" class="wire red"/>
+  <text x="472" y="578" class="tm" font-size="10">9&#8201;V rail</text>
+
+  <rect x="660" y="590" width="220" height="100" rx="8" class="box"/>
+  <text x="770" y="616" text-anchor="middle" class="t" font-size="12" font-weight="bold">USB AUDIO INTERFACE</text>
+  <text x="770" y="632" text-anchor="middle" class="tm" font-size="10">line/instrument input</text>
+  <text x="770" y="646" text-anchor="middle" class="tm" font-size="10">(easier + cleaner than a DIY ADC)</text>
+
+  <rect x="1010" y="590" width="160" height="100" rx="8" fill="#fce7f3" stroke="#9d174d" stroke-width="2"/>
+  <text x="1090" y="622" text-anchor="middle" class="t" font-size="12" font-weight="bold">&#8594; Pi USB PORT</text>
+  <text x="1090" y="640" text-anchor="middle" class="tm" font-size="10">chord analysis runs here</text>
+
+  <polyline class="wire blue" points="258,655 350,655"/>
+  <polyline class="wire blue" points="570,655 660,655"/>
+  <line x1="880" y1="655" x2="1002" y2="655" stroke="#a8a29e" stroke-width="3.5" stroke-dasharray="8 6"/>
+  <polygon points="996,649 1008,655 996,661" fill="#a8a29e"/>
+  <text x="941" y="645" text-anchor="middle" class="tm" font-size="10">USB cable</text>
+
+  <text x="620" y="719" text-anchor="middle" class="tm" font-size="11">Tap the DRY guitar signal &#8212; chord detection is far more reliable pre-distortion. To record the effected sound instead,</text>
+  <text x="620" y="735" text-anchor="middle" class="tm" font-size="11">tap the OUTPUT jack tip the same way (buffer required either way). Buffer ground goes to the fig&#8201;1 ground bus.</text>
+  <text x="620" y="751" text-anchor="middle" class="tm" font-size="11">Spare pot? Wire it as a level trim between buffer and interface: lug 3 &#8592; buffer out &#183; lug 2 (wiper) &#8594; line-in tip &#183; lug 1 &#8594; ground.</text>
+
+  <!-- ======== LEGEND ======== -->
+  <rect x="70" y="762" width="1100" height="44" rx="8" fill="#fafaf9" stroke="#e7e5e4" stroke-width="1.5"/>
+  <g font-size="12">
+    <line x1="90" y1="784" x2="126" y2="784" class="wire violet"/><text x="134" y="788" class="t">18&#8201;V raw</text>
+    <line x1="240" y1="784" x2="276" y2="784" class="wire red"/><text x="284" y="788" class="t">9&#8201;V analog</text>
+    <line x1="410" y1="784" x2="446" y2="784" class="wire mag"/><text x="454" y="788" class="t">5&#8201;V digital</text>
+    <line x1="590" y1="784" x2="626" y2="784" class="wire blue"/><text x="634" y="788" class="t">audio</text>
+    <line x1="730" y1="784" x2="766" y2="784" class="wire blk"/><text x="774" y="788" class="t">ground</text>
+    <text x="880" y="788" class="tm">wires 17&#8211;24 &#8212; table in the README</text>
+  </g>
+
+  <!-- ======== WARNING ======== -->
+  <rect x="70" y="822" width="1100" height="52" rx="8" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="92" y="844" font-size="13" font-weight="bold" fill="#b91c1c" paint-order="stroke" stroke="#ffffff" stroke-width="4">18&#8201;V SAFETY</text>
+  <text x="92" y="862" class="tm" font-size="11">Fuse within 10&#8201;cm of the pack &#183; 18&#8201;V never touches the 9&#8201;V net or any Pi pin &#183; lithium pack: stop at 15.0&#8201;V (add a low-voltage-cutoff module) &#183; insulate the dock terminals &#8212; tool packs deliver huge fault current</text>
+
+  <!-- ======== BADGES ======== -->
+  <g>
+    <circle cx="329" cy="150" r="10" fill="#7c3aed"/><text x="329" y="154" text-anchor="middle" class="badge-t">17</text>
+    <circle cx="485" cy="150" r="10" fill="#7c3aed"/><text x="485" y="154" text-anchor="middle" class="badge-t">18</text>
+    <circle cx="660" cy="250" r="10" fill="#7c3aed"/><text x="660" y="254" text-anchor="middle" class="badge-t">19</text>
+    <circle cx="945" cy="176" r="10" fill="#dc2626"/><text x="945" y="180" text-anchor="middle" class="badge-t">20</text>
+    <circle cx="970" cy="450" r="10" fill="#1c1917"/><text x="970" y="454" text-anchor="middle" class="badge-t">21</text>
+    <circle cx="950" cy="357" r="10" fill="#db2777"/><text x="950" y="361" text-anchor="middle" class="badge-t">22</text>
+    <circle cx="300" cy="655" r="10" fill="#1d4ed8"/><text x="300" y="659" text-anchor="middle" class="badge-t">23</text>
+    <circle cx="613" cy="655" r="10" fill="#1d4ed8"/><text x="613" y="659" text-anchor="middle" class="badge-t">24</text>
+  </g>
+</svg>
