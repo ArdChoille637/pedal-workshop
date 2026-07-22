@@ -15,6 +15,7 @@ silk / build doc; hookup points for those are called out where they plug in.
 | [fig 3 — jacks & power](fig3-jacks-power.svg) | Jack/DC lug identification, polarity, optional battery hookup |
 | [fig 4 — pots & LED](fig4-pots-led.svg) | Pot lug numbering (front vs. solder side), LED polarity |
 | [fig 5 — 18 V power & DSP tap](fig5-power-dsp.svg) | Ryobi 18 V pack → 9 V analog + 5 V Pi rails, star ground, buffered recording tap |
+| [fig 6 — pinout reference](fig6-pinout-reference.svg) | Complete Pi 40-pin header (annotated for this rig), TL072 DIP-8, 7809 TO-220 |
 
 ![Overview wiring map](fig1-overview.svg)
 
@@ -83,6 +84,10 @@ The buffer grounds to the fig 1 ground bus (already reaches the star via 21).
 ≈ 1 W, analog ≈ 0.5 W → ≈ 9 W from the pack. A 2 Ah pack (36 Wh) gives roughly
 **3.5–4 h**; 4 Ah roughly double. Stop at 15.0 V — fit a low-voltage-cutoff
 module to protect the pack.
+
+Pin-level detail for the Pi header, the TL072 buffer, and the 7809 lives in
+**fig 6** — in this rig the Pi's header is optional (I²C chord display and
+footswitch sensing only); power arrives by USB-C and audio by USB.
 
 **Parts:** Ryobi terminal dock/adapter · blade fuse holder + 3 A fuse · SPST
 toggle ≥3 A · 7809 (TO-220) + 100 nF/10 µF caps + clip-on heatsink · 5 V ≥3 A

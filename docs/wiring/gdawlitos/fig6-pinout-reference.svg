@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1030" font-family="Helvetica, Arial, sans-serif">
+<defs><style>
+.box{fill:#f5f5f4;stroke:#57534e;stroke-width:2}
+.t{fill:#1c1917;paint-order:stroke;stroke:#ffffff;stroke-width:4}
+.tm{fill:#57534e;paint-order:stroke;stroke:#ffffff;stroke-width:4}
+.pn{font-size:11px;font-weight:bold}
+</style></defs>
+<rect x="0" y="0" width="1240" height="1030" fill="#ffffff"/>
+<text x="620" y="36" text-anchor="middle" class="t" font-size="22" font-weight="bold">fig 6 &#8212; pinout reference: Pi 40-pin header &#183; TL072 &#183; 7809</text>
+<text x="620" y="60" text-anchor="middle" class="tm" font-size="14">this rig powers the Pi by USB-C and records by USB &#8212; the header is OPTIONAL (display / footswitch only) &#183; all GPIO are 3.3&#8201;V logic</text>
+<text x="330" y="100" text-anchor="middle" class="t" font-size="15" font-weight="bold">RASPBERRY PI 40-PIN HEADER</text>
+<text x="330" y="118" text-anchor="middle" class="tm" font-size="10">top view, pin 1 = corner nearest the SD card &#183; physical numbering</text>
+<rect x="270" y="130" width="120" height="830" rx="10" fill="#fafaf9" stroke="#a8a29e" stroke-width="2"/>
+<rect x="286" y="138" width="28" height="28" rx="5" fill="#f59e0b" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="156" text-anchor="middle" class="pn" fill="#ffffff">1</text>
+<text x="256" y="156" text-anchor="end" class="tm" font-size="10">3V3 &#183; peripherals only - tens of mA</text>
+<rect x="346" y="138" width="28" height="28" rx="5" fill="#dc2626" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="156" text-anchor="middle" class="pn" fill="#ffffff">2</text>
+<text x="404" y="156" class="tm" font-size="10">5V &#183; output here; do NOT back-feed</text>
+<rect x="286" y="179" width="28" height="28" rx="5" fill="#1d4ed8" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="197" text-anchor="middle" class="pn" fill="#ffffff">3</text>
+<text x="256" y="197" text-anchor="end" class="tm" font-size="10">GPIO2 SDA1 &#183; OLED data (optional)</text>
+<rect x="346" y="179" width="28" height="28" rx="5" fill="#dc2626" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="197" text-anchor="middle" class="pn" fill="#ffffff">4</text>
+<text x="404" y="197" class="tm" font-size="10">5V &#183; output here; do NOT back-feed</text>
+<rect x="286" y="220" width="28" height="28" rx="5" fill="#1d4ed8" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="238" text-anchor="middle" class="pn" fill="#ffffff">5</text>
+<text x="256" y="238" text-anchor="end" class="tm" font-size="10">GPIO3 SCL1 &#183; OLED clock (optional)</text>
+<rect x="346" y="220" width="28" height="28" rx="5" fill="#1c1917" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="238" text-anchor="middle" class="pn" fill="#ffffff">6</text>
+<text x="404" y="238" class="tm" font-size="10">GND</text>
+<rect x="286" y="261" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="279" text-anchor="middle" class="pn" fill="#1c1917">7</text>
+<text x="256" y="279" text-anchor="end" class="tm" font-size="10">GPIO4</text>
+<rect x="346" y="261" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="279" text-anchor="middle" class="pn" fill="#1c1917">8</text>
+<text x="404" y="279" class="tm" font-size="10">GPIO14 TXD</text>
+<rect x="286" y="302" width="28" height="28" rx="5" fill="#1c1917" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="320" text-anchor="middle" class="pn" fill="#ffffff">9</text>
+<text x="256" y="320" text-anchor="end" class="tm" font-size="10">GND</text>
+<rect x="346" y="302" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="320" text-anchor="middle" class="pn" fill="#1c1917">10</text>
+<text x="404" y="320" class="tm" font-size="10">GPIO15 RXD</text>
+<rect x="286" y="343" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="361" text-anchor="middle" class="pn" fill="#1c1917">11</text>
+<text x="256" y="361" text-anchor="end" class="tm" font-size="10">GPIO17 &#183; footswitch sense (optional)</text>
+<rect x="346" y="343" width="28" height="28" rx="5" fill="#0d9488" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="361" text-anchor="middle" class="pn" fill="#ffffff">12</text>
+<text x="404" y="361" class="tm" font-size="10">GPIO18 PCM_CLK &#183; I2S - only if codec HAT</text>
+<rect x="286" y="384" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="402" text-anchor="middle" class="pn" fill="#1c1917">13</text>
+<text x="256" y="402" text-anchor="end" class="tm" font-size="10">GPIO27</text>
+<rect x="346" y="384" width="28" height="28" rx="5" fill="#1c1917" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="402" text-anchor="middle" class="pn" fill="#ffffff">14</text>
+<text x="404" y="402" class="tm" font-size="10">GND</text>
+<rect x="286" y="425" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="443" text-anchor="middle" class="pn" fill="#1c1917">15</text>
+<text x="256" y="443" text-anchor="end" class="tm" font-size="10">GPIO22</text>
+<rect x="346" y="425" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="443" text-anchor="middle" class="pn" fill="#1c1917">16</text>
+<text x="404" y="443" class="tm" font-size="10">GPIO23</text>
+<rect x="286" y="466" width="28" height="28" rx="5" fill="#f59e0b" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="484" text-anchor="middle" class="pn" fill="#ffffff">17</text>
+<text x="256" y="484" text-anchor="end" class="tm" font-size="10">3V3 &#183; peripherals only - tens of mA</text>
+<rect x="346" y="466" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="484" text-anchor="middle" class="pn" fill="#1c1917">18</text>
+<text x="404" y="484" class="tm" font-size="10">GPIO24</text>
+<rect x="286" y="507" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="525" text-anchor="middle" class="pn" fill="#1c1917">19</text>
+<text x="256" y="525" text-anchor="end" class="tm" font-size="10">GPIO10 MOSI</text>
+<rect x="346" y="507" width="28" height="28" rx="5" fill="#1c1917" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="525" text-anchor="middle" class="pn" fill="#ffffff">20</text>
+<text x="404" y="525" class="tm" font-size="10">GND</text>
+<rect x="286" y="548" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="566" text-anchor="middle" class="pn" fill="#1c1917">21</text>
+<text x="256" y="566" text-anchor="end" class="tm" font-size="10">GPIO9 MISO</text>
+<rect x="346" y="548" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="566" text-anchor="middle" class="pn" fill="#1c1917">22</text>
+<text x="404" y="566" class="tm" font-size="10">GPIO25</text>
+<rect x="286" y="589" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="607" text-anchor="middle" class="pn" fill="#1c1917">23</text>
+<text x="256" y="607" text-anchor="end" class="tm" font-size="10">GPIO11 SCLK</text>
+<rect x="346" y="589" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="607" text-anchor="middle" class="pn" fill="#1c1917">24</text>
+<text x="404" y="607" class="tm" font-size="10">GPIO8 CE0</text>
+<rect x="286" y="630" width="28" height="28" rx="5" fill="#1c1917" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="648" text-anchor="middle" class="pn" fill="#ffffff">25</text>
+<text x="256" y="648" text-anchor="end" class="tm" font-size="10">GND</text>
+<rect x="346" y="630" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="648" text-anchor="middle" class="pn" fill="#1c1917">26</text>
+<text x="404" y="648" class="tm" font-size="10">GPIO7 CE1</text>
+<rect x="286" y="671" width="28" height="28" rx="5" fill="#a8a29e" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="689" text-anchor="middle" class="pn" fill="#ffffff">27</text>
+<text x="256" y="689" text-anchor="end" class="tm" font-size="10">ID_SD &#183; HAT EEPROM - leave alone</text>
+<rect x="346" y="671" width="28" height="28" rx="5" fill="#a8a29e" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="689" text-anchor="middle" class="pn" fill="#ffffff">28</text>
+<text x="404" y="689" class="tm" font-size="10">ID_SC &#183; HAT EEPROM - leave alone</text>
+<rect x="286" y="712" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="730" text-anchor="middle" class="pn" fill="#1c1917">29</text>
+<text x="256" y="730" text-anchor="end" class="tm" font-size="10">GPIO5</text>
+<rect x="346" y="712" width="28" height="28" rx="5" fill="#1c1917" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="730" text-anchor="middle" class="pn" fill="#ffffff">30</text>
+<text x="404" y="730" class="tm" font-size="10">GND</text>
+<rect x="286" y="753" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="771" text-anchor="middle" class="pn" fill="#1c1917">31</text>
+<text x="256" y="771" text-anchor="end" class="tm" font-size="10">GPIO6</text>
+<rect x="346" y="753" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="771" text-anchor="middle" class="pn" fill="#1c1917">32</text>
+<text x="404" y="771" class="tm" font-size="10">GPIO12 PWM0</text>
+<rect x="286" y="794" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="812" text-anchor="middle" class="pn" fill="#1c1917">33</text>
+<text x="256" y="812" text-anchor="end" class="tm" font-size="10">GPIO13 PWM1</text>
+<rect x="346" y="794" width="28" height="28" rx="5" fill="#1c1917" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="812" text-anchor="middle" class="pn" fill="#ffffff">34</text>
+<text x="404" y="812" class="tm" font-size="10">GND</text>
+<rect x="286" y="835" width="28" height="28" rx="5" fill="#0d9488" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="853" text-anchor="middle" class="pn" fill="#ffffff">35</text>
+<text x="256" y="853" text-anchor="end" class="tm" font-size="10">GPIO19 PCM_FS &#183; I2S - only if codec HAT</text>
+<rect x="346" y="835" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="853" text-anchor="middle" class="pn" fill="#1c1917">36</text>
+<text x="404" y="853" class="tm" font-size="10">GPIO16</text>
+<rect x="286" y="876" width="28" height="28" rx="5" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="894" text-anchor="middle" class="pn" fill="#1c1917">37</text>
+<text x="256" y="894" text-anchor="end" class="tm" font-size="10">GPIO26</text>
+<rect x="346" y="876" width="28" height="28" rx="5" fill="#0d9488" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="894" text-anchor="middle" class="pn" fill="#ffffff">38</text>
+<text x="404" y="894" class="tm" font-size="10">GPIO20 PCM_DIN &#183; I2S - only if codec HAT</text>
+<rect x="286" y="917" width="28" height="28" rx="5" fill="#1c1917" stroke="#44403c" stroke-width="1.5"/>
+<text x="300" y="935" text-anchor="middle" class="pn" fill="#ffffff">39</text>
+<text x="256" y="935" text-anchor="end" class="tm" font-size="10">GND</text>
+<rect x="346" y="917" width="28" height="28" rx="5" fill="#0d9488" stroke="#44403c" stroke-width="1.5"/>
+<text x="360" y="935" text-anchor="middle" class="pn" fill="#ffffff">40</text>
+<text x="404" y="935" class="tm" font-size="10">GPIO21 PCM_DOUT &#183; I2S - only if codec HAT</text>
+<text x="300" y="130" text-anchor="middle" class="tm" font-size="9">&#9660; pin 1</text>
+<text x="70" y="990" class="t" font-size="11" font-weight="bold">KEY:</text>
+<g font-size="10">
+<rect x="120" y="978" width="16" height="16" rx="3" fill="#f59e0b" stroke="#44403c"/>
+<text x="142" y="990" class="tm">3.3&#8201;V out</text>
+<rect x="215" y="978" width="16" height="16" rx="3" fill="#dc2626" stroke="#44403c"/>
+<text x="237" y="990" class="tm">5&#8201;V out</text>
+<rect x="310" y="978" width="16" height="16" rx="3" fill="#1c1917" stroke="#44403c"/>
+<text x="332" y="990" class="tm">GND</text>
+<rect x="405" y="978" width="16" height="16" rx="3" fill="#1d4ed8" stroke="#44403c"/>
+<text x="427" y="990" class="tm">I&#178;C</text>
+<rect x="500" y="978" width="16" height="16" rx="3" fill="#0d9488" stroke="#44403c"/>
+<text x="522" y="990" class="tm">I2S</text>
+<rect x="595" y="978" width="16" height="16" rx="3" fill="#e7e5e4" stroke="#44403c"/>
+<text x="617" y="990" class="tm">GPIO</text>
+<rect x="690" y="978" width="16" height="16" rx="3" fill="#a8a29e" stroke="#44403c"/>
+<text x="712" y="990" class="tm">reserved</text>
+</g>
+<text x="910" y="112" text-anchor="middle" class="t" font-size="15" font-weight="bold">TL072 (buffer) &#8212; DIP-8, top view</text>
+<rect x="850" y="130" width="120" height="180" rx="8" class="box"/>
+<path d="M 895 130 A 15 15 0 0 0 925 130" fill="#ffffff" stroke="#57534e" stroke-width="2"/>
+<rect x="834" y="156" width="18" height="18" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="843" y="169" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">1</text>
+<text x="826" y="169" text-anchor="end" class="tm" font-size="10">OUT A &#8594; tap out (wire 24)</text>
+<rect x="834" y="194" width="18" height="18" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="843" y="207" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">2</text>
+<text x="826" y="207" text-anchor="end" class="tm" font-size="10">IN A&#8722; &#8594; tie to pin 1 (unity)</text>
+<rect x="834" y="232" width="18" height="18" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="843" y="245" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">3</text>
+<text x="826" y="245" text-anchor="end" class="tm" font-size="10">IN A+ &#8594; signal in via cap + bias</text>
+<rect x="834" y="270" width="18" height="18" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="843" y="283" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">4</text>
+<text x="826" y="283" text-anchor="end" class="tm" font-size="10">V&#8722; &#8594; ground</text>
+<rect x="968" y="156" width="18" height="18" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="977" y="169" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">8</text>
+<text x="994" y="169" class="tm" font-size="10">V+ &#8594; +9&#8201;V rail</text>
+<rect x="968" y="194" width="18" height="18" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="977" y="207" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">7</text>
+<text x="994" y="207" class="tm" font-size="10">OUT B &#8594; tie to pin 6</text>
+<rect x="968" y="232" width="18" height="18" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="977" y="245" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">6</text>
+<text x="994" y="245" class="tm" font-size="10">IN B&#8722; &#8594; tie to pin 7</text>
+<rect x="968" y="270" width="18" height="18" fill="#e7e5e4" stroke="#44403c" stroke-width="1.5"/>
+<text x="977" y="283" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">5</text>
+<text x="994" y="283" class="tm" font-size="10">IN B+ &#8594; &#189;-supply bias</text>
+<text x="910" y="335" text-anchor="middle" class="tm" font-size="10">&#189;-supply bias = two equal resistors (1&#8201;M) from 9&#8201;V to ground,</text>
+<text x="910" y="349" text-anchor="middle" class="tm" font-size="10">midpoint to pin 3 through the input cap network</text>
+<text x="910" y="412" text-anchor="middle" class="t" font-size="15" font-weight="bold">7809 &#8212; TO-220, facing the label</text>
+<rect x="855" y="430" width="110" height="30" rx="4" fill="#d6d3d1" stroke="#44403c" stroke-width="2"/>
+<circle cx="910" cy="445" r="6" fill="#ffffff" stroke="#44403c" stroke-width="1.5"/>
+<rect x="855" y="460" width="110" height="60" rx="4" class="box"/>
+<line x1="875" y1="520" x2="875" y2="550" stroke="#44403c" stroke-width="4"/>
+<text x="875" y="566" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">1</text>
+<line x1="910" y1="520" x2="910" y2="550" stroke="#44403c" stroke-width="4"/>
+<text x="910" y="566" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">2</text>
+<line x1="945" y1="520" x2="945" y2="550" stroke="#44403c" stroke-width="4"/>
+<text x="945" y="566" text-anchor="middle" class="pn" fill="#1c1917" font-size="10">3</text>
+<text x="910" y="590" text-anchor="middle" class="tm" font-size="10">1 = IN (18&#8201;V) &#183; 2 = GND &#183; 3 = OUT (9&#8201;V) &#183; metal tab = GND</text>
+<text x="910" y="604" text-anchor="middle" class="tm" font-size="10">heatsink touches the tab only &#8212; tab is ground, keep it off +18&#8201;V wiring</text>
+<rect x="700" y="650" width="470" height="200" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+<text x="935" y="678" text-anchor="middle" class="t" font-size="14" font-weight="bold">WHAT THIS RIG ACTUALLY CONNECTS</text>
+<text x="716" y="704" class="tm" font-size="11">&#8226; Power: USB-C from the 5&#8201;V buck (fig 5) &#8212; header 5&#8201;V pins stay empty</text>
+<text x="716" y="726" class="tm" font-size="11">&#8226; Audio in: USB-A &#8594; USB audio interface (fig 5) &#8212; no header pins</text>
+<text x="716" y="748" class="tm" font-size="11">&#8226; Optional chord display: I&#178;C OLED &#8594; pins 1 (3V3), 3 (SDA), 5 (SCL), 6 (GND)</text>
+<text x="716" y="770" class="tm" font-size="11">&#8226; Optional footswitch sense: GPIO17 (pin 11) &#8594; switch &#8594; GND (pin 9),</text>
+<text x="716" y="792" class="tm" font-size="11">   enable the internal pull-up in software; no external voltage</text>
+<text x="716" y="814" class="tm" font-size="11">&#8226; Everything else: unconnected. Never 5/9/18&#8201;V into any GPIO or 3V3 pin.</text>
+<rect x="700" y="880" width="470" height="80" rx="8" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/>
+<text x="716" y="906" font-size="12" font-weight="bold" fill="#b91c1c" paint-order="stroke" stroke="#ffffff" stroke-width="4">HARD LIMITS</text>
+<text x="716" y="926" class="tm" font-size="10">3V3 pins are outputs (peripherals only) &#183; 5&#8201;V pins are outputs when USB-C powered &#8212; do not back-feed &#183;</text>
+<text x="716" y="942" class="tm" font-size="10">GPIO tolerate 3.3&#8201;V max &#183; guitar signal never goes to GPIO &#8212; it goes through the USB interface (fig 5)</text>
+</svg>
