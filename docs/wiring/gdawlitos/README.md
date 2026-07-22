@@ -14,6 +14,7 @@ silk / build doc; hookup points for those are called out where they plug in.
 | [fig 2 — 3PDT states](fig2-3pdt-states.svg) | Switch internals in bypass vs. effect, lug-by-lug map, DMM check |
 | [fig 3 — jacks & power](fig3-jacks-power.svg) | Jack/DC lug identification, polarity, optional battery hookup |
 | [fig 4 — pots & LED](fig4-pots-led.svg) | Pot lug numbering (front vs. solder side), LED polarity |
+| [fig 5 — 18 V power & DSP tap](fig5-power-dsp.svg) | Ryobi 18 V pack → 9 V analog + 5 V Pi rails, star ground, buffered recording tap |
 
 ![Overview wiring map](fig1-overview.svg)
 
@@ -48,6 +49,46 @@ common) · 3 (bottom).
 **Ground bus** = star or daisy-chain joining: DC pin lug, board GND, A1, C3,
 input sleeve, output sleeve. Metal jack bushings ground the enclosure
 automatically (scrape paint under one lock washer on powder-coated boxes).
+
+## 18 V battery power & DSP tap (fig 5)
+
+The rig runs from a Ryobi 18 V tool pack via a terminal dock. Two rails: a
+**7809 linear regulator** makes the clean 9 V analog rail (no switching noise;
+trivial heat at pedal currents), and a **5 V ≥3 A buck converter** feeds the
+Raspberry Pi over USB-C (a linear reg would dissipate ~40 W here — buck only).
+The 9 V rail ends in a 2.1 mm center-negative plug into the fig 1 DC jack, so
+figs 1–4 are unchanged. All grounds meet **once** at a star point.
+
+For chord analysis the Pi records the **dry** guitar signal: a TL072 unity
+buffer (on the 9 V rail, ½-supply bias) taps the input jack tip and feeds a
+USB audio interface — detection is far more reliable pre-distortion. A spare
+pot works as a level trim between buffer and interface (lug 3 ← buffer out,
+lug 2 wiper → line-in tip, lug 1 → ground).
+
+| # | From | To | Color | Notes |
+|---|------|----|-------|-------|
+| 17 | Battery **+** (dock terminal) | Fuse (3–5 A blade) | violet | Fuse within 10 cm of the pack |
+| 18 | Fuse | Master switch (SPST ≥3 A) | violet | |
+| 19 | Master switch | 7809 **IN** + buck **IN** | violet | One junction, two feeds |
+| 20 | 7809 **OUT** | 2.1 mm plug **barrel** (+) | red | Plug goes into the fig 1 DC jack |
+| 21 | 2.1 mm plug **pin** (−) | Star ground | black | |
+| 22 | Buck **5 V OUT** | Pi **USB-C** | magenta | Ground rides in the USB cable |
+| 23 | Input jack **TIP** | Buffer **IN** | blue | Same tip as wire 1 — solder both tails to the lug |
+| 24 | Buffer **OUT** | Trim pot → USB interface **line-in** | blue | Pot optional but recommended |
+
+Grounds to the star point: battery −, 7809 GND, buck GND, plug pin (21).
+The buffer grounds to the fig 1 ground bus (already reaches the star via 21).
+
+**Power budget / runtime:** Pi 4 under analysis load ≈ 6 W, interface + display
+≈ 1 W, analog ≈ 0.5 W → ≈ 9 W from the pack. A 2 Ah pack (36 Wh) gives roughly
+**3.5–4 h**; 4 Ah roughly double. Stop at 15.0 V — fit a low-voltage-cutoff
+module to protect the pack.
+
+**Parts:** Ryobi terminal dock/adapter · blade fuse holder + 3 A fuse · SPST
+toggle ≥3 A · 7809 (TO-220) + 100 nF/10 µF caps + clip-on heatsink · 5 V ≥3 A
+buck rated ≥24 V input · TL072 + bias resistors + coupling caps (or a premade
+buffer) · USB audio interface with instrument/line input · spare pot
+(10k–100k) as level trim · low-voltage-cutoff module (~15 V).
 
 ## Build order checklist
 
