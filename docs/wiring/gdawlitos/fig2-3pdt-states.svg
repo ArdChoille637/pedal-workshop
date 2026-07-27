@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 760" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .box   { fill:#f5f5f4; stroke:#57534e; stroke-width:2; }
+      .board { fill:#d1fae5; stroke:#065f46; stroke-width:2.5; }
+      .lug   { fill:#e7e5e4; stroke:#44403c; stroke-width:2; }
+      .pad   { fill:#fef3c7; stroke:#92400e; stroke-width:2; }
+      .wire  { fill:none; stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round; }
+      .blue  { stroke:#1d4ed8; } .teal  { stroke:#0d9488; } .green { stroke:#15803d; }
+      .red   { stroke:#dc2626; } .orange{ stroke:#ea580c; } .blk   { stroke:#1c1917; }
+      .t     { fill:#1c1917; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .tm    { fill:#57534e; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .lbl   { font-size:12px; font-weight:bold; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .lugid { font-size:10px; font-weight:bold; fill:#1c1917; }
+      .badge-t { font-size:12px; font-weight:bold; fill:#ffffff; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1240" height="760" fill="#ffffff"/>
+  <text x="620" y="36" text-anchor="middle" class="t" font-size="22" font-weight="bold">fig 2 - 3PDT switch states (solder-side view)</text>
+  <text x="620" y="60" text-anchor="middle" class="tm" font-size="14">which mechanical position is which does not matter - this hookup guarantees LED on = effect on</text>
+
+  <line x1="620" y1="80" x2="620" y2="478" stroke="#e7e5e4" stroke-width="2"/>
+
+  <!-- ================= LEFT PANEL : BYPASS ================= -->
+  <text x="320" y="96" text-anchor="middle" class="t" font-size="16" font-weight="bold">BYPASS &#8212; LED off</text>
+  <text x="320" y="116" text-anchor="middle" class="tm" font-size="12">middle&#8596;top contacts closed (gray bars)</text>
+
+  <rect x="205" y="150" width="230" height="230" rx="12" class="box"/>
+  <text x="250" y="141" text-anchor="middle" class="t" font-size="14" font-weight="bold">A</text>
+  <text x="320" y="141" text-anchor="middle" class="t" font-size="14" font-weight="bold">B</text>
+  <text x="390" y="141" text-anchor="middle" class="t" font-size="14" font-weight="bold">C</text>
+
+  <!-- closed-contact bars: row1-row2 -->
+  <rect x="242" y="184" width="16" height="92" rx="8" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1.5"/>
+  <rect x="312" y="184" width="16" height="92" rx="8" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1.5"/>
+  <rect x="382" y="184" width="16" height="92" rx="8" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1.5"/>
+
+  <!-- highlighted signal route -->
+  <path d="M 185 335 L 250 335 Q 276 238 320 195 L 320 265 L 355 300 L 485 300"
+        fill="none" stroke="#fde047" stroke-opacity="0.55" stroke-width="11"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- external stubs -->
+  <polyline class="wire blk"  points="185,195 239,195"/>
+  <polyline class="wire blue" points="185,265 239,265"/>
+  <polyline class="wire blue" points="185,335 239,335"/>
+  <path class="wire blue" d="M 250 324 Q 280 242 308 197"/>
+  <polyline class="wire teal" points="328,273 355,300 485,300"/>
+  <polyline class="wire green" points="320,346 320,405"/>
+  <polyline class="wire orange" points="401,265 466,265"/>
+  <polyline class="wire blk"  points="401,335 455,335"/>
+  <line x1="401" y1="195" x2="455" y2="195" stroke="#a8a29e" stroke-width="2" stroke-dasharray="4 4"/>
+
+  <!-- direction arrows -->
+  <polygon points="222,329 234,335 222,341" fill="#1d4ed8"/>
+  <polygon points="485,294 497,300 485,306" fill="#0d9488"/>
+
+  <!-- lugs -->
+  <g>
+    <circle cx="250" cy="195" r="11" class="lug"/><text x="250" y="199" text-anchor="middle" class="lugid">A1</text>
+    <circle cx="320" cy="195" r="11" class="lug"/><text x="320" y="199" text-anchor="middle" class="lugid">B1</text>
+    <circle cx="390" cy="195" r="11" class="lug"/><text x="390" y="199" text-anchor="middle" class="lugid">C1</text>
+    <circle cx="250" cy="265" r="11" class="lug"/><text x="250" y="269" text-anchor="middle" class="lugid">A2</text>
+    <circle cx="320" cy="265" r="11" class="lug"/><text x="320" y="269" text-anchor="middle" class="lugid">B2</text>
+    <circle cx="390" cy="265" r="11" class="lug"/><text x="390" y="269" text-anchor="middle" class="lugid">C2</text>
+    <circle cx="250" cy="335" r="11" class="lug"/><text x="250" y="339" text-anchor="middle" class="lugid">A3</text>
+    <circle cx="320" cy="335" r="11" class="lug"/><text x="320" y="339" text-anchor="middle" class="lugid">B3</text>
+    <circle cx="390" cy="335" r="11" class="lug"/><text x="390" y="339" text-anchor="middle" class="lugid">C3</text>
+  </g>
+
+  <!-- dark LED symbol -->
+  <circle cx="475" cy="265" r="7" fill="#e7e5e4" stroke="#78716c" stroke-width="2"/>
+
+  <!-- stub labels -->
+  <text x="178" y="199" text-anchor="end" class="lbl" fill="#1c1917">GND</text>
+  <text x="178" y="269" text-anchor="end" class="lbl" fill="#1d4ed8">board IN</text>
+  <text x="178" y="339" text-anchor="end" class="lbl" fill="#1d4ed8">input TIP</text>
+  <text x="462" y="199" class="lbl" fill="#78716c">(empty)</text>
+  <text x="492" y="269" class="lbl" fill="#78716c">LED &#8722; (dark)</text>
+  <text x="504" y="304" class="lbl" fill="#0d9488">output TIP</text>
+  <text x="462" y="339" class="lbl" fill="#1c1917">GND</text>
+  <text x="320" y="421" text-anchor="middle" class="lbl" fill="#15803d">board OUT</text>
+
+  <!-- numbered route badges -->
+  <circle cx="203" cy="335" r="9" fill="#1d4ed8"/><text x="203" y="339" text-anchor="middle" class="badge-t" font-size="10">1</text>
+  <circle cx="280" cy="251" r="9" fill="#1d4ed8"/><text x="280" y="255" text-anchor="middle" class="badge-t" font-size="10">2</text>
+  <circle cx="320" cy="230" r="9" fill="#57534e"/><text x="320" y="234" text-anchor="middle" class="badge-t" font-size="10">3</text>
+  <circle cx="420" cy="300" r="9" fill="#0d9488"/><text x="420" y="304" text-anchor="middle" class="badge-t" font-size="10">4</text>
+
+  <!-- captions -->
+  <text x="320" y="450" text-anchor="middle" class="t" font-size="12" font-weight="bold">input TIP &#8594; A3 &#8594; jumper &#8594; B1&#8594;B2 &#8594; output TIP &#8212; board bypassed</text>
+  <text x="320" y="468" text-anchor="middle" class="tm" font-size="11">board input grounded via A2&#8211;A1 (anti-pop) &#183; C2&#8594;C1 closed onto empty C1 (C2&#8211;C3 open) &#8594; LED dark</text>
+
+  <!-- ================= RIGHT PANEL : EFFECT ================= -->
+  <text x="940" y="96" text-anchor="middle" class="t" font-size="16" font-weight="bold">EFFECT &#8212; LED on</text>
+  <text x="940" y="116" text-anchor="middle" class="tm" font-size="12">middle&#8596;bottom contacts closed (gray bars)</text>
+
+  <rect x="825" y="150" width="230" height="230" rx="12" class="box"/>
+  <text x="870" y="141" text-anchor="middle" class="t" font-size="14" font-weight="bold">A</text>
+  <text x="940" y="141" text-anchor="middle" class="t" font-size="14" font-weight="bold">B</text>
+  <text x="1010" y="141" text-anchor="middle" class="t" font-size="14" font-weight="bold">C</text>
+
+  <!-- closed-contact bars: row2-row3 -->
+  <rect x="862" y="254" width="16" height="92" rx="8" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1.5"/>
+  <rect x="932" y="254" width="16" height="92" rx="8" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1.5"/>
+  <rect x="1002" y="254" width="16" height="92" rx="8" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1.5"/>
+
+  <!-- highlighted signal routes -->
+  <path d="M 805 335 L 870 335 L 870 265 L 805 265"
+        fill="none" stroke="#fde047" stroke-opacity="0.55" stroke-width="11"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 940 405 L 940 265 L 975 230 L 1096 230"
+        fill="none" stroke="#fde047" stroke-opacity="0.55" stroke-width="11"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- LED loop glow -->
+  <path d="M 1066 265 L 1010 265 L 1010 335 L 1075 335"
+        fill="none" stroke="#fdba74" stroke-opacity="0.5" stroke-width="11"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- external stubs -->
+  <polyline class="wire blk"  points="805,195 859,195"/>
+  <polyline class="wire blue" points="805,265 859,265"/>
+  <polyline class="wire blue" points="805,335 859,335"/>
+  <path class="wire blue" d="M 881 333 Q 910 265 932 203"/>
+  <polyline class="wire teal" points="948,257 975,230 1096,230"/>
+  <polyline class="wire green" points="940,346 940,405"/>
+  <polyline class="wire orange" points="1021,265 1066,265"/>
+  <polyline class="wire blk"  points="1021,335 1075,335"/>
+  <line x1="1021" y1="195" x2="1075" y2="195" stroke="#a8a29e" stroke-width="2" stroke-dasharray="4 4"/>
+
+  <!-- direction arrows -->
+  <polygon points="842,329 854,335 842,341" fill="#1d4ed8"/>
+  <polygon points="822,259 810,265 822,271" fill="#1d4ed8"/>
+  <polygon points="934,364 940,352 946,364" fill="#15803d"/>
+  <polygon points="1096,224 1108,230 1096,236" fill="#0d9488"/>
+
+  <!-- lugs -->
+  <g>
+    <circle cx="870" cy="195" r="11" class="lug"/><text x="870" y="199" text-anchor="middle" class="lugid">A1</text>
+    <circle cx="940" cy="195" r="11" class="lug"/><text x="940" y="199" text-anchor="middle" class="lugid">B1</text>
+    <circle cx="1010" cy="195" r="11" class="lug"/><text x="1010" y="199" text-anchor="middle" class="lugid">C1</text>
+    <circle cx="870" cy="265" r="11" class="lug"/><text x="870" y="269" text-anchor="middle" class="lugid">A2</text>
+    <circle cx="940" cy="265" r="11" class="lug"/><text x="940" y="269" text-anchor="middle" class="lugid">B2</text>
+    <circle cx="1010" cy="265" r="11" class="lug"/><text x="1010" y="269" text-anchor="middle" class="lugid">C2</text>
+    <circle cx="870" cy="335" r="11" class="lug"/><text x="870" y="339" text-anchor="middle" class="lugid">A3</text>
+    <circle cx="940" cy="335" r="11" class="lug"/><text x="940" y="339" text-anchor="middle" class="lugid">B3</text>
+    <circle cx="1010" cy="335" r="11" class="lug"/><text x="1010" y="339" text-anchor="middle" class="lugid">C3</text>
+  </g>
+
+  <!-- lit LED symbol -->
+  <circle cx="1075" cy="265" r="7" fill="#f87171" stroke="#7f1d1d" stroke-width="2"/>
+  <g stroke="#f59e0b" stroke-width="2" stroke-linecap="round">
+    <line x1="1075" y1="255" x2="1075" y2="249"/>
+    <line x1="1082" y1="258" x2="1086" y2="254"/>
+    <line x1="1085" y1="265" x2="1091" y2="265"/>
+    <line x1="1082" y1="272" x2="1086" y2="276"/>
+    <line x1="1068" y1="258" x2="1064" y2="254"/>
+  </g>
+
+  <!-- stub labels -->
+  <text x="798" y="199" text-anchor="end" class="lbl" fill="#1c1917">GND</text>
+  <text x="798" y="269" text-anchor="end" class="lbl" fill="#1d4ed8">board IN</text>
+  <text x="798" y="339" text-anchor="end" class="lbl" fill="#1d4ed8">input TIP</text>
+  <text x="1082" y="199" class="lbl" fill="#78716c">(empty)</text>
+  <text x="1116" y="234" class="lbl" fill="#0d9488">output TIP</text>
+  <text x="1098" y="269" class="lbl" fill="#ea580c">LED &#8722; (lit)</text>
+  <text x="1082" y="339" class="lbl" fill="#1c1917">GND</text>
+  <text x="940" y="421" text-anchor="middle" class="lbl" fill="#15803d">board OUT</text>
+
+  <!-- numbered route badges -->
+  <circle cx="823" cy="335" r="9" fill="#1d4ed8"/><text x="823" y="339" text-anchor="middle" class="badge-t" font-size="10">1</text>
+  <circle cx="870" cy="300" r="9" fill="#57534e"/><text x="870" y="304" text-anchor="middle" class="badge-t" font-size="10">2</text>
+  <circle cx="836" cy="265" r="9" fill="#1d4ed8"/><text x="836" y="269" text-anchor="middle" class="badge-t" font-size="10">3</text>
+  <circle cx="940" cy="382" r="9" fill="#15803d"/><text x="940" y="386" text-anchor="middle" class="badge-t" font-size="10">4</text>
+  <circle cx="940" cy="300" r="9" fill="#57534e"/><text x="940" y="304" text-anchor="middle" class="badge-t" font-size="10">5</text>
+  <circle cx="1030" cy="230" r="9" fill="#0d9488"/><text x="1030" y="234" text-anchor="middle" class="badge-t" font-size="10">6</text>
+
+  <!-- captions -->
+  <text x="940" y="450" text-anchor="middle" class="t" font-size="12" font-weight="bold">input TIP &#8594; A3&#8594;A2 &#8594; board IN &#160;&#183;&#160; board OUT &#8594; B3&#8594;B2 &#8594; output TIP</text>
+  <text x="940" y="468" text-anchor="middle" class="tm" font-size="11">C2&#8211;C3 closed &#8594; LED lit &#8212; this is what makes LED on = effect on</text>
+
+  <!-- ================= BOTTOM STRIP ================= -->
+  <!-- lug map -->
+  <rect x="60" y="498" width="620" height="234" rx="8" fill="#fafaf9" stroke="#e7e5e4" stroke-width="1.5"/>
+  <text x="370" y="524" text-anchor="middle" class="t" font-size="14" font-weight="bold">LUG MAP &#8212; 3PDT from the SOLDER SIDE</text>
+  <text x="370" y="543" text-anchor="middle" class="tm" font-size="11">columns A &#183; B &#183; C left&#8594;right &#183; rows 1 (top), 2 (middle = common), 3 (bottom)</text>
+  <g font-size="12" font-weight="bold">
+    <text x="140" y="572" class="t">col A</text>
+    <text x="345" y="572" class="t">col B</text>
+    <text x="525" y="572" class="t">col C</text>
+  </g>
+  <g font-size="11" font-weight="bold">
+    <text x="78" y="600" class="tm">1 top</text>
+    <text x="78" y="630" class="tm">2 mid</text>
+    <text x="78" y="660" class="tm">3 bot</text>
+  </g>
+  <g font-size="11">
+    <text x="140" y="600" class="t">A1 &#8212; ground (w4, anti-pop)</text>
+    <text x="345" y="600" class="t">B1 &#8212; jumper from A3 (w2)</text>
+    <text x="525" y="600" class="t">C1 &#8212; (empty)</text>
+    <text x="140" y="630" class="t">A2 &#8212; board IN (w3)</text>
+    <text x="345" y="630" class="t">B2 &#8212; output TIP (w6)</text>
+    <text x="525" y="630" class="t">C2 &#8212; LED &#8722; (w8)</text>
+    <text x="140" y="660" class="t">A3 &#8212; input TIP (w1) + jumper (w2)</text>
+    <text x="345" y="660" class="t">B3 &#8212; board OUT (w5)</text>
+    <text x="525" y="660" class="t">C3 &#8212; ground (w7)</text>
+  </g>
+  <text x="370" y="695" text-anchor="middle" class="tm" font-size="11">row 2 = common &#8212; each press flips ALL three columns at once: row&#8201;1 (BYPASS) &#8596; row&#8201;3 (EFFECT)</text>
+  <text x="370" y="713" text-anchor="middle" class="tm" font-size="10">wire numbers wN match fig&#8201;1 / README &#183; circled numbers on the panels above = signal-path steps, not wire numbers</text>
+
+  <!-- DMM note -->
+  <rect x="710" y="498" width="470" height="234" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="945" y="526" text-anchor="middle" class="t" font-size="14" font-weight="bold">DMM CHECK &#8212; BEFORE SOLDERING</text>
+  <g class="tm" font-size="12">
+    <text x="725" y="556">&#8226; Meter on continuity: the MIDDLE lug must beep to the</text>
+    <text x="737" y="576">TOP or BOTTOM lug of the SAME column,</text>
+    <text x="737" y="596">alternating with every press.</text>
+    <text x="725" y="622">&#8226; Beeps ACROSS a row instead? The switch is rotated &#8212;</text>
+    <text x="737" y="642">turn your whole mapping 90&#176; and re-test.</text>
+    <text x="725" y="668">&#8226; Which mechanical position is which doesn't matter:</text>
+    <text x="737" y="688">this hookup guarantees LED on = effect on.</text>
+  </g>
+</svg>

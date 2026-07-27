@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1010" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .box   { fill:#f5f5f4; stroke:#57534e; stroke-width:2; }
+      .board { fill:#d1fae5; stroke:#065f46; stroke-width:2.5; }
+      .lug   { fill:#e7e5e4; stroke:#44403c; stroke-width:2; }
+      .pad   { fill:#fef3c7; stroke:#92400e; stroke-width:2; }
+      .wire  { fill:none; stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round; }
+      .blue  { stroke:#1d4ed8; } .teal  { stroke:#0d9488; } .green { stroke:#15803d; }
+      .red   { stroke:#dc2626; } .orange{ stroke:#ea580c; } .blk   { stroke:#1c1917; }
+      .t     { fill:#1c1917; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .tm    { fill:#57534e; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .lbl   { font-size:12px; font-weight:bold; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .lugid { font-size:10px; font-weight:bold; fill:#1c1917; }
+      .badge-t { font-size:12px; font-weight:bold; fill:#ffffff; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1240" height="1010" fill="#ffffff"/>
+  <text x="620" y="36" text-anchor="middle" class="t" font-size="22" font-weight="bold">gdawlitos — off-board wiring map (true bypass · status LED · 9&#8201;V center-negative)</text>
+  <text x="620" y="60" text-anchor="middle" class="tm" font-size="14">3PDT footswitch drawn from the SOLDER SIDE (back). Wire numbers match the solder checklist in the README.</text>
+
+  <!-- ======== DC JACK ======== -->
+  <rect x="70" y="100" width="180" height="150" rx="8" class="box"/>
+  <text x="160" y="124" text-anchor="middle" class="t" font-size="15" font-weight="bold">DC JACK</text>
+  <text x="160" y="142" text-anchor="middle" class="tm" font-size="11">2.1&#8201;mm center-negative</text>
+  <circle cx="250" cy="160" r="8" class="lug"/>
+  <circle cx="250" cy="190" r="8" class="lug"/>
+  <circle cx="250" cy="220" r="8" class="lug"/>
+  <text x="238" y="164" text-anchor="end" class="tm" font-size="10" font-weight="bold">barrel = +9&#8201;V</text>
+  <text x="238" y="194" text-anchor="end" class="tm" font-size="10" font-weight="bold">pin = &#8722; (gnd)</text>
+  <text x="238" y="224" text-anchor="end" class="tm" font-size="10" font-weight="bold">switch lug</text>
+  <text x="160" y="242" text-anchor="middle" class="tm" font-size="9">switch lug = battery + &#183; see fig&#8201;3</text>
+  <!-- polarity glyph -->
+  <g stroke="#1c1917" stroke-width="2" fill="none">
+    <line x1="122" y1="272" x2="140" y2="272"/>
+    <circle cx="147" cy="272" r="3.5" fill="#1c1917" stroke="none"/>
+    <path d="M 158 261 A 12 12 0 0 1 158 283"/>
+    <line x1="163" y1="272" x2="180" y2="272"/>
+  </g>
+  <text x="112" y="277" text-anchor="middle" class="t" font-size="13" font-weight="bold">&#8722;</text>
+  <text x="190" y="277" text-anchor="middle" class="t" font-size="13" font-weight="bold">+</text>
+  <text x="153" y="298" text-anchor="middle" class="tm" font-size="10">center pin = negative (ground)</text>
+
+  <!-- ======== BOARD ======== -->
+  <rect x="430" y="100" width="380" height="170" rx="10" class="board"/>
+  <text x="620" y="148" text-anchor="middle" class="t" font-size="18" font-weight="bold">GDAWLITOS BOARD</text>
+  <text x="620" y="170" text-anchor="middle" class="tm" font-size="12">(component side up)</text>
+  <text x="620" y="190" text-anchor="middle" class="tm" font-size="10">pad names may differ — match your board / build doc</text>
+  <circle cx="430" cy="130" r="8" class="pad"/>
+  <circle cx="430" cy="210" r="8" class="pad"/>
+  <circle cx="660" cy="270" r="8" class="pad"/>
+  <circle cx="770" cy="270" r="8" class="pad"/>
+  <text x="448" y="134" class="t" font-size="12" font-weight="bold">9V</text>
+  <text x="448" y="214" class="t" font-size="12" font-weight="bold">IN</text>
+  <text x="660" y="252" text-anchor="middle" class="t" font-size="12" font-weight="bold">GND</text>
+  <text x="770" y="252" text-anchor="middle" class="t" font-size="12" font-weight="bold">OUT</text>
+
+  <!-- ======== NOTE BOX ======== -->
+  <rect x="960" y="100" width="250" height="300" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="1085" y="128" text-anchor="middle" class="t" font-size="14" font-weight="bold">3PDT SANITY CHECKS</text>
+  <g class="tm" font-size="11">
+    <text x="975" y="154">&#8226; Poles = columns A &#183; B &#183; C</text>
+    <text x="975" y="172">&#8226; Middle row (2) = common</text>
+    <text x="975" y="190">&#8226; Each press toggles</text>
+    <text x="985" y="206">mid&#8596;top &#8646; mid&#8596;bottom</text>
+    <text x="975" y="228">&#8226; DMM before soldering: the</text>
+    <text x="985" y="244">middle lug beeps to the top OR</text>
+    <text x="985" y="260">bottom lug of the SAME column.</text>
+    <text x="985" y="276">If it beeps across a row instead,</text>
+    <text x="985" y="292">rotate your mapping 90&#176;.</text>
+    <text x="975" y="314">&#8226; No need to label the states:</text>
+    <text x="985" y="330">LED on = effect on, guaranteed</text>
+    <text x="985" y="346">by this hookup.</text>
+    <text x="975" y="368">&#8226; Solder pots/jacks last if they</text>
+    <text x="985" y="384">share enclosure real estate.</text>
+  </g>
+
+  <!-- ======== 3PDT SWITCH ======== -->
+  <rect x="505" y="525" width="230" height="230" rx="12" class="box"/>
+  <text x="550" y="516" text-anchor="middle" class="t" font-size="14" font-weight="bold">A</text>
+  <text x="620" y="516" text-anchor="middle" class="t" font-size="14" font-weight="bold">B</text>
+  <text x="690" y="516" text-anchor="middle" class="t" font-size="14" font-weight="bold">C</text>
+  <text x="620" y="549" text-anchor="middle" class="tm" font-size="10" font-weight="bold">3PDT &#183; SOLDER SIDE VIEW</text>
+
+  <!-- ======== INPUT JACK ======== -->
+  <rect x="70" y="560" width="170" height="180" rx="8" class="box"/>
+  <text x="150" y="588" text-anchor="middle" class="t" font-size="15" font-weight="bold">INPUT JACK</text>
+  <text x="150" y="606" text-anchor="middle" class="tm" font-size="11">&#188;&#8243; stereo (TRS)</text>
+  <circle cx="240" cy="630" r="8" class="lug"/>
+  <circle cx="240" cy="665" r="8" class="lug"/>
+  <circle cx="240" cy="700" r="8" class="lug"/>
+  <text x="228" y="634" text-anchor="end" class="tm" font-size="10" font-weight="bold">TIP</text>
+  <text x="228" y="669" text-anchor="end" class="tm" font-size="10" font-weight="bold">RING</text>
+  <text x="228" y="704" text-anchor="end" class="tm" font-size="10" font-weight="bold">SLEEVE</text>
+  <text x="150" y="728" text-anchor="middle" class="tm" font-size="9">ring = battery &#8722; &#183; see fig&#8201;3</text>
+
+  <!-- ======== OUTPUT JACK ======== -->
+  <rect x="1000" y="560" width="170" height="180" rx="8" class="box"/>
+  <text x="1085" y="588" text-anchor="middle" class="t" font-size="15" font-weight="bold">OUTPUT JACK</text>
+  <text x="1085" y="606" text-anchor="middle" class="tm" font-size="11">&#188;&#8243; mono (TS)</text>
+  <circle cx="1000" cy="630" r="8" class="lug"/>
+  <circle cx="1000" cy="665" r="8" class="lug"/>
+  <text x="1012" y="634" class="tm" font-size="10" font-weight="bold">TIP</text>
+  <text x="1012" y="669" class="tm" font-size="10" font-weight="bold">SLEEVE</text>
+
+  <!-- ======== WIRES (under lugs so lug circles sit on top) ======== -->
+  <!-- W10 red: DC barrel -> board 9V -->
+  <polyline class="wire red" points="258,160 355,160 355,130 422,130"/>
+  <!-- W9 red branch: junction -> CLR -> LED -->
+  <polyline class="wire red" points="355,160 355,330 860,330 860,348"/>
+  <circle cx="355" cy="160" r="4.5" fill="#dc2626"/>
+  <line x1="860" y1="392" x2="860" y2="414" class="wire red"/>
+  <!-- W11 black: DC pin -> ground bus -->
+  <polyline class="wire blk" points="258,190 315,190 315,870"/>
+  <!-- W3 blue: board IN -> A2 -->
+  <polyline class="wire blue" points="422,210 390,210 390,640 539,640"/>
+  <!-- W1 blue: input tip -> A3 -->
+  <polyline class="wire blue" points="249,630 360,630 360,810 550,810 550,721"/>
+  <!-- W2 blue jumper: A3 -> B1 -->
+  <polyline class="wire blue" points="550,699 550,680 583,680 583,570 609,570"/>
+  <!-- W4 black: A1 -> ground -->
+  <polyline class="wire blk" points="539,570 470,570 470,870"/>
+  <!-- W5 green: board OUT -> B3 -->
+  <polyline class="wire green" points="770,278 770,830 620,830 620,721"/>
+  <!-- W6 teal: B2 -> output tip -->
+  <polyline class="wire teal" points="628,648 652,672 652,790 948,790 948,630 991,630"/>
+  <!-- W7 black: C3 -> ground -->
+  <polyline class="wire blk" points="690,721 690,870"/>
+  <!-- W8 orange: LED cathode -> C2 -->
+  <polyline class="wire orange" points="860,442 860,640 701,640"/>
+  <!-- W12 black: board GND -> bus -->
+  <polyline class="wire blk" points="660,278 660,300 915,300 915,870"/>
+  <!-- W13 black: input sleeve -> bus -->
+  <polyline class="wire blk" points="249,700 263,700 263,870"/>
+  <!-- W14 black: output sleeve -> bus -->
+  <polyline class="wire blk" points="991,665 978,665 978,870"/>
+
+  <!-- ======== LED + CLR ======== -->
+  <rect x="852" y="348" width="16" height="44" rx="3" fill="#e0e7ff" stroke="#3730a3" stroke-width="2"/>
+  <text x="845" y="360" text-anchor="end" class="t" font-size="11" font-weight="bold">CLR 4k7</text>
+  <text x="845" y="374" text-anchor="end" class="tm" font-size="9">(skip if LED</text>
+  <text x="845" y="386" text-anchor="end" class="tm" font-size="9">is on-board)</text>
+  <circle cx="860" cy="428" r="14" fill="#f87171" stroke="#7f1d1d" stroke-width="2.5"/>
+  <line x1="849" y1="437" x2="871" y2="437" stroke="#7f1d1d" stroke-width="2.5"/>
+  <text x="842" y="414" text-anchor="end" class="t" font-size="13" font-weight="bold">+</text>
+  <text x="842" y="452" text-anchor="end" class="t" font-size="13" font-weight="bold">&#8722;</text>
+  <text x="836" y="436" text-anchor="end" class="t" font-size="12" font-weight="bold">LED</text>
+
+  <!-- ======== 3PDT LUGS (drawn after wires) ======== -->
+  <g>
+    <circle cx="550" cy="570" r="11" class="lug"/><text x="550" y="574" text-anchor="middle" class="lugid">A1</text>
+    <circle cx="620" cy="570" r="11" class="lug"/><text x="620" y="574" text-anchor="middle" class="lugid">B1</text>
+    <circle cx="690" cy="570" r="11" class="lug"/><text x="690" y="574" text-anchor="middle" class="lugid">C1</text>
+    <circle cx="550" cy="640" r="11" class="lug"/><text x="550" y="644" text-anchor="middle" class="lugid">A2</text>
+    <circle cx="620" cy="640" r="11" class="lug"/><text x="620" y="644" text-anchor="middle" class="lugid">B2</text>
+    <circle cx="690" cy="640" r="11" class="lug"/><text x="690" y="644" text-anchor="middle" class="lugid">C2</text>
+    <circle cx="550" cy="710" r="11" class="lug"/><text x="550" y="714" text-anchor="middle" class="lugid">A3</text>
+    <circle cx="620" cy="710" r="11" class="lug"/><text x="620" y="714" text-anchor="middle" class="lugid">B3</text>
+    <circle cx="690" cy="710" r="11" class="lug"/><text x="690" y="714" text-anchor="middle" class="lugid">C3</text>
+  </g>
+
+  <!-- ======== GROUND BUS ======== -->
+  <line x1="140" y1="870" x2="1080" y2="870" stroke="#1c1917" stroke-width="5" stroke-linecap="round"/>
+  <g stroke="#1c1917" stroke-width="3" stroke-linecap="round">
+    <line x1="1080" y1="870" x2="1080" y2="880"/>
+    <line x1="1066" y1="880" x2="1094" y2="880"/>
+    <line x1="1071" y1="886" x2="1089" y2="886"/>
+    <line x1="1076" y1="892" x2="1084" y2="892"/>
+  </g>
+  <text x="140" y="893" class="t" font-size="11" font-weight="bold">GROUND BUS</text>
+  <text x="240" y="893" class="tm" font-size="10">— star or daisy-chain; metal jacks also ground the enclosure via their bushings</text>
+
+  <!-- ======== WIRE LABELS ======== -->
+  <text x="455" y="798" text-anchor="middle" class="lbl" fill="#1d4ed8">INPUT TIP &#8594; A3</text>
+  <g transform="translate(378,470) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1d4ed8">A2 &#8594; BOARD IN</text></g>
+  <g transform="translate(486,752) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">A1 &#8594; GND</text></g>
+  <g transform="translate(756,585) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#15803d">BOARD OUT &#8594; B3</text></g>
+  <text x="845" y="778" text-anchor="middle" class="lbl" fill="#0d9488">B2 &#8594; OUTPUT TIP</text>
+  <text x="674" y="859" text-anchor="end" class="lbl" fill="#1c1917">C3 &#8594; GND</text>
+  <text x="815" y="622" text-anchor="middle" class="lbl" fill="#ea580c">LED &#8722; &#8594; C2</text>
+  <text x="300" y="146" text-anchor="middle" class="lbl" fill="#dc2626">+9&#8201;V</text>
+  <g transform="translate(328,300) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">DC &#8722; &#8594; GND</text></g>
+  <g transform="translate(929,560) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">BOARD GND</text></g>
+  <g transform="translate(276,760) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">SLEEVE &#8594; GND</text></g>
+  <g transform="translate(991,760) rotate(-90)"><text text-anchor="middle" class="lbl" fill="#1c1917">SLEEVE &#8594; GND</text></g>
+
+  <!-- ======== WIRE NUMBER BADGES ======== -->
+  <g>
+    <circle cx="420" cy="810" r="10" fill="#1d4ed8"/><text x="420" y="814" text-anchor="middle" class="badge-t">1</text>
+    <circle cx="583" cy="620" r="9"  fill="#1d4ed8"/><text x="583" y="624" text-anchor="middle" class="badge-t" font-size="10">2</text>
+    <circle cx="390" cy="430" r="10" fill="#1d4ed8"/><text x="390" y="434" text-anchor="middle" class="badge-t">3</text>
+    <circle cx="470" cy="700" r="10" fill="#1c1917"/><text x="470" y="704" text-anchor="middle" class="badge-t">4</text>
+    <circle cx="770" cy="740" r="10" fill="#15803d"/><text x="770" y="744" text-anchor="middle" class="badge-t">5</text>
+    <circle cx="870" cy="790" r="10" fill="#0d9488"/><text x="870" y="794" text-anchor="middle" class="badge-t">6</text>
+    <circle cx="690" cy="812" r="10" fill="#1c1917"/><text x="690" y="816" text-anchor="middle" class="badge-t">7</text>
+    <circle cx="820" cy="640" r="10" fill="#ea580c"/><text x="820" y="644" text-anchor="middle" class="badge-t">8</text>
+    <circle cx="820" cy="330" r="10" fill="#dc2626"/><text x="820" y="334" text-anchor="middle" class="badge-t">9</text>
+    <circle cx="306" cy="160" r="10" fill="#dc2626"/><text x="306" y="164" text-anchor="middle" class="badge-t">10</text>
+    <circle cx="315" cy="360" r="10" fill="#1c1917"/><text x="315" y="364" text-anchor="middle" class="badge-t">11</text>
+    <circle cx="915" cy="505" r="10" fill="#1c1917"/><text x="915" y="509" text-anchor="middle" class="badge-t">12</text>
+    <circle cx="263" cy="835" r="10" fill="#1c1917"/><text x="263" y="839" text-anchor="middle" class="badge-t">13</text>
+    <circle cx="978" cy="835" r="10" fill="#1c1917"/><text x="978" y="839" text-anchor="middle" class="badge-t">14</text>
+  </g>
+
+  <!-- ======== LEGEND ======== -->
+  <rect x="70" y="905" width="1100" height="85" rx="8" fill="#fafaf9" stroke="#e7e5e4" stroke-width="1.5"/>
+  <g font-size="12">
+    <line x1="90"  y1="932" x2="130" y2="932" class="wire blue"/>  <text x="138" y="936" class="t">input signal (blue)</text>
+    <line x1="300" y1="932" x2="340" y2="932" class="wire green"/> <text x="348" y="936" class="t">board out (green)</text>
+    <line x1="510" y1="932" x2="550" y2="932" class="wire teal"/>  <text x="558" y="936" class="t">to output jack (teal)</text>
+    <line x1="740" y1="932" x2="780" y2="932" class="wire red"/>   <text x="788" y="936" class="t">+9&#8201;V (red)</text>
+    <line x1="920" y1="932" x2="960" y2="932" class="wire orange"/><text x="968" y="936" class="t">LED (orange)</text>
+    <line x1="90"  y1="964" x2="130" y2="964" class="wire blk"/>   <text x="138" y="968" class="t">ground (black)</text>
+    <text x="300" y="968" class="tm">Suggested wire: 24&#8201;AWG stranded, pre-tinned &#8226; keep signal runs short &#8226; battery hookup is optional — see fig&#8201;3</text>
+  </g>
+</svg>

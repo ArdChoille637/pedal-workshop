@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 780" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .box   { fill:#f5f5f4; stroke:#57534e; stroke-width:2; }
+      .board { fill:#d1fae5; stroke:#065f46; stroke-width:2.5; }
+      .lug   { fill:#e7e5e4; stroke:#44403c; stroke-width:2; }
+      .pad   { fill:#fef3c7; stroke:#92400e; stroke-width:2; }
+      .wire  { fill:none; stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round; }
+      .blue  { stroke:#1d4ed8; } .teal  { stroke:#0d9488; } .green { stroke:#15803d; }
+      .red   { stroke:#dc2626; } .orange{ stroke:#ea580c; } .blk   { stroke:#1c1917; }
+      .t     { fill:#1c1917; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .tm    { fill:#57534e; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .lbl   { font-size:12px; font-weight:bold; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .lugid { font-size:10px; font-weight:bold; fill:#1c1917; }
+      .badge-t { font-size:12px; font-weight:bold; fill:#ffffff; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1240" height="780" fill="#ffffff"/>
+  <text x="620" y="36" text-anchor="middle" class="t" font-size="22" font-weight="bold">fig&#8201;3 &#8212; jacks, DC power, optional battery</text>
+  <text x="620" y="60" text-anchor="middle" class="tm" font-size="14">Lug layouts vary by brand &#8212; always confirm with a DMM before soldering.</text>
+
+  <!-- ======== BATTERY SNAP (optional) — drawn first so lead wires render on top ======== -->
+  <rect x="430" y="424" width="220" height="140" rx="8" class="box" stroke-dasharray="8 6"/>
+  <rect x="512" y="444" width="91" height="18" rx="3" fill="#d6d3d1" stroke="#44403c" stroke-width="2"/>
+  <rect x="480" y="462" width="155" height="66" rx="4" fill="#e7e5e4" stroke="#44403c" stroke-width="2"/>
+  <text x="530" y="484" text-anchor="middle" class="t" font-size="13" font-weight="bold">&#8722;</text>
+  <text x="585" y="484" text-anchor="middle" class="t" font-size="13" font-weight="bold">+</text>
+  <text x="557" y="510" text-anchor="middle" class="tm" font-size="11" font-weight="bold">9&#8201;V BATTERY</text>
+  <text x="540" y="552" text-anchor="middle" class="t" font-size="12" font-weight="bold">BATTERY SNAP (optional)</text>
+  <text x="522" y="414" text-anchor="end" class="tm" font-size="10" font-weight="bold">black (&#8722;) &#8594; input jack RING</text>
+  <text x="668" y="400" class="tm" font-size="10" font-weight="bold">red (+) &#8594; DC switch lug</text>
+
+  <!-- ======== INPUT JACK ======== -->
+  <rect x="70" y="100" width="215" height="220" rx="8" class="box"/>
+  <text x="177" y="126" text-anchor="middle" class="t" font-size="15" font-weight="bold">INPUT JACK</text>
+  <text x="177" y="144" text-anchor="middle" class="tm" font-size="11">&#188;&#8243; stereo (TRS) &#183; open-frame</text>
+  <!-- bushing + frame sketch -->
+  <rect x="82" y="218" width="26" height="34" fill="#d6d3d1" stroke="#44403c" stroke-width="2"/>
+  <g stroke="#78716c" stroke-width="1.5">
+    <line x1="88" y1="222" x2="88" y2="248"/>
+    <line x1="95" y1="222" x2="95" y2="248"/>
+    <line x1="102" y1="222" x2="102" y2="248"/>
+  </g>
+  <rect x="108" y="170" width="64" height="130" fill="#ffffff" stroke="#57534e" stroke-width="2"/>
+  <g stroke="#57534e" stroke-width="3" stroke-linecap="round">
+    <line x1="172" y1="185" x2="274" y2="185"/>
+    <line x1="172" y1="235" x2="274" y2="235"/>
+    <line x1="172" y1="285" x2="274" y2="285"/>
+  </g>
+
+  <!-- input wire stubs -->
+  <polyline class="wire blue" points="296,185 350,185"/>
+  <polyline class="wire blk" stroke-dasharray="7 5" points="296,235 530,235 530,444"/>
+  <polyline class="wire blk" points="296,285 350,285"/>
+
+  <!-- input lugs -->
+  <circle cx="285" cy="185" r="11" class="lug"/><text x="285" y="189" text-anchor="middle" class="lugid">T</text>
+  <circle cx="285" cy="235" r="11" class="lug"/><text x="285" y="239" text-anchor="middle" class="lugid">R</text>
+  <circle cx="285" cy="285" r="11" class="lug"/><text x="285" y="289" text-anchor="middle" class="lugid">S</text>
+
+  <!-- input stub labels -->
+  <text x="356" y="189" class="lbl" fill="#1d4ed8">TIP &#8594; 3PDT A3 (wire 1)</text>
+  <text x="356" y="226" class="lbl" fill="#1c1917">RING &#8594; battery &#8722;</text>
+  <text x="356" y="254" class="lbl" fill="#1c1917">(wire 16, optional)</text>
+  <text x="356" y="289" class="lbl" fill="#1c1917">SLEEVE &#8594; ground (wire 13)</text>
+
+  <!-- stereo-jack note -->
+  <rect x="70" y="350" width="280" height="105" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="85" y="374" class="t" font-size="12" font-weight="bold">STEREO JACK = POWER SWITCH</text>
+  <g class="tm" font-size="11">
+    <text x="85" y="396">A mono plug shorts RING to SLEEVE,</text>
+    <text x="85" y="413">completing the battery circuit.</text>
+    <text x="85" y="430">Unplug the input to save the battery.</text>
+  </g>
+
+  <!-- ======== OUTPUT JACK ======== -->
+  <rect x="560" y="100" width="190" height="200" rx="8" class="box"/>
+  <text x="655" y="126" text-anchor="middle" class="t" font-size="15" font-weight="bold">OUTPUT JACK</text>
+  <text x="655" y="144" text-anchor="middle" class="tm" font-size="11">&#188;&#8243; mono (TS)</text>
+  <rect x="572" y="208" width="24" height="34" fill="#d6d3d1" stroke="#44403c" stroke-width="2"/>
+  <g stroke="#78716c" stroke-width="1.5">
+    <line x1="578" y1="212" x2="578" y2="238"/>
+    <line x1="584" y1="212" x2="584" y2="238"/>
+    <line x1="590" y1="212" x2="590" y2="238"/>
+  </g>
+  <rect x="596" y="170" width="56" height="110" fill="#ffffff" stroke="#57534e" stroke-width="2"/>
+  <g stroke="#57534e" stroke-width="3" stroke-linecap="round">
+    <line x1="652" y1="195" x2="739" y2="195"/>
+    <line x1="652" y1="255" x2="739" y2="255"/>
+  </g>
+
+  <polyline class="wire teal" points="761,195 800,195"/>
+  <polyline class="wire blk" points="761,255 800,255"/>
+
+  <circle cx="750" cy="195" r="11" class="lug"/><text x="750" y="199" text-anchor="middle" class="lugid">T</text>
+  <circle cx="750" cy="255" r="11" class="lug"/><text x="750" y="259" text-anchor="middle" class="lugid">S</text>
+
+  <text x="806" y="192" class="lbl" fill="#0d9488">TIP &#8592; 3PDT B2</text>
+  <text x="806" y="208" class="lbl" fill="#0d9488">(wire 6)</text>
+  <text x="806" y="250" class="lbl" fill="#1c1917">SLEEVE &#8594; ground</text>
+  <text x="806" y="268" class="lbl" fill="#1c1917">(wire 14)</text>
+
+  <!-- ======== DC JACK ======== -->
+  <rect x="930" y="100" width="180" height="245" rx="8" class="box"/>
+  <text x="1020" y="126" text-anchor="middle" class="t" font-size="15" font-weight="bold">DC JACK</text>
+  <text x="1020" y="144" text-anchor="middle" class="tm" font-size="11">2.1&#8201;mm center-negative</text>
+  <text x="1096" y="179" text-anchor="end" class="tm" font-size="10" font-weight="bold">barrel = +9&#8201;V</text>
+  <text x="1096" y="224" text-anchor="end" class="tm" font-size="10" font-weight="bold">pin = &#8722; (gnd)</text>
+  <text x="1096" y="269" text-anchor="end" class="tm" font-size="10" font-weight="bold">switch = battery +</text>
+
+  <!-- DC stubs (switch stub continues to the battery snap) -->
+  <polyline class="wire red" points="1121,175 1168,175"/>
+  <polyline class="wire blk" points="1121,220 1168,220"/>
+  <polyline class="wire red" stroke-dasharray="7 5" points="1121,265 1190,265 1190,408 585,408 585,444"/>
+
+  <circle cx="1110" cy="175" r="11" class="lug"/><text x="1110" y="179" text-anchor="middle" class="lugid">+</text>
+  <circle cx="1110" cy="220" r="11" class="lug"/><text x="1110" y="224" text-anchor="middle" class="lugid">&#8722;</text>
+  <circle cx="1110" cy="265" r="11" class="lug"/><text x="1110" y="269" text-anchor="middle" class="lugid">SW</text>
+
+  <text x="1174" y="179" class="lbl" fill="#dc2626">wire 10</text>
+  <text x="1174" y="224" class="lbl" fill="#1c1917">wire 11</text>
+  <text x="1128" y="255" class="lbl" fill="#dc2626">wire 15</text>
+
+  <!-- polarity glyph (as fig 1) -->
+  <g stroke="#1c1917" stroke-width="2" fill="none">
+    <line x1="991" y1="300" x2="1009" y2="300"/>
+    <circle cx="1016" cy="300" r="3.5" fill="#1c1917" stroke="none"/>
+    <path d="M 1027 289 A 12 12 0 0 1 1027 311"/>
+    <line x1="1032" y1="300" x2="1049" y2="300"/>
+  </g>
+  <text x="981" y="305" text-anchor="middle" class="t" font-size="13" font-weight="bold">&#8722;</text>
+  <text x="1059" y="305" text-anchor="middle" class="t" font-size="13" font-weight="bold">+</text>
+  <text x="1020" y="330" text-anchor="middle" class="tm" font-size="10">center pin = negative (ground)</text>
+
+  <!-- ======== CAVEAT ======== -->
+  <rect x="680" y="530" width="490" height="168" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="925" y="554" text-anchor="middle" class="t" font-size="14" font-weight="bold">CAVEAT &#8212; VERIFY THE SWITCH LUG WITH A METER</text>
+  <g class="tm" font-size="11">
+    <text x="695" y="578">Jack brands differ: the switch lug usually breaks contact with the BARREL (+)</text>
+    <text x="695" y="595">lug when a plug inserts &#8212; verify by metering switch-to-barrel and</text>
+    <text x="695" y="612">switch-to-pin while inserting a plug. If yours breaks from the PIN lug instead:</text>
+    <text x="695" y="629">wire battery red directly to the +9&#8201;V node and battery black to the switch</text>
+    <text x="695" y="646">lug. Either way, inserting the adapter must disconnect the battery.</text>
+    <text x="695" y="663">If yours is the pin-breaking type, omit wire 16 &#8212; the input jack then no longer</text>
+    <text x="695" y="680">switches the battery, so it drains whenever no adapter is inserted.</text>
+  </g>
+
+  <!-- ======== WARNING ======== -->
+  <rect x="70" y="706" width="1100" height="54" rx="8" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="92" y="739" font-size="14" font-weight="bold" fill="#b91c1c" paint-order="stroke" stroke="#ffffff" stroke-width="4">POLARITY WARNING</text>
+  <text x="250" y="739" class="t" font-size="12">Reversed polarity can destroy the circuit. Before first power: DC barrel lug to board 9&#8201;V pad must beep; DC barrel lug to ground must NOT beep.</text>
+</svg>

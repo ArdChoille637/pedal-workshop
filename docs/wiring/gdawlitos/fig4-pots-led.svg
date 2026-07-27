@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 640" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .box   { fill:#f5f5f4; stroke:#57534e; stroke-width:2; }
+      .board { fill:#d1fae5; stroke:#065f46; stroke-width:2.5; }
+      .lug   { fill:#e7e5e4; stroke:#44403c; stroke-width:2; }
+      .pad   { fill:#fef3c7; stroke:#92400e; stroke-width:2; }
+      .wire  { fill:none; stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round; }
+      .blue  { stroke:#1d4ed8; } .teal  { stroke:#0d9488; } .green { stroke:#15803d; }
+      .red   { stroke:#dc2626; } .orange{ stroke:#ea580c; } .blk   { stroke:#1c1917; }
+      .t     { fill:#1c1917; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .tm    { fill:#57534e; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .lbl   { font-size:12px; font-weight:bold; paint-order:stroke; stroke:#ffffff; stroke-width:4; }
+      .lugid { font-size:10px; font-weight:bold; fill:#1c1917; }
+      .badge-t { font-size:12px; font-weight:bold; fill:#ffffff; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1240" height="640" fill="#ffffff"/>
+  <text x="620" y="36" text-anchor="middle" class="t" font-size="22" font-weight="bold">fig&#8201;4 &#8212; pot lug numbering &amp; LED polarity</text>
+  <text x="620" y="60" text-anchor="middle" class="tm" font-size="14">gdawlitos pot destinations come from the board silk / build doc &#8212; this sheet fixes orientation only</text>
+
+  <!-- ======== PANEL 1: POT FRONT VIEW ======== -->
+  <rect x="40" y="90" width="370" height="440" rx="8" class="box"/>
+  <text x="225" y="118" text-anchor="middle" class="t" font-size="15" font-weight="bold">POT &#8212; front view</text>
+  <text x="225" y="136" text-anchor="middle" class="tm" font-size="11">shaft toward you, lugs down</text>
+
+  <!-- pot body -->
+  <circle cx="225" cy="250" r="70" fill="#d6d3d1" stroke="#44403c" stroke-width="2.5"/>
+  <circle cx="225" cy="250" r="20" fill="#a8a29e" stroke="#44403c" stroke-width="2"/>
+  <circle cx="225" cy="250" r="7" fill="#78716c" stroke="none"/>
+  <!-- legs -->
+  <g stroke="#44403c" stroke-width="3" stroke-linecap="round">
+    <line x1="165" y1="286" x2="165" y2="349"/>
+    <line x1="225" y1="320" x2="225" y2="349"/>
+    <line x1="285" y1="286" x2="285" y2="349"/>
+  </g>
+  <!-- lugs -->
+  <circle cx="165" cy="360" r="11" class="lug"/><text x="165" y="364" text-anchor="middle" class="lugid">1</text>
+  <circle cx="225" cy="360" r="11" class="lug"/><text x="225" y="364" text-anchor="middle" class="lugid">2</text>
+  <circle cx="285" cy="360" r="11" class="lug"/><text x="285" y="364" text-anchor="middle" class="lugid">3</text>
+  <text x="225" y="392" text-anchor="middle" class="tm" font-size="11" font-weight="bold">numbered 1 &#8594; 2 &#8594; 3, LEFT to RIGHT</text>
+
+  <text x="225" y="420" text-anchor="middle" class="t" font-size="13" font-weight="bold">lug 2 = wiper, always</text>
+  <text x="225" y="446" text-anchor="middle" class="tm" font-size="11">typical volume pot: 1 = ground, 2 = output,</text>
+  <text x="225" y="463" text-anchor="middle" class="tm" font-size="11">3 = input (audio taper)</text>
+
+  <!-- ======== PANEL 2: POT SOLDER-SIDE VIEW ======== -->
+  <rect x="435" y="90" width="370" height="440" rx="8" class="box"/>
+  <text x="620" y="118" text-anchor="middle" class="t" font-size="15" font-weight="bold">POT &#8212; solder-side view</text>
+  <text x="620" y="136" text-anchor="middle" class="tm" font-size="11">what you see inside the enclosure</text>
+
+  <!-- pot body (back) -->
+  <text x="620" y="161" text-anchor="middle" class="tm" font-size="10">dashed circle = shaft on the far side</text>
+  <circle cx="620" cy="250" r="70" fill="#d6d3d1" stroke="#44403c" stroke-width="2.5"/>
+  <circle cx="620" cy="250" r="20" fill="none" stroke="#44403c" stroke-width="2" stroke-dasharray="4 3"/>
+  <!-- legs -->
+  <g stroke="#44403c" stroke-width="3" stroke-linecap="round">
+    <line x1="560" y1="286" x2="560" y2="349"/>
+    <line x1="620" y1="320" x2="620" y2="349"/>
+    <line x1="680" y1="286" x2="680" y2="349"/>
+  </g>
+  <!-- lugs -->
+  <circle cx="560" cy="360" r="11" class="lug"/><text x="560" y="364" text-anchor="middle" class="lugid">3</text>
+  <circle cx="620" cy="360" r="11" class="lug"/><text x="620" y="364" text-anchor="middle" class="lugid">2</text>
+  <circle cx="680" cy="360" r="11" class="lug"/><text x="680" y="364" text-anchor="middle" class="lugid">1</text>
+  <text x="620" y="392" text-anchor="middle" class="tm" font-size="11" font-weight="bold">reads 3 &#183; 2 &#183; 1 left to right &#8212; mirrored</text>
+
+  <!-- callout -->
+  <rect x="450" y="406" width="340" height="76" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="620" y="436" text-anchor="middle" class="t" font-size="14" font-weight="bold">the order FLIPS when wiring from</text>
+  <text x="620" y="460" text-anchor="middle" class="t" font-size="14" font-weight="bold">behind &#8212; double-check before soldering</text>
+
+  <!-- ======== PANEL 3: LED ======== -->
+  <rect x="830" y="90" width="370" height="440" rx="8" class="box"/>
+  <text x="1015" y="118" text-anchor="middle" class="t" font-size="15" font-weight="bold">LED</text>
+  <text x="1015" y="136" text-anchor="middle" class="tm" font-size="11">polarity check before you solder</text>
+
+  <!-- wire stubs (under legs) -->
+  <polyline class="wire orange" points="995,340 880,340"/>
+  <polyline class="wire red" points="1035,385 1165,385"/>
+
+  <!-- LED body: circle with flat chord on the left -->
+  <path d="M 971 202 A 55 55 0 1 1 971 268 Z" fill="#f87171" stroke="#7f1d1d" stroke-width="2.5"/>
+  <line x1="971" y1="202" x2="971" y2="268" stroke="#7f1d1d" stroke-width="4"/>
+  <!-- legs: short = cathode (flat side), long = anode -->
+  <g stroke="#57534e" stroke-width="3.5" stroke-linecap="round">
+    <line x1="995" y1="287" x2="995" y2="340"/>
+    <line x1="1035" y1="286" x2="1035" y2="385"/>
+  </g>
+
+  <text x="952" y="239" text-anchor="end" class="tm" font-size="11" font-weight="bold">flat side</text>
+  <line x1="956" y1="235" x2="970" y2="235" stroke="#57534e" stroke-width="2"/>
+
+  <text x="981" y="312" text-anchor="end" class="lbl" fill="#1c1917">short leg = cathode (&#8722;)</text>
+  <text x="1049" y="312" class="lbl" fill="#1c1917">long leg = anode (+)</text>
+
+  <text x="938" y="358" text-anchor="middle" class="lbl" fill="#ea580c">&#8594; 3PDT C2 (wire 8)</text>
+  <text x="1100" y="403" text-anchor="middle" class="lbl" fill="#dc2626">&#8592; CLR 4k7 &#8592; +9&#8201;V (wire 9)</text>
+
+  <text x="1015" y="446" text-anchor="middle" class="t" font-size="12" font-weight="bold">flat side / short leg = cathode.</text>
+  <text x="1015" y="466" text-anchor="middle" class="tm" font-size="11">if the board has on-board LED pads, use those</text>
+  <text x="1015" y="482" text-anchor="middle" class="tm" font-size="11">and skip wires 8&#8211;9.</text>
+
+  <!-- ======== BOTTOM NOTE ======== -->
+  <rect x="40" y="555" width="1160" height="55" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="620" y="588" text-anchor="middle" class="t" font-size="13" font-weight="bold">board-mounted pots need no wiring &#8212; but orientation still applies when reading the silk from the back</text>
+</svg>
