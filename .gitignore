@@ -86,3 +86,6 @@ android/SPEC.md
 
 # ── Local-only research inputs (list third-party schematic titles) ────────────
 docs/research/*.csv
+
+# Census batch files (third-party schematic titles)
+docs/research/census/

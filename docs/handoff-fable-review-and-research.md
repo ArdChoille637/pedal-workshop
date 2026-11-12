@@ -3,8 +3,8 @@
 
 | | |
 |---|---|
-| **Status** | v1 — drafted, NOT yet relayed to Fable |
-| **Version** | 1 |
+| **Status** | v2 — PASS 1 answered (run by Fable inside Code, 2026-11-11). Reply: [`fable-reply-v1.md`](fable-reply-v1.md). Next: relay research prompts D0 → B14 → census B01–B04 |
+| **Version** | 2 |
 | **Updated** | 2026-11-11 |
 | **Companion** | `research/schematic-manifest.csv` (580 slugs; **local-only, gitignored** — it lists third-party schematic titles. Attach it to Fable and to every schematic/BOM research chat) |
 
@@ -110,6 +110,9 @@ image into `extractions/<slug>.json` (parts + nets), then `netlist_to_kicad.py`
 - 565 schematics · **24,286 components** · **12,803 connections**
   (connections ≈ 22/schematic vs ≈ 43 components/schematic — hypothesis: the
   netlist is *incomplete*; ATTACK THIS FIRST).
+  `✔ v2 PASS-1 VERDICT: conclusion CONFIRMED, evidence WRONG — the DB chain-encodes
+  nets (N pins → N−1 rows), so the count proves nothing. Real measure: 61% of parts
+  are in no net, 89 schematics have zero nets, only 103 reach ≥95% pin coverage.`
 - Types: resistor 10,414 · capacitor 6,086 · potentiometer 1,335 ·
   transistor 1,238 · diode 1,204 · opamp 938 · jack 893 · ic 579 · switch 492 ·
   jfet 392.
@@ -122,6 +125,10 @@ image into `extractions/<slug>.json` (parts + nets), then `netlist_to_kicad.py`
   voltage rating / package, no confidence, no source/provenance, no
   human-verified flag.** The richer `issues[]` the extractors logged lives only
   in the JSON files.
+  `✔ v2 PASS-1 VERDICT: PARTLY WRONG — issues[] are joined into
+  schematics.design_notes; what the DB drops is confidence, pins, net names, signal_path.`
+- `✔ v2 PASS-1 VERDICT (new): 580 manifest rows but only 564 unique slugs — 16 slugs
+  collide; extraction files are keyed by slug (reply finding 5a).`
 - Corpus: **580 manifest entries (574 awaiting review, 6 pending extraction)** (distortion 97,
   filter 81, fuzz 80, delay 54, utility 47, eq 42, phaser 35, compressor 29,
   pitch 24, modification 23, chorus 21, flanger 16, …). Source library was
@@ -333,7 +340,12 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 ---
 
 ## Open items before / while relaying
-- [ ] Attach `research/schematic-manifest.csv` to Fable.
+- [ ] **Next relay:** paste prompt **D0** (reply §5.3) into a research chat with
+      `research/schematic-manifest.csv`; then **B14**; then **D1** with
+      `research/census/B01.csv` … `B04.csv` (one file per chat).
+- [ ] Code (no chat): structural lint + numeric value canonicaliser + 12-schematic pilot.
+- [ ] Resolve the 16 duplicate slugs in the manifest.
+- [x] ~~Attach `research/schematic-manifest.csv` to Fable.~~ (v2: Fable read it in Code)
 - [ ] Decide whether to also attach 3–5 representative `extractions/<slug>.json`
       files (Fable can then judge `issues[]` quality) — Code can pick them.
 - [ ] Confirm **State of Formation** (affects Task A.5 and the Ohio analysis).
@@ -345,6 +357,15 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 | Ver | Date | Change |
 |---|---|---|
 | 1 | 2026-11-11 | Initial handoff drafted by Code: tasks A–D, ground rules, measured DB facts, manifest CSV. |
+| 2 | 2026-11-11 | Pass 1 answered by Fable (in Code, with file access). Three verdicts stamped inline; reply filed as `fable-reply-v1.md`; 29 census batch files generated in gitignored `research/census/`; next-relay items added. The prompt body is otherwise unchanged — the eight edits Fable proposes for it are in reply §7 and not yet applied. |
 
 ## Reply log (file Fable's / research-chat replies here — raw, then verdict)
-*(empty — nothing relayed yet)*
+### Pass 1 — Fable 5.2, run inside Code, 2026-11-11
+**Raw:** [`fable-reply-v1.md`](fable-reply-v1.md) (full document, all seven output-contract sections).
+
+**Verdict (Code):** ACCEPTED as the working plan. Headline results:
+- Netlists are not fit for KiCad output (61% of parts unconnected); parts lists are unmeasured — run the 12-schematic pilot before more extraction work.
+- `normalizeValue` is string clean-up, not numeric — `100n` ≠ `0.1u` in the Build Analyzer today.
+- Clients/Jobs: keep Workshop-local now; ERPNext becomes system of record once live.
+- 14 back-office prompts (B1–B14), triage prompt D0 and census prompt D1 are paste-ready in the reply.
+- All legal statements in the reply are UNVERIFIED (memory only) until prompt B7 is run.
