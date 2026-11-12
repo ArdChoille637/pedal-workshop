@@ -347,8 +347,12 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 - [ ] After D0 returns: re-cut batches with
       `python3 pipeline/tools/make_census_batches.py --manifest docs/research/schematic-manifest.csv --out docs/research/census --triage <D0.csv> --extractions <extractions dir>`.
 - [x] ~~Structural lint~~ → `pipeline/lint_extractions.py` (v3; 42 tests pass).
+- [x] ~~Pick the 12 pilot schematics~~ → see *Pilot picked* below (local folder `docs/research/pilot/`).
+- [ ] **Michael (or Code with you): read the 12 images into the blank `<slug>.truth.csv` sheets
+      WITHOUT looking at the extraction** — ref,type,value per part (~424 parts, est. 4–6 h; one at a time is fine).
+- [ ] Code: scorer (`pipeline/tools/score_pilot.py`) that diffs truth vs extraction → the first real accuracy number.
 - [ ] Code (no chat): numeric value canonicaliser in the **app** (`parse_value` in the lint is the
-      Python reference + test vectors) + 12-schematic pilot.
+      Python reference + test vectors).
 - [ ] Resolve the 16 duplicate slugs in the manifest.
 - [x] ~~Attach `research/schematic-manifest.csv` to Fable.~~ (v2: Fable read it in Code)
 - [ ] Decide whether to also attach 3–5 representative `extractions/<slug>.json`
@@ -363,7 +367,7 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 |---|---|---|
 | 1 | 2026-11-11 | Initial handoff drafted by Code: tasks A–D, ground rules, measured DB facts, manifest CSV. |
 | 2 | 2026-11-11 | Pass 1 answered by Fable (in Code, with file access). Three verdicts stamped inline; reply filed as `fable-reply-v1.md`; 29 census batch files generated in gitignored `research/census/`; next-relay items added. The prompt body is otherwise unchanged — the eight edits Fable proposes for it are in reply §7 and not yet applied. |
-| 3 | 2026-11-11 | Code reviewed pass 1: re-measured the headline numbers (match), found four gaps (see Reply log → *Code's review of pass 1*), built `pipeline/lint_extractions.py` + tests, `make_census_batches.py`, rewrote the census prompt as D1 v2, re-cut batches 29→46. The eight prompt-body edits in reply §7 are still not applied. |
+| 3 | 2026-11-11 | Pilot picked + no-schematic finding added (see end of Reply log). Code reviewed pass 1: re-measured the headline numbers (match), found four gaps (see Reply log → *Code's review of pass 1*), built `pipeline/lint_extractions.py` + tests, `make_census_batches.py`, rewrote the census prompt as D1 v2, re-cut batches 29→46. The eight prompt-body edits in reply §7 are still not applied. |
 
 ## Reply log (file Fable's / research-chat replies here — raw, then verdict)
 ### Pass 1 — Fable 5.2, run inside Code, 2026-11-11
@@ -396,10 +400,36 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 | **Usable with badge** | lower 95% bound ≥ 90% on recall, precision and passive value accuracy, **and** ≥ 95% on semiconductor identity | Parts list may feed BOM/inventory; every line shows `extracted` in the UI ("Ready — n lines unverified") |
 | **Trusted line** | line individually `human-checked` or `source-confirmed` | The only way to remove the badge. A corpus-wide number cannot vouch for one schematic |
 | Corpus-wide "unbadged" (Fable's original 97/98/97/99 bounds) | kept as an aspirational target | Needs ≈ 99% point estimates at n = 60 — expect it only after a second-engine re-extraction |
-| Nets / KiCad | lint `netlist-candidate` **and** golden net F1 ≥ 0.95 | unchanged; today 81 schematics are even candidates |
+| Nets / KiCad | lint `netlist-candidate` **and** golden net F1 ≥ 0.95 | unchanged; today 80 schematics are even candidates |
 
 **Lint result on the live extractions** (`python3 pipeline/lint_extractions.py --dir <extractions>`):
-565 schematics · 24,286 parts · 89 with no nets · 14,850 parts in no net (61%) · pooled pin coverage 26% (median 30%; 309 under 50%; 94 at ≥ 95%) · 465 dangling net refs · 27 duplicate refs · 231 pins in more than one net · tiers: **81 netlist-candidate / 481 parts-list-only / 3 no-parts** · R/C values: 13,630 ok · 759 assumed-unit (bare resistor number) · 1,603 ambiguous (e.g. `.022`, `1/50`) · 508 unknown (`unknown`, `?`, `not printed`) · 372 off-E24.
+565 schematics · 24,286 parts · 89 with no nets · 14,850 parts in no net (61%) · pooled pin coverage 26% (median 30%; 309 under 50%; 94 at ≥ 95%) · 465 dangling net refs · 27 duplicate refs · 231 pins in more than one net · tiers: **80 netlist-candidate / 474 parts-list-only / 8 suspect-no-schematic / 3 no-parts** · R/C values: 13,630 ok · 759 assumed-unit (bare resistor number) · 1,603 ambiguous (e.g. `.022`, `1/50`) · 508 unknown (`unknown`, `?`, `not printed`) · 372 off-E24.
 *(The first lint run counted 5,288 unparseable R/C values; that was the parser bug above, not the data.)*
 
 **Still open from the reply:** its §7 list of eight edits to this handoff's prompt body (reply §7 items 1–8) is not applied; the pilot (12 schematics) has not been run; State of Formation is still unrecorded.
+
+### New finding while picking the pilot — extractions that describe a circuit the image does not contain (Code, 2026-11-11)
+`fet-compressors` passed every structural check (it was a `netlist-candidate`) yet its own `issues[]` says the image "contains only text and a table… does not contain a circuit schematic" and that the parts are "hypothetical placeholders". The model **invented a self-consistent circuit**. Structure cannot catch that — only its own admissions or ground truth can.
+- Added to the lint: `no_schematic` flag + tier `suspect-no-schematic` (narrow phrase set, 8 files: `apr9031-simple-voice-recorder`, `dod-fx64`, `echo-matic-cassette-delay-page-1`, `mn3011-reverb`, `40-second-recorder`, `guitar-frequency-doubleur`, `ti-speak-and-read-1`, `fet-compressors`; plus `digitech-xp100` with 0 parts).
+- **These 8 are only the self-confessed ones.** How many *unconfessed* inventions exist is unknown; the golden set (precision of extracted parts vs image) is the first thing that can measure it. Treat "extractor high confidence" and "passes lint" as necessary, never sufficient.
+- Implication for Task D: the census must record when the source schematic **differs from the image we hold** (wrong circuit under the title), not just value mismatches.
+
+### Pilot picked — 2026-11-11 (seed 20261111, `pipeline/tools/pick_pilot.py`)
+Pool of 356 (has extraction · unique slug · file on disk · 10–80 parts · not utility/modification · not no-parts/suspect-no-schematic · not an obvious non-pedal). One draw per slot, constrained to mirror the golden-set mix scaled to 12.
+
+| Type | Slug | File | Parts | Extractor conf. | Lint tier |
+|---|---|---|---|---|---|
+| fuzz | jimi-hendrix-fuzz-face | pdf | 22 | high | netlist-candidate |
+| fuzz | roger-mayer-classic-fuzz | gif | 15 | high | netlist-candidate |
+| distortion | ibanez-ts-10 | gif | 75 | medium | parts-list-only |
+| distortion | npn-boost | gif | 11 | high | netlist-candidate |
+| filter | fatwah-lf-wah | gif | 27 | medium | parts-list-only |
+| delay | ross-stereo-delay-2 | png | 24 | medium | parts-list-only |
+| eq | anderton-frequency-booster | gif | 12 | high | parts-list-only |
+| phaser | mu-tron-phaser-2 | jpg | 72 | medium | parts-list-only |
+| compressor | dod-825 | jpg | 23 | medium | parts-list-only |
+| pitch | univibe | pdf | 22 | low | parts-list-only |
+| chorus | dod-fx60 | gif | 52 | low | parts-list-only |
+| flanger | electro-harmonix-electric-mistress-3 | jpg | 69 | medium | parts-list-only |
+
+Mix: 6 gif · 3 jpg · 2 pdf · 1 png · confidence 4 high / 6 medium / 2 low · 3 netlist-candidates (nets scorable) · 424 parts. All single-page images. Deviation from the protocol: one draw per type rather than proportional, because proportional allocation at n = 12 leaves most types empty; the full 60 follows the proportional rule and includes these 12. Files (images + blank `<slug>.truth.csv`) are in the gitignored `docs/research/pilot/`.

@@ -89,3 +89,6 @@ docs/research/*.csv
 
 # Census batch files (third-party schematic titles)
 docs/research/census/
+
+# Pilot images + truth sheets (copyrighted source images, hand-entered truth)
+docs/research/pilot/

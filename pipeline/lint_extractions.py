@@ -18,11 +18,14 @@ What it checks, per schematic:
   multi_net_pins   (ref, pin) that appear in more than one net (shorts / mis-traces)
   off_e24          resistor/capacitor values that parse but are not E24 (review queue —
                    legitimate odd values and misreads both land here)
+  no_schematic     issues[] entries admitting the image has no schematic / the content is
+                   hypothetical (structurally perfect, but invented — structure can't catch it)
   value_issues     R/C values that cannot be parsed to a number; split into
                    vals_ok / vals_assumed (bare resistor number = ohms) /
                    vals_ambiguous (e.g. ".022", "1/50": never guessed) / vals_unknown
 
 Tier (what the data may be used for):
+  suspect-no-schematic  issues[] say the image has no schematic or the circuit is hypothetical
   netlist-candidate  pin_coverage >= 0.95, no dangling refs, no duplicate refs
   parts-list-only    has parts but fails the above — usable only as an unverified parts list
   no-parts           zero parts (not an extractable analog circuit)
@@ -49,6 +52,19 @@ E24 = [1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0, 2.2, 2.4, 2.7, 3.0, 3.3, 3.6,
        3.9, 4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1]
 
 CANDIDATE_COVERAGE = 0.95
+
+# The extractor logs its own doubts in issues[]. Structural checks cannot see a circuit the
+# model INVENTED (it will be perfectly self-consistent), so read the admissions: phrases
+# saying the image holds no schematic, or that the parts/nets are placeholders/hypothetical.
+# Deliberately narrow — "based on standard practice" style notes are benign pin assumptions.
+NO_SCHEMATIC = re.compile(
+    r"(does not|doesn't|did not|do not|not) (actually )?contain (a |any |the )?(circuit |actual )?(schematic|diagram)"
+    r"|contains only (the |a |an )?(descriptive|documentation|text|textual|revision|title|table|pcb|parts list)"
+    r"|no (circuit )?schematic( diagram)?( was| is)? (provided|present|included|visible|shown)"
+    r"|cannot be fulfilled|not (actually )?extracted from"
+    r"|(hypothetical|synthetic) (representation|parts|netlist|circuit)|purely (hypothetical|synthetic)"
+    r"|(parts list|netlist|part list) (and (netlist|parts list) )?(above )?(is|are) (a )?placeholders?",
+    re.IGNORECASE)
 
 # ── value parsing ────────────────────────────────────────────────────────────
 # Deliberately conservative: anything not clearly one number+unit is "ambiguous"
@@ -169,7 +185,9 @@ def lint(doc: dict) -> dict:
         elif not is_e24(num):
             off_e24 += 1
 
+    no_schem = sum(1 for i in (doc.get("issues") or []) if NO_SCHEMATIC.search(str(i)))
     row = {
+        "no_schematic": no_schem,
         "parts": len(parts),
         "nets": len(nets),
         "pins_declared": decl_total,
@@ -190,6 +208,8 @@ def lint(doc: dict) -> dict:
     }
     if not parts:
         row["tier"] = "no-parts"
+    elif no_schem:
+        row["tier"] = "suspect-no-schematic"
     elif coverage >= CANDIDATE_COVERAGE and not dangling and not row["dup_refs"]:
         row["tier"] = "netlist-candidate"
     else:
@@ -228,6 +248,7 @@ def summarize(rows: list[dict]) -> str:
         f"pin coverage (median) {statistics.median(cov):.0%}" if cov else "",
         f"  under 50%           {sum(1 for c in cov if c < 0.5)}",
         f"  at least 95%        {sum(1 for c in cov if c >= CANDIDATE_COVERAGE)}",
+        f"no-schematic admitted {sum(1 for r in ok if r['no_schematic'])} files",
         f"dangling net refs     {sum(r['dangling_refs'] for r in ok)}",
         f"duplicate refs        {sum(r['dup_refs'] for r in ok)}",
         f"single-pin nets       {sum(r['single_pin_nets'] for r in ok)}",
@@ -255,7 +276,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.csv:
         cols = ["slug", "tier", "parts", "nets", "pins_declared", "pins_placed", "pin_coverage",
                 "zero_nets", "unconnected", "dangling_refs", "dup_refs", "single_pin_nets",
-                "multi_net_pins", "off_e24", "value_issues", "vals_ok", "vals_assumed",
+                "multi_net_pins", "no_schematic", "off_e24", "value_issues", "vals_ok", "vals_assumed",
                 "vals_ambiguous", "vals_unknown", "confidence", "issues"]
         with open(args.csv, "w", newline="") as fh:
             w = csv.DictWriter(fh, fieldnames=cols, extrasaction="ignore")

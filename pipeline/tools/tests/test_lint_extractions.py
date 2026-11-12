@@ -104,3 +104,22 @@ def test_pin_listed_twice_in_one_net_counts_once():
 def test_no_nets_and_no_parts():
     assert lint(_doc([{"ref": "R1", "type": "resistor", "value": "1k", "pins": 2}], []))["zero_nets"] == 1
     assert lint(_doc([], []))["tier"] == "no-parts"
+
+
+@pytest.mark.parametrize("issue,flag", [
+    ("The uploaded image file 'x.png' contains only text and a table of specifications. It does not contain a circuit schematic.", True),
+    ("The provided image contains only documentation text and a parts list, not the circuit schematic.", True),
+    ("The part list and netlist above are placeholders; the request cannot be fulfilled without the schematic image.", True),
+    ("No schematic diagram provided in the image, only a descriptive text and a PCB layout.", True),
+    ("The parts list and netlist are a synthetic representation of a standard vintage-style circuit.", True),
+    ("Several diodes are unmarked or ambiguously labeled; assigned '1N' as placeholder.", False),
+    ("Pin numbering assumed based on standard TO-92 layout.", False),
+    ("Ground symbols indicate connection to a common chassis ground.", False),
+])
+def test_no_schematic_admissions(issue, flag):
+    d = _doc([{"ref": "R1", "type": "resistor", "value": "10k", "pins": 2}],
+             [{"name": "A", "pins": ["R1.1", "R1.2"]}])
+    d["issues"] = [issue]
+    r = lint(d)
+    assert bool(r["no_schematic"]) is flag
+    assert (r["tier"] == "suspect-no-schematic") is flag
