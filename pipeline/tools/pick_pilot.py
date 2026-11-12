@@ -45,6 +45,35 @@ EXCLUDE_TYPES = {"utility", "modification"}
 NOT_PEDAL_HINT = re.compile(r"recorder|speak-and|voice")
 
 
+HOWTO = """PILOT TRUTH SHEETS — how to fill them in
+=========================================
+Goal: a trustworthy answer key made from the IMAGE, so the extractor can be graded.
+Do NOT open the extraction JSON or the KiCad project while you do this.
+
+For each <slug>.<png|gif|jpg|pdf> open <slug>.truth.csv (a spreadsheet app or any text
+editor) and add one row per part, columns:  ref,type,value
+
+  ref    as printed on the drawing (R1, C3, Q2, RV1). If the drawing prints NO reference,
+         leave it blank — the scorer still counts the part by type + value.
+  type   resistor | capacitor | potentiometer | transistor | diode | led | opamp | ic
+  value  as printed, any style is fine (4k7, 4.7k, 100n, .1uf, 47p, 100kA, 2N3904, TL072).
+         Pots: include the taper if shown (A / B / LOG / LIN). Unreadable: write ? .
+  skip   jacks, switches, battery, wiring, enclosure, LED resistors you cannot see — only the
+         types above are scored.
+
+Tips: one schematic at a time is fine (blank sheets are skipped). Order does not matter.
+Do the three that have a <slug>.nets.csv last, if you have the energy: add one row per net,
+columns  net,pins   with pins as space-separated REF.PIN, e.g.
+  input,C1.1 R1.1 Q1.B        (pin = the leg: B/C/E for a transistor, 1/2 for a resistor...)
+These three are the only ones whose connectivity is complete enough to be scored; skip the
+nets files entirely if you only want the parts score.
+
+When you are done (or partway — it scores whatever is filled in), tell Claude Code
+"score the pilot". It runs:
+  python3 pipeline/tools/score_pilot.py --pilot docs/research/pilot --extractions <extractions dir>
+"""
+
+
 def build_pool(manifest_json: Path, extractions: Path) -> list[dict]:
     entries = json.loads(manifest_json.read_text())["entries"]
     slug_count = Counter(e["slug"] for e in entries.values())
@@ -121,6 +150,13 @@ def main() -> int:
         sheet = out / f"{p['slug']}.truth.csv"
         if not sheet.exists():                        # never overwrite hand-entered truth
             sheet.write_text("ref,type,value\n")
+        if p["tier"] == "netlist-candidate":          # nets are only scorable where lint passes
+            nets = out / f"{p['slug']}.nets.csv"
+            if not nets.exists():
+                nets.write_text("net,pins\n")
+    howto = out / "HOW-TO.txt"
+    if not howto.exists():
+        howto.write_text(HOWTO)
     print(f"pool {len(pool)} · seed {args.seed} · accepted draw #{n}")
     for p in chosen:
         print(f"  {p['effect_type']:<11} {p['file_type']:<4} {p['parts']:>3} parts  "

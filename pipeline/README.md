@@ -70,7 +70,7 @@ Re-extraction during refinement targets one slug at a time via `chunk_driver.py`
 | `package_dataset.py` | export a redistributable dataset (excludes copyrighted source) |
 | `lint_extractions.py` | structural lint of `extractions/*.json` (pin coverage, dangling/duplicate refs, unparseable or off-E24 values) → `netlist-candidate` / `parts-list-only` tiers; tests in `tools/tests/` |
 | `schema.sql` | SQLite schema |
-| `tools/` | corpus + OCR helpers that feed the app's seeds (`generate_native_index.py`, `analyze_schematics.py`, `download_schematics.py`, `make_census_batches.py`) |
+| `tools/` | corpus + OCR helpers that feed the app's seeds (`generate_native_index.py`, `analyze_schematics.py`, `download_schematics.py`, `make_census_batches.py`, `pick_pilot.py`, `score_pilot.py`) |
 
 ## Local-only data (not in git)
 

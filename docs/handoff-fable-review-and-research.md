@@ -350,7 +350,7 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 - [x] ~~Pick the 12 pilot schematics~~ → see *Pilot picked* below (local folder `docs/research/pilot/`).
 - [ ] **Michael (or Code with you): read the 12 images into the blank `<slug>.truth.csv` sheets
       WITHOUT looking at the extraction** — ref,type,value per part (~424 parts, est. 4–6 h; one at a time is fine).
-- [ ] Code: scorer (`pipeline/tools/score_pilot.py`) that diffs truth vs extraction → the first real accuracy number.
+- [x] ~~Scorer~~ → `pipeline/tools/score_pilot.py` (v3; 28 tests): BOM recall/precision (multiset of class+canonical value, so invented ref designators don't hurt), R/C/P value accuracy strict + lenient, semiconductor identity with aliases (`324` ~ `LM324`), pot taper, net F1 on lint candidates, 95% bootstrap over schematics, calibration by extractor confidence, and the stop / badge verdict from the revised tiers. Dry-run verified on scratch truth sheets. Fill the sheets (see `docs/research/pilot/HOW-TO.txt`), then say **"score the pilot"**.
 - [ ] Code (no chat): numeric value canonicaliser in the **app** (`parse_value` in the lint is the
       Python reference + test vectors).
 - [ ] Resolve the 16 duplicate slugs in the manifest.
@@ -367,7 +367,7 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 |---|---|---|
 | 1 | 2026-11-11 | Initial handoff drafted by Code: tasks A–D, ground rules, measured DB facts, manifest CSV. |
 | 2 | 2026-11-11 | Pass 1 answered by Fable (in Code, with file access). Three verdicts stamped inline; reply filed as `fable-reply-v1.md`; 29 census batch files generated in gitignored `research/census/`; next-relay items added. The prompt body is otherwise unchanged — the eight edits Fable proposes for it are in reply §7 and not yet applied. |
-| 3 | 2026-11-11 | Pilot picked + no-schematic finding added (see end of Reply log). Code reviewed pass 1: re-measured the headline numbers (match), found four gaps (see Reply log → *Code's review of pass 1*), built `pipeline/lint_extractions.py` + tests, `make_census_batches.py`, rewrote the census prompt as D1 v2, re-cut batches 29→46. The eight prompt-body edits in reply §7 are still not applied. |
+| 3 | 2026-11-11 | Scorer built (`score_pilot.py`). Pilot picked + no-schematic finding added (see end of Reply log). Code reviewed pass 1: re-measured the headline numbers (match), found four gaps (see Reply log → *Code's review of pass 1*), built `pipeline/lint_extractions.py` + tests, `make_census_batches.py`, rewrote the census prompt as D1 v2, re-cut batches 29→46. The eight prompt-body edits in reply §7 are still not applied. |
 
 ## Reply log (file Fable's / research-chat replies here — raw, then verdict)
 ### Pass 1 — Fable 5.2, run inside Code, 2026-11-11
