@@ -3,8 +3,8 @@
 
 | | |
 |---|---|
-| **Status** | v2 — PASS 1 answered (run by Fable inside Code, 2026-11-11). Reply: [`fable-reply-v1.md`](fable-reply-v1.md). Next: relay research prompts D0 → B14 → census B01–B04 |
-| **Version** | 2 |
+| **Status** | v3 — PASS 1 answered and reviewed by Code. Reply: [`fable-reply-v1.md`](fable-reply-v1.md). Revised census prompt: [`census-prompt-d1-v2.md`](census-prompt-d1-v2.md). Lint built. Next: relay D0 → B14 → census fuzz batches |
+| **Version** | 3 |
 | **Updated** | 2026-11-11 |
 | **Companion** | `research/schematic-manifest.csv` (580 slugs; **local-only, gitignored** — it lists third-party schematic titles. Attach it to Fable and to every schematic/BOM research chat) |
 
@@ -341,9 +341,14 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 
 ## Open items before / while relaying
 - [ ] **Next relay:** paste prompt **D0** (reply §5.3) into a research chat with
-      `research/schematic-manifest.csv`; then **B14**; then **D1** with
-      `research/census/B01.csv` … `B04.csv` (one file per chat).
-- [ ] Code (no chat): structural lint + numeric value canonicaliser + 12-schematic pilot.
+      `research/schematic-manifest.csv`; then **B14**; then **D1 v2**
+      ([`census-prompt-d1-v2.md`](census-prompt-d1-v2.md)) with `research/census/B01.csv`
+      + `B01-extractions.json` (one pair per chat; fuzz = B01–B06).
+- [ ] After D0 returns: re-cut batches with
+      `python3 pipeline/tools/make_census_batches.py --manifest docs/research/schematic-manifest.csv --out docs/research/census --triage <D0.csv> --extractions <extractions dir>`.
+- [x] ~~Structural lint~~ → `pipeline/lint_extractions.py` (v3; 42 tests pass).
+- [ ] Code (no chat): numeric value canonicaliser in the **app** (`parse_value` in the lint is the
+      Python reference + test vectors) + 12-schematic pilot.
 - [ ] Resolve the 16 duplicate slugs in the manifest.
 - [x] ~~Attach `research/schematic-manifest.csv` to Fable.~~ (v2: Fable read it in Code)
 - [ ] Decide whether to also attach 3–5 representative `extractions/<slug>.json`
@@ -358,6 +363,7 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 |---|---|---|
 | 1 | 2026-11-11 | Initial handoff drafted by Code: tasks A–D, ground rules, measured DB facts, manifest CSV. |
 | 2 | 2026-11-11 | Pass 1 answered by Fable (in Code, with file access). Three verdicts stamped inline; reply filed as `fable-reply-v1.md`; 29 census batch files generated in gitignored `research/census/`; next-relay items added. The prompt body is otherwise unchanged — the eight edits Fable proposes for it are in reply §7 and not yet applied. |
+| 3 | 2026-11-11 | Code reviewed pass 1: re-measured the headline numbers (match), found four gaps (see Reply log → *Code's review of pass 1*), built `pipeline/lint_extractions.py` + tests, `make_census_batches.py`, rewrote the census prompt as D1 v2, re-cut batches 29→46. The eight prompt-body edits in reply §7 are still not applied. |
 
 ## Reply log (file Fable's / research-chat replies here — raw, then verdict)
 ### Pass 1 — Fable 5.2, run inside Code, 2026-11-11
@@ -369,3 +375,31 @@ chat, grouped by `effect_type`, so each chat finishes). Keep every constraint.
 - Clients/Jobs: keep Workshop-local now; ERPNext becomes system of record once live.
 - 14 back-office prompts (B1–B14), triage prompt D0 and census prompt D1 are paste-ready in the reply.
 - All legal statements in the reply are UNVERIFIED (memory only) until prompt B7 is run.
+
+### Code's review of pass 1 — 2026-11-11
+**Re-measured independently** (own script, same 565 files): zero-net schematics 89 ✔, unconnected parts 61% ✔, duplicate refs 27 ✔, 16 duplicate manifest slugs ✔, `normalizeValue` does no numeric conversion ✔ (its own doc comment says so). Small differences from Fable's table (net pins, single-pin nets, ≥95% coverage: **94 vs 103**) come from counting rules — the lint counts each pin once per net and caps placed pins at the declared count, so it is the stricter figure.
+
+**Four gaps found, all addressed**
+
+| # | Gap in the reply | Resolution |
+|---|---|---|
+| 1 | "Lint script exists from this session" — it was not on disk anywhere | **Built**: `pipeline/lint_extractions.py` (+ `tools/tests/test_lint_extractions.py`, 42 tests). Reproduces Fable's table; first run found a real parser bug (upper-case `K`/`P`, `10u/16V`) which the tests now pin. |
+| 2 | "Ship" thresholds (lower 95% bound ≥ 97/98/97/99%) are unreachable at n = 60 (margin ≈ ±2 points ⇒ needs ≈ 99% point estimates) | **Revised tiers** below |
+| 3 | Census time box (8 searches × 25 rows ≈ 200 per chat) cannot finish | **D1 v2**: 5 searches/row, ≤ 15 rows/batch (46 batches before D0 triage), resume protocol |
+| 4 | Copying rule ("values are facts") lets a chat reproduce a whole proprietary BOM line by line | **D1 v2**: full BOM lines only from reusable-licence sources; proprietary → counts + diff-against-our-extraction only; outputs stay in gitignored `docs/research/census/`; legal question stays with prompt B7 (UNVERIFIED) |
+
+**Revised ship tiers** (replaces reply §2.4 "Thresholds" for the three "ship" rows; Stop-after-pilot and the regression gate are unchanged). The 90% / 95% bounds are Code's judgement — revisit after the pilot gives a real error rate.
+
+| Tier | Rule | Meaning |
+|---|---|---|
+| Stop | point estimate of value accuracy or line recall < 90% after the pilot | Re-extract with a second engine before reviewing more |
+| **Usable with badge** | lower 95% bound ≥ 90% on recall, precision and passive value accuracy, **and** ≥ 95% on semiconductor identity | Parts list may feed BOM/inventory; every line shows `extracted` in the UI ("Ready — n lines unverified") |
+| **Trusted line** | line individually `human-checked` or `source-confirmed` | The only way to remove the badge. A corpus-wide number cannot vouch for one schematic |
+| Corpus-wide "unbadged" (Fable's original 97/98/97/99 bounds) | kept as an aspirational target | Needs ≈ 99% point estimates at n = 60 — expect it only after a second-engine re-extraction |
+| Nets / KiCad | lint `netlist-candidate` **and** golden net F1 ≥ 0.95 | unchanged; today 81 schematics are even candidates |
+
+**Lint result on the live extractions** (`python3 pipeline/lint_extractions.py --dir <extractions>`):
+565 schematics · 24,286 parts · 89 with no nets · 14,850 parts in no net (61%) · pooled pin coverage 26% (median 30%; 309 under 50%; 94 at ≥ 95%) · 465 dangling net refs · 27 duplicate refs · 231 pins in more than one net · tiers: **81 netlist-candidate / 481 parts-list-only / 3 no-parts** · R/C values: 13,630 ok · 759 assumed-unit (bare resistor number) · 1,603 ambiguous (e.g. `.022`, `1/50`) · 508 unknown (`unknown`, `?`, `not printed`) · 372 off-E24.
+*(The first lint run counted 5,288 unparseable R/C values; that was the parser bug above, not the data.)*
+
+**Still open from the reply:** its §7 list of eight edits to this handoff's prompt body (reply §7 items 1–8) is not applied; the pilot (12 schematics) has not been run; State of Formation is still unrecorded.
