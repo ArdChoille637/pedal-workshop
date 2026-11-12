@@ -43,6 +43,6 @@ scheme `PedalWorkshop-macOS`).
 ## Architecture notes
 - `BuildAnalyzer` aggregates per-project BOM demand by `StockKey` vs. on-hand
   stock; `normalizeValue` handles `Ω`/`470r`/`4k7` forms.
-- `SupplierSearch` currently searches Mammoth + Mouser (Keychain key); other
-  seeded suppliers are reference-only.
+- `SupplierSearch.searchAll` queries **Mouser only** (Keychain key); Tayda, Love My
+  Switches and Mammoth block scripted access, so they are reference-only.
 - Barcode parsing (GS1-128 / MH10.8.2) lives in `WorkshopCore`, unit-testable.

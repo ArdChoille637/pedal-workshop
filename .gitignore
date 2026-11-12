@@ -83,3 +83,6 @@ android/SPEC.md
 # from ever being staged, no matter where the app is run from.
 **/settings.json
 .pedalworkshop/
+
+# ── Local-only research inputs (list third-party schematic titles) ────────────
+docs/research/*.csv
