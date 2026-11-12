@@ -71,6 +71,8 @@ public actor LocalDataStore: Sendable {
     private var _bomItems:         [BOMItem]?
     private var _schematics:       [Schematic]?
     private var _supplierListings: [SupplierListing]?
+    private var _clients:         [Client]?
+    private var _jobs:            [Job]?
 
     // MARK: – Application Support directory
 
@@ -279,6 +281,110 @@ public actor LocalDataStore: Sendable {
             _bomItems = []
             try save(_bomItems!, name: "bom_items")
         }
+    }
+
+    // =========================================================================
+    // MARK: – Clients & Jobs  (local-only; no bundle seed — see Client.swift)
+    // =========================================================================
+
+    /// Load a user-only collection: absent file means empty, never a bundle seed.
+    private func loadLocalOnly<T: Codable>(_ name: String, type: T.Type) throws -> [T] where T: Sendable {
+        let url = dataURL(name)
+        guard FileManager.default.fileExists(atPath: url.path) else { return [] }
+        do {
+            return try decoder.decode([T].self, from: Data(contentsOf: url))
+        } catch {
+            // Quarantine rather than brick; customer data must never be silently dropped.
+            let stamp = ISO8601DateFormatter().string(from: Date()).replacingOccurrences(of: ":", with: "-")
+            try? FileManager.default.moveItem(
+                at: url, to: appSupportDir.appendingPathComponent("\(name).corrupt-\(stamp).json"))
+            throw DataError.decodeFailed(name, underlying: error)
+        }
+    }
+
+    private func clients() throws -> [Client] {
+        if _clients == nil { _clients = try loadLocalOnly("clients", type: Client.self) }
+        return _clients!
+    }
+
+    private func jobs() throws -> [Job] {
+        if _jobs == nil { _jobs = try loadLocalOnly("jobs", type: Job.self) }
+        return _jobs!
+    }
+
+    public func fetchClients() throws -> [Client] { try clients() }
+    public func fetchJobs() throws -> [Job] { try jobs() }
+
+    public func addClient(_ form: ClientForm) throws -> Client {
+        var all = try clients()
+        let ts = now()
+        let new = Client(id: nextId(all), name: form.name,
+                         email: form.email.nilIfEmpty, phone: form.phone.nilIfEmpty,
+                         notes: form.notes.nilIfEmpty, createdAt: ts, updatedAt: ts)
+        all.append(new)
+        try save(all, name: "clients")
+        _clients = all
+        return new
+    }
+
+    public func updateClient(_ client: Client) throws -> Client {
+        var all = try clients()
+        guard let i = all.firstIndex(where: { $0.id == client.id }) else {
+            throw DataError.notFound(client.id)
+        }
+        var u = client; u.updatedAt = now()
+        all[i] = u
+        try save(all, name: "clients")
+        _clients = all
+        return u
+    }
+
+    /// Deletes a client AND their jobs (jobs are meaningless without the client).
+    public func deleteClient(id: Int) throws {
+        var all = try clients()
+        all.removeAll { $0.id == id }
+        var js = try jobs()
+        js.removeAll { $0.clientId == id }
+        try save(js, name: "jobs")
+        try save(all, name: "clients")
+        _jobs = js
+        _clients = all
+    }
+
+    public func addJob(_ form: JobForm, for clientId: Int) throws -> Job {
+        guard try clients().contains(where: { $0.id == clientId }) else {
+            throw DataError.notFound(clientId)
+        }
+        var all = try jobs()
+        let ts = now()
+        let new = Job(id: nextId(all), clientId: clientId, projectId: form.projectId,
+                      kind: form.kind, title: form.title, status: form.status,
+                      quote: form.quote, deposit: form.deposit,
+                      dueDate: form.dueDate.nilIfEmpty, notes: form.notes.nilIfEmpty,
+                      createdAt: ts, updatedAt: ts)
+        all.append(new)
+        try save(all, name: "jobs")
+        _jobs = all
+        return new
+    }
+
+    public func updateJob(_ job: Job) throws -> Job {
+        var all = try jobs()
+        guard let i = all.firstIndex(where: { $0.id == job.id }) else {
+            throw DataError.notFound(job.id)
+        }
+        var u = job; u.updatedAt = now()
+        all[i] = u
+        try save(all, name: "jobs")
+        _jobs = all
+        return u
+    }
+
+    public func deleteJob(id: Int) throws {
+        var all = try jobs()
+        all.removeAll { $0.id == id }
+        try save(all, name: "jobs")
+        _jobs = all
     }
 
     // =========================================================================

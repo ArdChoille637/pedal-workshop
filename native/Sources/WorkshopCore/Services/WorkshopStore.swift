@@ -53,6 +53,8 @@ public final class WorkshopStore {
     public var suppliers:        [Supplier]        = []
     public var schematics:       [Schematic]       = []
     public var supplierListings: [SupplierListing] = []
+    public var clients:          [Client]          = []
+    public var jobs:             [Job]             = []
 
     /// Set to true while any async load is in progress.  Use for progress indicators.
     public var isLoading = false
@@ -119,6 +121,8 @@ public final class WorkshopStore {
             let schems = try await store.fetchSchematics()
             let allBOM = try await store.fetchAllBOMItems()
             let listings = (try? await store.fetchSupplierListings()) ?? []
+            clients = try await store.fetchClients()
+            jobs    = try await store.fetchJobs()
 
             components       = comps
             projects         = projs
@@ -224,6 +228,47 @@ public final class WorkshopStore {
         } catch {
             self.error = error.localizedDescription
         }
+    }
+
+    // MARK: – Client & Job CRUD
+
+    public func addClient(_ form: ClientForm) async {
+        do { clients.append(try await store.addClient(form)) }
+        catch { self.error = error.localizedDescription }
+    }
+
+    public func updateClient(_ client: Client) async {
+        do {
+            let u = try await store.updateClient(client)
+            if let i = clients.firstIndex(where: { $0.id == u.id }) { clients[i] = u }
+        } catch { self.error = error.localizedDescription }
+    }
+
+    public func deleteClient(_ client: Client) async {
+        do {
+            try await store.deleteClient(id: client.id)
+            clients.removeAll { $0.id == client.id }
+            jobs.removeAll { $0.clientId == client.id }
+        } catch { self.error = error.localizedDescription }
+    }
+
+    public func addJob(_ form: JobForm, for client: Client) async {
+        do { jobs.append(try await store.addJob(form, for: client.id)) }
+        catch { self.error = error.localizedDescription }
+    }
+
+    public func updateJob(_ job: Job) async {
+        do {
+            let u = try await store.updateJob(job)
+            if let i = jobs.firstIndex(where: { $0.id == u.id }) { jobs[i] = u }
+        } catch { self.error = error.localizedDescription }
+    }
+
+    public func deleteJob(_ job: Job) async {
+        do {
+            try await store.deleteJob(id: job.id)
+            jobs.removeAll { $0.id == job.id }
+        } catch { self.error = error.localizedDescription }
     }
 
     // MARK: – BOM CRUD
